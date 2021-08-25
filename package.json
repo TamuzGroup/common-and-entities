@@ -1,0 +1,11 @@
+{
+  "name": "common-and-entities",
+  "version": "1.0.0",
+  "description": "givers common-and-entities repository to be shared between projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matan Navon",
+  "license": "ISC"
+}
