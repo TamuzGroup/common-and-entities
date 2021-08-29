@@ -73,12 +73,14 @@ class GoogleDriveService implements IClouds {
         },
         (
           err: Error | null,
-          res: GaxiosResponse<drive_v3.Schema$FileList> | null | undefined
-        ) => {
+          res?: GaxiosResponse<drive_v3.Schema$FileList> | null
+        ): void => {
           if (err) {
             return reject(err);
           }
-          return resolve(res.data.files ? res.data.files[0] : null);
+          if (res) {
+            return resolve(res.data.files ? res.data.files[0] : null);
+          }
         }
       );
     });
