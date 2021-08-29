@@ -1,10 +1,11 @@
 import { google, drive_v3 } from "googleapis";
 import { OAuth2Client } from "google-auth-library";
 import * as fs from "fs";
+import { GaxiosPromise } from "googleapis-common";
+import { GaxiosResponse } from "gaxios";
+import { Readable } from "stream";
 import { IClouds } from "./interfaces/clouds";
 import constants from "../constants";
-import { GaxiosPromise } from "googleapis-common";
-import { Readable } from "stream";
 
 class GoogleDriveService implements IClouds {
   auth: OAuth2Client;
@@ -51,27 +52,29 @@ class GoogleDriveService implements IClouds {
   createFolder(
     folderName: string,
     parentId: string
-  ): GaxiosPromise<Readable> & GaxiosPromise<drive_v3.Schema$File> & void {
-    const test = this.drive.files.create({
-      resource: {
+  ): GaxiosPromise<drive_v3.Schema$File> {
+    const params: drive_v3.Params$Resource$Files$Create | undefined = {
+      requestBody: {
         name: folderName,
         mimeType: constants.GOOGLE_FOLDER_PATH,
         parents: [parentId],
       },
       fields: "id, name",
-    });
-
-    console.log({ test })
+    };
+    return this.drive.files.create(params);
   }
 
   searchFolder(folderName: string): Promise<Response> {
     return new Promise((resolve, reject) => {
-      this.drive.files.list(
+      return this.drive.files.list(
         {
           q: `mimeType='${constants.GOOGLE_FOLDER_PATH}' and name='${folderName}'`,
           fields: "files(id, name)",
         },
-        (err: Error, res: object) => {
+        (
+          err: Error | null,
+          res: GaxiosResponse<drive_v3.Schema$FileList> | null | undefined
+        ) => {
           if (err) {
             return reject(err);
           }
@@ -86,8 +89,8 @@ class GoogleDriveService implements IClouds {
     filePath: string,
     fileMimeType: string,
     folderId: string
-  ): Promise<Response> {
-    return this.drive.files.create({
+  ): GaxiosPromise<drive_v3.Schema$File> {
+    const params: drive_v3.Params$Resource$Files$Create | undefined = {
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
@@ -97,31 +100,36 @@ class GoogleDriveService implements IClouds {
         mimeType: fileMimeType,
         body: fs.createReadStream(filePath),
       },
-    });
+    };
+    return this.drive.files.create(params);
   }
 
-  getDriveFiles(folderId: string): Promise<Response> {
-    return this.drive.files.list({
+  getDriveFiles(folderId: string): GaxiosPromise<drive_v3.Schema$FileList> {
+    const params: drive_v3.Params$Resource$Files$List | undefined = {
       auth: this.auth,
       pageSize: 10,
       q: `'${folderId}' in parents and trashed=false`,
-      action: "open",
-    });
+    };
+
+    return this.drive.files.list(params);
   }
 
   getAuthToken(code: string): void {
     this.auth.getToken(code, (err, tokens) => {
-      this.auth.setCredentials(tokens);
+      if (tokens) {
+        this.auth.setCredentials(tokens);
+      }
     });
   }
 
-  async deleteFile(fileId: string): Promise<Response> {
-    return this.drive.files.delete({
+  async deleteFile(fileId: string): Promise<GaxiosResponse<void>> {
+    const params: drive_v3.Params$Resource$Files$Delete | undefined = {
       fileId,
-    });
+    };
+    return this.drive.files.delete(params);
   }
 
-  downloadFile(fileId: string): Promise<Response> {
+  downloadFile(fileId: string): GaxiosPromise<Readable> {
     return this.drive.files.get(
       {
         fileId,
@@ -133,7 +141,9 @@ class GoogleDriveService implements IClouds {
     );
   }
 
-  async getFileData(fileId: string): Promise<Response> {
+  async getFileData(
+    fileId: string
+  ): Promise<GaxiosResponse<drive_v3.Schema$File>> {
     return this.drive.files.get({
       fileId,
       fields: "webViewLink, webContentLink, thumbnailLink",
@@ -145,18 +155,19 @@ class GoogleDriveService implements IClouds {
     email: string,
     role: string,
     type: string
-  ): Promise<Response> {
-    return this.drive.permissions.create({
+  ): Promise<GaxiosResponse<drive_v3.Schema$Permission>> {
+    const params: drive_v3.Params$Resource$Permissions$Create | undefined = {
       fileId,
-      resource: {
+      requestBody: {
         role,
         type,
         emailAddress: email,
       },
-    });
+    };
+    return this.drive.permissions.create(params);
   }
 
-  generateAuthUrl(): Promise<Response> {
+  generateAuthUrl(): string {
     return this.auth.generateAuthUrl({
       access_type: "offline",
       prompt: "consent",
