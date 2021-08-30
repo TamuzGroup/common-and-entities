@@ -1,4 +1,4 @@
-import { Kafka, Consumer, EachMessagePayload } from "kafkajs";
+import {Kafka, Consumer, EachMessagePayload, EachBatchPayload} from "kafkajs";
 
 export default class KafkaConsumer {
   groupId;
@@ -22,14 +22,18 @@ export default class KafkaConsumer {
     this.topic = topic;
   }
 
-  async connect(
-    eachMessage: (payload: EachMessagePayload) => Promise<any>
-  ): Promise<void> {
+  async connect(config?: {
+    autoCommit?: boolean
+    autoCommitInterval?: number | null
+    autoCommitThreshold?: number | null
+    eachBatchAutoResolve?: boolean
+    partitionsConsumedConcurrently?: number
+    eachBatch?: (payload: EachBatchPayload) => Promise<void>
+    eachMessage?: (payload: EachMessagePayload) => Promise<void>
+  }): Promise<void> {
     await this.consumer.connect();
     await this.consumer.subscribe({ topic: this.topic });
-    await this.consumer.run({
-      eachMessage,
-    });
+    await this.consumer.run(config);
   }
 
   disconnect() {

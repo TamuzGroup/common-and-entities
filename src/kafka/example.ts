@@ -14,12 +14,12 @@ const eachMessage = async (payload: EachMessagePayload) => {
 };
 
 consumer
-  .connect(eachMessage)
+  .connect({ eachMessage })
   .then(() => producer.connect())
   .then(() =>
     producer.sendMessage({
       key: `${getRandomNumber()}`,
-      value: JSON.stringify({ data: new Date().getTime() + "" }),
+      value: JSON.stringify({ data: { date: new Date().getTime() + "", test: 'test' } }),
     })
   )
   .catch((e) => console.log({ e }));
