@@ -2,7 +2,7 @@ import { Kafka, Producer } from "kafkajs";
 
 export default class KafkaProducer {
   kafka: Kafka;
-  topic;
+  topic: string;
   producer: Producer;
 
   constructor(
