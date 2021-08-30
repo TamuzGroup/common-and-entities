@@ -19,7 +19,7 @@ export interface IClouds {
   ):
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<DropboxResponse<files.CreateFolderResult>>;
-  searchFolder(folderName: string): Promise<Response>;
+  searchFolder(folderName: string): Promise<drive_v3.Schema$File | null>;
 
   saveFile(
     fileName: string,
