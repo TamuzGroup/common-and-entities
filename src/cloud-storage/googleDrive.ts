@@ -64,7 +64,7 @@ class GoogleDriveService implements IClouds {
     return this.drive.files.create(params);
   }
 
-  searchFolder(folderName: string): Promise<Response> {
+  searchFolder(folderName: string): Promise<drive_v3.Schema$File | null> {
     return new Promise((resolve, reject) => {
       return this.drive.files.list(
         {
@@ -79,7 +79,8 @@ class GoogleDriveService implements IClouds {
             return reject(err);
           }
           if (res) {
-            return resolve(res.data.files ? res.data.files[0] : null);
+            const restData = res.data.files ? res.data.files[0] : null;
+            return resolve(restData);
           }
         }
       );
