@@ -1,4 +1,4 @@
-import { google, drive_v3 } from "googleapis";
+import googleapis from "googleapis";
 import { OAuth2Client } from "google-auth-library";
 import * as fs from "fs";
 import { GaxiosPromise } from "googleapis-common";
@@ -10,7 +10,7 @@ import constants from "../constants";
 class GoogleDriveService implements IClouds {
   auth: OAuth2Client;
 
-  drive: drive_v3.Drive;
+  drive: googleapis.drive_v3.Drive;
 
   clientId: string;
 
@@ -36,8 +36,8 @@ class GoogleDriveService implements IClouds {
     this.drive = drive;
   }
 
-  cloudAuth(): [OAuth2Client, drive_v3.Drive] {
-    const auth = new google.auth.OAuth2(
+  cloudAuth(): [OAuth2Client, googleapis.drive_v3.Drive] {
+    const auth = new googleapis.google.auth.OAuth2(
       this.clientId,
       this.clientSecret,
       this.redirectUrl
@@ -45,26 +45,29 @@ class GoogleDriveService implements IClouds {
 
     auth.setCredentials({ refresh_token: this.refreshToken });
 
-    const drive = google.drive({ version: "v3", auth });
+    const drive = googleapis.google.drive({ version: "v3", auth });
     return [auth, drive];
   }
 
   createFolder(
     folderName: string,
     parentId: string
-  ): GaxiosPromise<drive_v3.Schema$File> {
-    const params: drive_v3.Params$Resource$Files$Create | undefined = {
-      requestBody: {
-        name: folderName,
-        mimeType: constants.GOOGLE_FOLDER_PATH,
-        parents: [parentId],
-      },
-      fields: "id, name",
-    };
+  ): GaxiosPromise<googleapis.drive_v3.Schema$File> {
+    const params: googleapis.drive_v3.Params$Resource$Files$Create | undefined =
+      {
+        requestBody: {
+          name: folderName,
+          mimeType: constants.GOOGLE_FOLDER_PATH,
+          parents: [parentId],
+        },
+        fields: "id, name",
+      };
     return this.drive.files.create(params);
   }
 
-  searchFolder(folderName: string): Promise<drive_v3.Schema$File | null> {
+  searchFolder(
+    folderName: string
+  ): Promise<googleapis.drive_v3.Schema$File | null> {
     return new Promise((resolve, reject) => {
       return this.drive.files.list(
         {
@@ -73,7 +76,7 @@ class GoogleDriveService implements IClouds {
         },
         (
           err: Error | null,
-          res?: GaxiosResponse<drive_v3.Schema$FileList> | null
+          res?: GaxiosResponse<googleapis.drive_v3.Schema$FileList> | null
         ): void => {
           if (err) {
             return reject(err);
@@ -92,23 +95,26 @@ class GoogleDriveService implements IClouds {
     filePath: string,
     fileMimeType: string,
     folderId: string
-  ): GaxiosPromise<drive_v3.Schema$File> {
-    const params: drive_v3.Params$Resource$Files$Create | undefined = {
-      requestBody: {
-        name: fileName,
-        mimeType: fileMimeType,
-        parents: folderId ? [folderId] : [],
-      },
-      media: {
-        mimeType: fileMimeType,
-        body: fs.createReadStream(filePath),
-      },
-    };
+  ): GaxiosPromise<googleapis.drive_v3.Schema$File> {
+    const params: googleapis.drive_v3.Params$Resource$Files$Create | undefined =
+      {
+        requestBody: {
+          name: fileName,
+          mimeType: fileMimeType,
+          parents: folderId ? [folderId] : [],
+        },
+        media: {
+          mimeType: fileMimeType,
+          body: fs.createReadStream(filePath),
+        },
+      };
     return this.drive.files.create(params);
   }
 
-  getDriveFiles(folderId: string): GaxiosPromise<drive_v3.Schema$FileList> {
-    const params: drive_v3.Params$Resource$Files$List | undefined = {
+  getDriveFiles(
+    folderId: string
+  ): GaxiosPromise<googleapis.drive_v3.Schema$FileList> {
+    const params: googleapis.drive_v3.Params$Resource$Files$List | undefined = {
       auth: this.auth,
       pageSize: 10,
       q: `'${folderId}' in parents and trashed=false`,
@@ -126,9 +132,10 @@ class GoogleDriveService implements IClouds {
   }
 
   async deleteFile(fileId: string): Promise<GaxiosResponse<void>> {
-    const params: drive_v3.Params$Resource$Files$Delete | undefined = {
-      fileId,
-    };
+    const params: googleapis.drive_v3.Params$Resource$Files$Delete | undefined =
+      {
+        fileId,
+      };
     return this.drive.files.delete(params);
   }
 
@@ -146,7 +153,7 @@ class GoogleDriveService implements IClouds {
 
   async getFileData(
     fileId: string
-  ): Promise<GaxiosResponse<drive_v3.Schema$File>> {
+  ): Promise<GaxiosResponse<googleapis.drive_v3.Schema$File>> {
     return this.drive.files.get({
       fileId,
       fields: "webViewLink, webContentLink, thumbnailLink",
@@ -158,8 +165,10 @@ class GoogleDriveService implements IClouds {
     email: string,
     role: string,
     type: string
-  ): Promise<GaxiosResponse<drive_v3.Schema$Permission>> {
-    const params: drive_v3.Params$Resource$Permissions$Create | undefined = {
+  ): Promise<GaxiosResponse<googleapis.drive_v3.Schema$Permission>> {
+    const params:
+      | googleapis.drive_v3.Params$Resource$Permissions$Create
+      | undefined = {
       fileId,
       requestBody: {
         role,
