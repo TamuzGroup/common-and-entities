@@ -36,9 +36,7 @@ class DropboxService implements IClouds {
 
   cloudAuth(): Dropbox {
     return new Dropbox({
-      fetch,
-      clientId: this.clientId,
-      clientSecret: this.clientSecret,
+      auth: this.auth,
     });
   }
 
@@ -54,7 +52,7 @@ class DropboxService implements IClouds {
       });
   }
 
-  generateAuthUrl(): Promise<String> {
+  generateAuthUrl(): Promise<string | object> {
     return this.auth.getAuthenticationUrl(
       this.redirectUrl,
       "",
@@ -134,6 +132,19 @@ class DropboxService implements IClouds {
       autorename: false,
       mode: { ".tag": "add" },
     });
+  }
+
+  searchFolder(folderName: string): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  shareFile(
+    fileId: string,
+    email: string,
+    role: string,
+    type: string
+  ): Promise<null> {
+    return Promise.resolve(null);
   }
 }
 

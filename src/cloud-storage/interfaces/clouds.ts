@@ -19,7 +19,7 @@ export interface IClouds {
   ):
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<DropboxResponse<files.CreateFolderResult>>;
-  searchFolder?(folderName: string): Promise<drive_v3.Schema$File | null>;
+  searchFolder(folderName: string): Promise<drive_v3.Schema$File | null>;
 
   saveFile(
     fileName: string,
@@ -69,7 +69,7 @@ export interface IClouds {
         | { data: { url: string } }
       >;
 
-  shareFile?(
+  shareFile(
     fileId: string,
     email: string,
     role: string,
@@ -77,7 +77,8 @@ export interface IClouds {
   ):
     | Promise<GaxiosResponse<drive_v3.Schema$Permission>>
     | Promise<DropboxResponse<Array<sharing.FileMemberActionResult>>>
-    | Promise<void | DropboxResponse<sharing.FileMemberActionResult[]>>;
+    | Promise<void | DropboxResponse<sharing.FileMemberActionResult[]>>
+    | Promise<null>;
 
-  generateAuthUrl(): string | Promise<string> | Promise<String>;
+  generateAuthUrl(): string | Promise<string | object>;
 }
