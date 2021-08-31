@@ -1,10 +1,12 @@
 import fetch from "node-fetch";
-import { Dropbox, DropboxResponse } from "dropbox";
+import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import { IClouds } from "./interfaces/clouds";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
+
+  auth: DropboxAuth;
 
   clientId: string;
 
@@ -24,6 +26,11 @@ class DropboxService implements IClouds {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.redirectUrl = redirectUrl;
+    this.auth = new DropboxAuth({
+      fetch,
+      clientId: this.clientId,
+      clientSecret: this.clientSecret,
+    });
     this.dropbox = this.cloudAuth();
   }
 
@@ -36,20 +43,24 @@ class DropboxService implements IClouds {
   }
 
   getAuthToken(code: string): void {
-    this.dropbox.auth
+    this.auth
       .getAccessTokenFromCode(this.redirectUrl, code)
-      .then((token) => {
-        this.dropbox.auth.setRefreshToken(token.result.refresh_token);
+      .then((token: DropboxResponse<object>) => {
+        // @ts-ignore
+        const { refresh_token: refreshToken } = token.result;
+        if (refreshToken != null) {
+          this.auth.setRefreshToken(refreshToken);
+        }
       });
   }
 
-  generateAuthUrl(): Promise<string> {
-    return this.dropbox.auth.getAuthenticationUrl(
+  generateAuthUrl(): Promise<String> {
+    return this.auth.getAuthenticationUrl(
       this.redirectUrl,
-      null,
+      "",
       "code",
       "offline",
-      null,
+      [],
       "none",
       false
     );
