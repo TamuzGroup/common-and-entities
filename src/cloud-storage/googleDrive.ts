@@ -5,7 +5,7 @@ import { GaxiosPromise } from "googleapis-common";
 import { GaxiosResponse } from "gaxios";
 import { Readable } from "stream";
 import { IClouds } from "./interfaces/clouds";
-import constants from "../constants";
+import constants from "./constants";
 
 class GoogleDriveService implements IClouds {
   auth: OAuth2Client;
