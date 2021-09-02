@@ -5,11 +5,11 @@ import axios, {
 } from "axios";
 import fetch from "node-fetch";
 
-const defaultHeaders = (authToken: AxiosBasicCredentials | null) => ({
+const defaultHeaders = (authToken: AxiosBasicCredentials | string) => ({
   Authorization: `Bearer ${authToken}`,
   "Content-Type": "application/json; charset=utf-8",
 });
-const defaultFetchOptions = (options: AxiosRequestConfig) => ({
+const defaultFetchOptions = (options: AxiosRequestConfig & string) => ({
   method: options.method || "GET",
   mode: "cors",
   cache: "no-cache",
@@ -19,7 +19,7 @@ const defaultFetchOptions = (options: AxiosRequestConfig) => ({
 
 export function axiosRequest(
   path: string,
-  options: AxiosRequestConfig
+  options: AxiosRequestConfig & any
 ): Promise<AxiosResponse> {
   const authToken = options.auth ? options.auth : null;
   const headers = defaultHeaders(authToken);
