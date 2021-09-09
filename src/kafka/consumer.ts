@@ -1,16 +1,19 @@
-import {Kafka, Consumer, EachMessagePayload, EachBatchPayload} from "kafkajs";
+import { Kafka, Consumer, EachMessagePayload, EachBatchPayload } from "kafkajs";
 
 export default class KafkaConsumer {
   groupId;
+
   consumer: Consumer;
+
   kafka: Kafka;
+
   topic: string;
 
   constructor(
-    groupId: string = "test-group",
-    clientId: string = "first-app",
+    groupId = "test-group",
+    clientId = "first-app",
     brokers: string[] = ["localhost:9092"],
-    topic: string = "topic-test",
+    topic = "topic-test"
   ) {
     this.kafka = new Kafka({
       clientId,
@@ -23,13 +26,13 @@ export default class KafkaConsumer {
   }
 
   async connect(config?: {
-    autoCommit?: boolean
-    autoCommitInterval?: number | null
-    autoCommitThreshold?: number | null
-    eachBatchAutoResolve?: boolean
-    partitionsConsumedConcurrently?: number
-    eachBatch?: (payload: EachBatchPayload) => Promise<void>
-    eachMessage?: (payload: EachMessagePayload) => Promise<void>
+    autoCommit?: boolean;
+    autoCommitInterval?: number | null;
+    autoCommitThreshold?: number | null;
+    eachBatchAutoResolve?: boolean;
+    partitionsConsumedConcurrently?: number;
+    eachBatch?: (payload: EachBatchPayload) => Promise<void>;
+    eachMessage?: (payload: EachMessagePayload) => Promise<void>;
   }): Promise<void> {
     await this.consumer.connect();
     await this.consumer.subscribe({ topic: this.topic });

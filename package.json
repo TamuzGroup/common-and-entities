@@ -4,7 +4,9 @@
   "description": "givers common-and-entities repository to be shared between projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "lint": "eslint ."
   },
   "author": "Matan Navon",
   "license": "ISC",
@@ -66,6 +68,7 @@
     "googleapis": "^84.0.0",
     "googleapis-common": "^5.0.4",
     "node-fetch": "^2.6.1",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "kafkajs": "^1.10.0"
   }
 }
