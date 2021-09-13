@@ -1,6 +1,6 @@
 {
   "name": "kafka-template",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "description": "Using Kafka with Node.js",
   "main": "index.ts",
   "types": "index.d.ts",
