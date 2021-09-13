@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
-import { IClouds } from "./interfaces/clouds";
+import { IClouds, IDropboxTreeItem } from "./interfaces/clouds";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
@@ -99,11 +99,29 @@ class DropboxService implements IClouds {
   > {
     return this.dropbox
       .filesListFolder({
-        path: folderPath,
+        path: "",
+        recursive: true,
+        include_mounted_folders: true,
       })
       .then((rsp) => {
         return {
-          data: { files: rsp.result.entries },
+          data: {
+            files: rsp.result.entries.reduce((acc, item: any) => {
+              if (item[".tag"] === "folder")
+                // @ts-ignore
+                acc.push(item);
+              else
+                acc.map((folder: IDropboxTreeItem) => {
+                  const folderPath = item.path_lower.split("/");
+                  if (folderPath[1] === folder.name)
+                    if (!folder.children)
+                      // @ts-ignore
+                      folder.children = [item];
+                    else folder.children.push(item);
+                });
+              return acc;
+            }, []),
+          },
         };
       });
   }
@@ -118,8 +136,9 @@ class DropboxService implements IClouds {
         path: fileId,
       })
       .then((rsp) => {
+        const url = rsp.result.links[0].url.split("?");
         return {
-          data: { url: rsp.result.links[0].url },
+          data: { url: `${url}?raw=1` },
         };
       });
   }

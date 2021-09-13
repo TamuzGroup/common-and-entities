@@ -27,7 +27,7 @@ export function axiosRequest(
   if (options.data) fetchOptions.body = options.data;
 
   if (options.headers) {
-    options.headers.forEach(([key, val]: string) => {
+    options.headers.forEach(([key, val]: any) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       headers[key] = val;
