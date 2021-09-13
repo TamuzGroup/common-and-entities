@@ -40,6 +40,10 @@ export interface IClouds {
     | GaxiosPromise<drive_v3.Schema$FileList>
     | Promise<AxiosResponse>
     | Promise<
+        | { data: { files: unknown[] } }
+        | { data: { files: IOneDriveTreeItem[] } }
+      >
+    | Promise<
         | DropboxResponse<files.ListFolderResult>
         | {
             data: {
@@ -54,7 +58,8 @@ export interface IClouds {
   getAuthToken: (code: string) => void;
 
   deleteFile(
-    fileId?: string
+    fileId?: string,
+    fileName?: string
   ):
     | Promise<GaxiosResponse<void>>
     | Promise<AxiosResponse>
@@ -88,5 +93,76 @@ export interface IClouds {
     | Promise<void | DropboxResponse<sharing.FileMemberActionResult[]>>
     | Promise<null>;
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   generateAuthUrl(): string | Promise<string | object>;
+}
+
+export interface IOneDriveTreeItem {
+  ".tag": string;
+  cTag: string;
+  children?: any;
+  createdBy: {
+    application: {
+      displayName: string;
+      id: string;
+    };
+    user: {
+      displayName: string;
+      id: string;
+    };
+  };
+  createdDateTime: string;
+  eTag: string;
+  fileSystemInfo: {
+    createdDateTime: string;
+    lastModifiedDateTime: string;
+  };
+  folder: {
+    childCount: number;
+    view: {
+      sortBy: string;
+      sortOrder: string;
+      viewType: string;
+    };
+  };
+  id: string;
+  lastModifiedBy: {
+    application: {
+      displayName: string;
+      id: string;
+    };
+    user: {
+      displayName: string;
+      id: string;
+    };
+  };
+  lastModifiedDateTime: string;
+  name: string;
+  parentReference: {
+    driveId: string;
+    driveType: string;
+    id: string;
+    name: string;
+    path: string;
+  };
+  reactions: {
+    commentCount: number;
+  };
+  size: number;
+  webUrl: string;
+}
+
+export interface IDropboxTreeItem {
+  ".tag": string;
+  client_modified: string;
+  content_hash: string;
+  id: string;
+  is_downloadable: boolean;
+  name: string;
+  path_display: string;
+  path_lower: string;
+  rev: string;
+  server_modified: string;
+  size: number;
+  children?: any;
 }

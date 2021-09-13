@@ -1,8 +1,10 @@
 import fs from "fs";
 import * as qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
-import { IClouds } from "./interfaces/clouds";
+import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
 import { axiosRequest } from "./utils/auth.util";
+
+const BASE_URL = "https://graph.microsoft.com/v1.0/drive/";
 
 class OneDriveService implements IClouds {
   auth: AxiosBasicCredentials | undefined;
@@ -45,12 +47,13 @@ class OneDriveService implements IClouds {
         }),
         headers: [["Content-Type", "application/x-www-form-urlencoded"]],
       };
-      axiosRequest("https://login.live.com/oauth20_token.srf", options).then(
-        (data) => {
-          this.auth = data.data.access_token;
-          resolve(data.data.access_token);
-        }
-      );
+      return axiosRequest(
+        "https://login.live.com/oauth20_token.srf",
+        options
+      ).then((data) => {
+        this.auth = data.data.access_token;
+        resolve(data.data.access_token);
+      });
     });
   }
 
@@ -58,10 +61,7 @@ class OneDriveService implements IClouds {
     const options = {
       auth: this.auth,
     };
-    return axiosRequest(
-      "https://graph.microsoft.com/v1.0/drive/special/approot/children",
-      options
-    );
+    return axiosRequest(`${BASE_URL}special/approot/children`, options);
   }
 
   deleteFile(fileName: string): Promise<AxiosResponse> {
@@ -69,10 +69,7 @@ class OneDriveService implements IClouds {
       auth: this.auth,
       method: "DELETE",
     };
-    return axiosRequest(
-      `https://graph.microsoft.com/v1.0/drive/special/approot:/${fileName}`,
-      options
-    );
+    return axiosRequest(`${BASE_URL}special/approot:/${fileName}`, options);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -84,17 +81,55 @@ class OneDriveService implements IClouds {
     return `https://login.live.com/oauth20_authorize.srf?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
   }
 
-  getDriveFiles(): Promise<AxiosResponse<never> | { data: { files: any } }> {
+  getChildren(
+    name: string
+  ): IOneDriveTreeItem[] | PromiseLike<IOneDriveTreeItem[]> {
+    const options = {
+      authToken: this.auth,
+    };
+    return axiosRequest(
+      `${BASE_URL}special/approot:/${name}:/children`,
+      options
+    ).then((data) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return data.value;
+    });
+  }
+
+  getDriveFiles(): Promise<
+    { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
+  > {
     const options = {
       auth: this.auth,
     };
 
-    return axiosRequest(
-      "https://graph.microsoft.com/v1.0/drive/special/approot/children",
-      options
-    ).then((data) => {
-      return { data: { files: data.data } };
-    });
+    return axiosRequest(`${BASE_URL}special/approot/children`, options).then(
+      async (rsp) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const treeData = rsp.value.map((item: IOneDriveTreeItem) => {
+          return {
+            ...item,
+            ".tag": item.folder ? "folder" : "file",
+            children:
+              item.folder &&
+              item.folder.childCount > 0 &&
+              this.getChildren(item.name),
+          };
+        });
+
+        const data = await Promise.all(
+          treeData.map(async (item: IOneDriveTreeItem) => {
+            return {
+              ...item,
+              children: await item.children,
+            };
+          })
+        );
+        return { data: { files: data } };
+      }
+    );
   }
 
   getFileData(fileName: string): Promise<AxiosResponse> {
@@ -103,7 +138,7 @@ class OneDriveService implements IClouds {
     };
 
     return axiosRequest(
-      `https://graph.microsoft.com/v1.0/drive/special/approot:/${fileName}:/thumbnails`,
+      `${BASE_URL}special/approot:/${fileName}:/thumbnails`,
       options
     ).then((data) => {
       return data.data;
@@ -117,7 +152,7 @@ class OneDriveService implements IClouds {
       auth: this.auth,
     };
     return axiosRequest(
-      `https://graph.microsoft.com/v1.0/drive/special/approot:/${fileName}:/content`,
+      `${BASE_URL}special/approot:/${fileName}:/content`,
       options
     );
   }
