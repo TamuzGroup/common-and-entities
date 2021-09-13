@@ -68,8 +68,8 @@ locales/*.json
 .idea
 ___*
 credentials.json
-package-lock.json
-packages/*/package-lock.json
+# package-lock.json
+# packages/*/package-lock.json
 docker-compose.debug.yml
 # docker-compose.yml
 .vscode/launch.json
