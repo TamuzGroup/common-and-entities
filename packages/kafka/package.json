@@ -2,7 +2,8 @@
   "name": "kafka-template",
   "version": "1.0.0",
   "description": "Using Kafka with Node.js",
-  "main": "index.js",
+  "main": "index.ts",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest"
   },

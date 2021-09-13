@@ -51,6 +51,7 @@
     "faker": "^5.1.0",
     "husky": "^7.0.0",
     "jest": "^26.0.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^11.0.0",
     "node-mocks-http": "^1.8.0",
     "nodemon": "^2.0.0",
@@ -68,7 +69,6 @@
     "googleapis": "^84.0.0",
     "googleapis-common": "^5.0.4",
     "node-fetch": "^2.6.1",
-    "qs": "^6.10.1",
-    "kafkajs": "^1.10.0"
+    "qs": "^6.10.1"
   }
 }
