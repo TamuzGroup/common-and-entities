@@ -46,13 +46,11 @@ export interface IClouds {
     | Promise<
         | DropboxResponse<files.ListFolderResult>
         | {
-            data: {
-              files: (
-                | files.FileMetadataReference
-                | files.FolderMetadataReference
-                | files.DeletedMetadataReference
-              )[];
-            };
+            data: (
+              | files.FileMetadataReference
+              | files.FolderMetadataReference
+              | files.DeletedMetadataReference
+            )[];
           }
       >;
   getAuthToken: (code: string) => void;
@@ -96,7 +94,7 @@ export interface IClouds {
   generateAuthUrl(): string | Promise<string | object>;
   getChildren(
     folderId?: string
-  ): Promise<{ data: drive_v3.Schema$File[] }> | Promise<any>;
+  ): Promise<{ data: drive_v3.Schema$File[] }> | Promise<never>;
 }
 
 export interface IOneDriveTreeItem {
