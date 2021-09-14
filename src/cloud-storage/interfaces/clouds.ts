@@ -37,7 +37,7 @@ export interface IClouds {
     folderId?: string,
     folderPath?: string
   ):
-    | GaxiosPromise<drive_v3.Schema$FileList>
+    | Promise<{ data: drive_v3.Schema$File[] }>
     | Promise<AxiosResponse>
     | Promise<
         | { data: { files: unknown[] } }
@@ -76,10 +76,9 @@ export interface IClouds {
     fileId?: string,
     fileName?: string
   ):
-    | Promise<GaxiosResponse<drive_v3.Schema$File>>
+    | Promise<GaxiosResponse<drive_v3.Schema$File> | { data: string }>
     | Promise<
-        | DropboxResponse<sharing.ListSharedLinksResult>
-        | { data: { url: string } }
+        DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
       >;
 
   shareFile(
@@ -95,12 +94,15 @@ export interface IClouds {
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   generateAuthUrl(): string | Promise<string | object>;
+  getChildren(
+    folderId?: string
+  ): Promise<{ data: drive_v3.Schema$File[] }> | Promise<any>;
 }
 
 export interface IOneDriveTreeItem {
   ".tag": string;
   cTag: string;
-  children?: any;
+  children?: IOneDriveTreeItem[];
   createdBy: {
     application: {
       displayName: string;
@@ -164,5 +166,5 @@ export interface IDropboxTreeItem {
   rev: string;
   server_modified: string;
   size: number;
-  children?: any;
+  children?: IDropboxTreeItem[];
 }

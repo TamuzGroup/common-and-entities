@@ -129,7 +129,7 @@ class DropboxService implements IClouds {
   getFileData(
     fileId: string
   ): Promise<
-    DropboxResponse<sharing.ListSharedLinksResult> | { data: { url: string } }
+    DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
   > {
     return this.dropbox
       .sharingListSharedLinks({
@@ -138,7 +138,7 @@ class DropboxService implements IClouds {
       .then((rsp) => {
         const url = rsp.result.links[0].url.split("?");
         return {
-          data: { url: `${url}?raw=1` },
+          data: `${url}?raw=1`,
         };
       });
   }
@@ -165,6 +165,8 @@ class DropboxService implements IClouds {
   ): Promise<null> {
     return Promise.resolve(null);
   }
+
+  getChildren(folderId?: string): any {}
 }
 
 export default DropboxService;

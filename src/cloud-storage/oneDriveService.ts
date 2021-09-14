@@ -7,7 +7,7 @@ import { axiosRequest } from "./utils/auth.util";
 const BASE_URL = "https://graph.microsoft.com/v1.0/drive/";
 
 class OneDriveService implements IClouds {
-  auth: AxiosBasicCredentials | undefined;
+  auth: AxiosBasicCredentials | null;
 
   clientId: string;
 
@@ -27,7 +27,7 @@ class OneDriveService implements IClouds {
     this.redirectUrl = redirectUrl;
     this.clientSecret = clientSecret;
     this.refreshToken = refreshToken;
-    this.auth = undefined;
+    this.auth = null;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -47,13 +47,12 @@ class OneDriveService implements IClouds {
         }),
         headers: [["Content-Type", "application/x-www-form-urlencoded"]],
       };
-      return axiosRequest(
-        "https://login.live.com/oauth20_token.srf",
-        options
-      ).then((data) => {
-        this.auth = data.data.access_token;
-        resolve(data.data.access_token);
-      });
+      axiosRequest("https://login.live.com/oauth20_token.srf", options).then(
+        (data) => {
+          this.auth = data.data.access_token;
+          resolve(data.data.access_token);
+        }
+      );
     });
   }
 
@@ -81,9 +80,7 @@ class OneDriveService implements IClouds {
     return `https://login.live.com/oauth20_authorize.srf?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
   }
 
-  getChildren(
-    name: string
-  ): IOneDriveTreeItem[] | PromiseLike<IOneDriveTreeItem[]> {
+  getChildren(name: string): Promise<any> {
     const options = {
       authToken: this.auth,
     };

@@ -57,7 +57,7 @@ class GoogleDriveService implements IClouds {
       requestBody: {
         name: folderName,
         mimeType: constants.GOOGLE_FOLDER_PATH,
-        parents: [parentId],
+        ...(parentId && { parents: [parentId] }),
       },
       fields: "id, name",
     };
@@ -96,7 +96,6 @@ class GoogleDriveService implements IClouds {
     const params: drive_v3.Params$Resource$Files$Create | undefined = {
       requestBody: {
         name: fileName,
-        mimeType: fileMimeType,
         parents: folderId ? [folderId] : [],
       },
       media: {
@@ -107,14 +106,56 @@ class GoogleDriveService implements IClouds {
     return this.drive.files.create(params);
   }
 
-  getDriveFiles(folderId: string): GaxiosPromise<drive_v3.Schema$FileList> {
+  getChildren(folderId: string): Promise<{ data: drive_v3.Schema$File[] }> {
     const params: drive_v3.Params$Resource$Files$List | undefined = {
       auth: this.auth,
-      pageSize: 10,
-      q: `'${folderId}' in parents and trashed=false`,
+      pageSize: 1000,
+      spaces: "appDataFolder",
+      ...(folderId && { q: `'${folderId}' in parents and trashed=false` }),
+      fields: "files(id, name, parents, mimeType)",
     };
 
-    return this.drive.files.list(params);
+    return this.drive.files.list(params).then((rsp) => {
+      const { files } = rsp.data;
+      const filesData = files !== null && files !== undefined ? files : [];
+      const filteredFiles = filesData.map((item) => {
+        return {
+          ...item,
+          ".tag":
+            item.mimeType === constants.GOOGLE_FOLDER_PATH ? "folder" : "file",
+        };
+      });
+      return {
+        data: filteredFiles,
+      };
+    });
+  }
+
+  getDriveFiles(folderId: string): Promise<{ data: drive_v3.Schema$File[] }> {
+    const params: drive_v3.Params$Resource$Files$List | undefined = {
+      auth: this.auth,
+      pageSize: 1000,
+      spaces: "appDataFolder",
+      fields: "files(id, name, parents, mimeType)",
+    };
+
+    return this.drive.files.list(params).then((rsp) => {
+      const { files } = rsp.data;
+      const filesData = files !== null && files !== undefined ? files : [];
+
+      const filteredFiles = filesData
+        .filter((item) => item.parents && item.parents[0] === folderId)
+        .map((item) => {
+          return {
+            ...item,
+            ".tag":
+              item.mimeType === constants.GOOGLE_FOLDER_PATH
+                ? "folder"
+                : "file",
+          };
+        });
+      return { data: filteredFiles };
+    });
   }
 
   getAuthToken(code: string): void {
@@ -146,11 +187,20 @@ class GoogleDriveService implements IClouds {
 
   async getFileData(
     fileId: string
-  ): Promise<GaxiosResponse<drive_v3.Schema$File>> {
-    return this.drive.files.get({
-      fileId,
-      fields: "webViewLink, webContentLink, thumbnailLink",
-    });
+  ): Promise<GaxiosResponse<drive_v3.Schema$File> | { data: string }> {
+    return this.drive.files
+      .get({
+        fileId,
+        fields: "webViewLink, webContentLink, thumbnailLink",
+      })
+      .then((rsp) => {
+        const { thumbnailLink } = rsp.data;
+        const [img]: any =
+          thumbnailLink !== undefined && thumbnailLink !== null
+            ? thumbnailLink.split("=")
+            : "";
+        return { data: img };
+      });
   }
 
   async shareFile(
