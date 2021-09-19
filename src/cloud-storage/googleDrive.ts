@@ -131,29 +131,39 @@ class GoogleDriveService implements IClouds {
     });
   }
 
-  getDriveFiles(folderId: string): Promise<{ data: drive_v3.Schema$File[] }> {
+  getDriveFiles(
+    folderId: string,
+    isRenderChildren: string
+  ): Promise<{ data: drive_v3.Schema$File[] }> {
     const params: drive_v3.Params$Resource$Files$List | undefined = {
       auth: this.auth,
       pageSize: 1000,
       spaces: "appDataFolder",
+      ...(folderId && { q: `'${folderId}' in parents and trashed=false` }),
       fields: "files(id, name, parents, mimeType)",
     };
+
+    const isRenderChildrenItems = isRenderChildren === "true";
 
     return this.drive.files.list(params).then((rsp) => {
       const { files } = rsp.data;
       const filesData = files !== null && files !== undefined ? files : [];
 
-      const filteredFiles = filesData
-        .filter((item) => item.parents && item.parents[0] === folderId)
-        .map((item) => {
-          return {
-            ...item,
-            ".tag":
-              item.mimeType === constants.GOOGLE_FOLDER_PATH
-                ? "folder"
-                : "file",
-          };
-        });
+      let filteredFiles: any[] = [];
+
+      if (!isRenderChildrenItems) {
+        filteredFiles = filesData.filter(
+          (item) => item.parents && item.parents[0] === folderId
+        );
+      }
+
+      filteredFiles = filteredFiles.map((item) => {
+        return {
+          ...item,
+          ".tag":
+            item.mimeType === constants.GOOGLE_FOLDER_PATH ? "folder" : "file",
+        };
+      });
       return { data: filteredFiles };
     });
   }

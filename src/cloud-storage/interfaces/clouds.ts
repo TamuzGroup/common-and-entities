@@ -34,8 +34,8 @@ export interface IClouds {
     | Promise<DropboxResponse<files.FileMetadata>>;
 
   getDriveFiles(
-    folderId?: string,
-    folderPath?: string
+    folderIdOrName?: string,
+    isRenderChildren?: string
   ):
     | Promise<{ data: drive_v3.Schema$File[] }>
     | Promise<AxiosResponse>
@@ -53,7 +53,7 @@ export interface IClouds {
             )[];
           }
       >;
-  getAuthToken: (code: string) => void;
+  getAuthToken: (code: string) => void | Promise<string>;
 
   deleteFile(
     fileId?: string,
@@ -92,9 +92,6 @@ export interface IClouds {
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   generateAuthUrl(): string | Promise<string | object>;
-  getChildren(
-    folderId?: string
-  ): Promise<{ data: drive_v3.Schema$File[] }> | Promise<never>;
 }
 
 export interface IOneDriveTreeItem {

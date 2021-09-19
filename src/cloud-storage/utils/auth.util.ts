@@ -9,8 +9,8 @@ const defaultHeaders = (authToken: AxiosBasicCredentials | string) => ({
   Authorization: `Bearer ${authToken}`,
   "Content-Type": "application/json; charset=utf-8",
 });
-const defaultFetchOptions = (options: AxiosRequestConfig & string) => ({
-  method: options.method || "GET",
+const defaultFetchOptions = (method: any) => ({
+  method: method || "GET",
   mode: "cors",
   cache: "no-cache",
   body: {},
@@ -23,8 +23,8 @@ export function axiosRequest(
 ): Promise<AxiosResponse> {
   const authToken = options.auth ? options.auth : null;
   const headers = defaultHeaders(authToken);
-  const fetchOptions = defaultFetchOptions(options);
-  if (options.data) fetchOptions.body = options.data;
+  const fetchOptions = defaultFetchOptions(options.method);
+  if (options.body) fetchOptions.body = options.body;
 
   if (options.headers) {
     options.headers.forEach(([key, val]: any) => {
@@ -38,7 +38,6 @@ export function axiosRequest(
       }
     });
   }
-
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   fetchOptions.headers = new fetch.Headers(headers);
