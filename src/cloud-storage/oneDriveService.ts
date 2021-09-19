@@ -3,6 +3,7 @@ import * as qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
 import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
 import { axiosRequest } from "./utils/auth.util";
+import constants from "./constants";
 
 const BASE_URL = "https://graph.microsoft.com/v1.0/drive/";
 
@@ -48,7 +49,7 @@ class OneDriveService implements IClouds {
         headers: [["Content-Type", "application/x-www-form-urlencoded"]],
       };
 
-      axiosRequest("https://login.live.com/oauth20_token.srf", options).then(
+      axiosRequest(constants.ONE_DRIVE_GET_TOKEN_URL, options).then(
         (data: any) => {
           this.auth = data.access_token;
           resolve(data.access_token);
@@ -78,7 +79,7 @@ class OneDriveService implements IClouds {
   }
 
   generateAuthUrl(): string {
-    return `https://login.live.com/oauth20_authorize.srf?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
+    return `${constants.ONE_DRIVE_AUTHORIZE_URL}?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
   }
 
   getDriveFiles(

@@ -2,6 +2,7 @@ import axios, {
   AxiosBasicCredentials,
   AxiosResponse,
   AxiosRequestConfig,
+  Method,
 } from "axios";
 import fetch from "node-fetch";
 
@@ -9,7 +10,7 @@ const defaultHeaders = (authToken: AxiosBasicCredentials | string) => ({
   Authorization: `Bearer ${authToken}`,
   "Content-Type": "application/json; charset=utf-8",
 });
-const defaultFetchOptions = (method: any) => ({
+const defaultFetchOptions = (method: Method | undefined) => ({
   method: method || "GET",
   mode: "cors",
   cache: "no-cache",
@@ -27,7 +28,7 @@ export function axiosRequest(
   if (options.body) fetchOptions.body = options.body;
 
   if (options.headers) {
-    options.headers.forEach(([key, val]: any) => {
+    options.headers.forEach(([key, val]: [string, string]) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       headers[key] = val;
