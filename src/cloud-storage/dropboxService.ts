@@ -85,43 +85,24 @@ class DropboxService implements IClouds {
     });
   }
 
-  getDriveFiles(folderPath: string): Promise<
+  getDriveFiles(folderId: string): Promise<
     | DropboxResponse<files.ListFolderResult>
     | {
-        data: {
-          files: (
-            | files.FileMetadataReference
-            | files.FolderMetadataReference
-            | files.DeletedMetadataReference
-          )[];
-        };
+        data: (
+          | files.FileMetadataReference
+          | files.FolderMetadataReference
+          | files.DeletedMetadataReference
+        )[];
       }
   > {
     return this.dropbox
       .filesListFolder({
-        path: "",
-        recursive: true,
+        path: folderId || "",
         include_mounted_folders: true,
       })
       .then((rsp) => {
         return {
-          data: {
-            files: rsp.result.entries.reduce((acc, item: any) => {
-              if (item[".tag"] === "folder")
-                // @ts-ignore
-                acc.push(item);
-              else
-                acc.map((folder: IDropboxTreeItem) => {
-                  const folderPath = item.path_lower.split("/");
-                  if (folderPath[1] === folder.name)
-                    if (!folder.children)
-                      // @ts-ignore
-                      folder.children = [item];
-                    else folder.children.push(item);
-                });
-              return acc;
-            }, []),
-          },
+          data: rsp.result.entries,
         };
       });
   }
@@ -129,7 +110,7 @@ class DropboxService implements IClouds {
   getFileData(
     fileId: string
   ): Promise<
-    DropboxResponse<sharing.ListSharedLinksResult> | { data: { url: string } }
+    DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
   > {
     return this.dropbox
       .sharingListSharedLinks({
@@ -138,7 +119,7 @@ class DropboxService implements IClouds {
       .then((rsp) => {
         const url = rsp.result.links[0].url.split("?");
         return {
-          data: { url: `${url}?raw=1` },
+          data: `${url}?raw=1`,
         };
       });
   }
@@ -165,6 +146,8 @@ class DropboxService implements IClouds {
   ): Promise<null> {
     return Promise.resolve(null);
   }
+
+  getChildren(folderId?: string): any {}
 }
 
 export default DropboxService;

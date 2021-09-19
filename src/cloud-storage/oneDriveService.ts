@@ -3,11 +3,12 @@ import * as qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
 import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
 import { axiosRequest } from "./utils/auth.util";
+import constants from "./constants";
 
 const BASE_URL = "https://graph.microsoft.com/v1.0/drive/";
 
 class OneDriveService implements IClouds {
-  auth: AxiosBasicCredentials | undefined;
+  auth: AxiosBasicCredentials | null;
 
   clientId: string;
 
@@ -27,7 +28,7 @@ class OneDriveService implements IClouds {
     this.redirectUrl = redirectUrl;
     this.clientSecret = clientSecret;
     this.refreshToken = refreshToken;
-    this.auth = undefined;
+    this.auth = null;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -47,13 +48,13 @@ class OneDriveService implements IClouds {
         }),
         headers: [["Content-Type", "application/x-www-form-urlencoded"]],
       };
-      return axiosRequest(
-        "https://login.live.com/oauth20_token.srf",
-        options
-      ).then((data) => {
-        this.auth = data.data.access_token;
-        resolve(data.data.access_token);
-      });
+
+      axiosRequest(constants.ONE_DRIVE_GET_TOKEN_URL, options).then(
+        (data: any) => {
+          this.auth = data.access_token;
+          resolve(data.access_token);
+        }
+      );
     });
   }
 
@@ -78,58 +79,35 @@ class OneDriveService implements IClouds {
   }
 
   generateAuthUrl(): string {
-    return `https://login.live.com/oauth20_authorize.srf?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
+    return `${constants.ONE_DRIVE_AUTHORIZE_URL}?client_id=${this.clientId}&scope=Files.ReadWrite.AppFolder&response_type=code&redirect_uri=${this.redirectUrl}`;
   }
 
-  getChildren(
-    name: string
-  ): IOneDriveTreeItem[] | PromiseLike<IOneDriveTreeItem[]> {
-    const options = {
-      authToken: this.auth,
-    };
-    return axiosRequest(
-      `${BASE_URL}special/approot:/${name}:/children`,
-      options
-    ).then((data) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return data.value;
-    });
-  }
-
-  getDriveFiles(): Promise<
+  getDriveFiles(
+    folderIdOrName: string,
+    isRenderChildren: string
+  ): Promise<
     { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
   > {
     const options = {
       auth: this.auth,
     };
 
-    return axiosRequest(`${BASE_URL}special/approot/children`, options).then(
-      async (rsp) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const treeData = rsp.value.map((item: IOneDriveTreeItem) => {
-          return {
-            ...item,
-            ".tag": item.folder ? "folder" : "file",
-            children:
-              item.folder &&
-              item.folder.childCount > 0 &&
-              this.getChildren(item.name),
-          };
-        });
+    const isRenderChildrenItems = isRenderChildren === "true";
 
-        const data = await Promise.all(
-          treeData.map(async (item: IOneDriveTreeItem) => {
-            return {
-              ...item,
-              children: await item.children,
-            };
-          })
-        );
-        return { data: { files: data } };
-      }
-    );
+    const url = isRenderChildrenItems
+      ? `${BASE_URL}special/approot:/${folderIdOrName}:/children`
+      : `${BASE_URL}special/approot/children`;
+
+    return axiosRequest(url, options).then((rsp: any) => {
+      const treeData = rsp.value.map((item: IOneDriveTreeItem) => {
+        return {
+          ...item,
+          ".tag": item.folder ? "folder" : "file",
+        };
+      });
+
+      return { data: treeData };
+    });
   }
 
   getFileData(fileName: string): Promise<AxiosResponse> {

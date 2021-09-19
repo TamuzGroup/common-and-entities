@@ -34,10 +34,10 @@ export interface IClouds {
     | Promise<DropboxResponse<files.FileMetadata>>;
 
   getDriveFiles(
-    folderId?: string,
-    folderPath?: string
+    folderIdOrName?: string,
+    isRenderChildren?: string
   ):
-    | GaxiosPromise<drive_v3.Schema$FileList>
+    | Promise<{ data: drive_v3.Schema$File[] }>
     | Promise<AxiosResponse>
     | Promise<
         | { data: { files: unknown[] } }
@@ -46,16 +46,14 @@ export interface IClouds {
     | Promise<
         | DropboxResponse<files.ListFolderResult>
         | {
-            data: {
-              files: (
-                | files.FileMetadataReference
-                | files.FolderMetadataReference
-                | files.DeletedMetadataReference
-              )[];
-            };
+            data: (
+              | files.FileMetadataReference
+              | files.FolderMetadataReference
+              | files.DeletedMetadataReference
+            )[];
           }
       >;
-  getAuthToken: (code: string) => void;
+  getAuthToken: (code: string) => void | Promise<string>;
 
   deleteFile(
     fileId?: string,
@@ -76,10 +74,9 @@ export interface IClouds {
     fileId?: string,
     fileName?: string
   ):
-    | Promise<GaxiosResponse<drive_v3.Schema$File>>
+    | Promise<GaxiosResponse<drive_v3.Schema$File> | { data: string }>
     | Promise<
-        | DropboxResponse<sharing.ListSharedLinksResult>
-        | { data: { url: string } }
+        DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
       >;
 
   shareFile(
@@ -100,7 +97,7 @@ export interface IClouds {
 export interface IOneDriveTreeItem {
   ".tag": string;
   cTag: string;
-  children?: any;
+  children?: IOneDriveTreeItem[];
   createdBy: {
     application: {
       displayName: string;
@@ -164,5 +161,5 @@ export interface IDropboxTreeItem {
   rev: string;
   server_modified: string;
   size: number;
-  children?: any;
+  children?: IDropboxTreeItem[];
 }
