@@ -1,5 +1,6 @@
 {
   "twilioStatus": "active",
   "from": "Wawy",
-  "appName": "Givers"
+  "appName": "Givers",
+  "apiVersion": "2010-03-31"
 }

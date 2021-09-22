@@ -27,7 +27,7 @@ class AwsService implements ISmsManager {
       region: this.region,
     });
 
-    return new AWS.SNS({ apiVersion: '2010-03-31' });
+    return new AWS.SNS({ apiVersion: smsManagerSettings.apiVersion });
   }
 
   sendSms(options: { to: string; body: string }): Promise<{ sendTo: string; message: SNS.PublishResponse | { $response: Response } }> {
