@@ -70,7 +70,7 @@ ___*
 credentials.json
 package-lock.json
 docker-compose.debug.yml
-docker-compose.yml
+# docker-compose.yml
 .vscode/launch.json
 .vscode/settings.json
 .vscode/tasks.json

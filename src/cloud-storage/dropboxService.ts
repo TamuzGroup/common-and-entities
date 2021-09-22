@@ -1,10 +1,12 @@
 import fetch from "node-fetch";
-import { Dropbox, DropboxResponse } from "dropbox";
+import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
-import { IClouds } from "./interfaces/clouds";
+import { IClouds, IDropboxTreeItem } from "./interfaces/clouds";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
+
+  auth: DropboxAuth;
 
   clientId: string;
 
@@ -24,32 +26,39 @@ class DropboxService implements IClouds {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.redirectUrl = redirectUrl;
+    this.auth = new DropboxAuth({
+      fetch,
+      clientId: this.clientId,
+      clientSecret: this.clientSecret,
+    });
     this.dropbox = this.cloudAuth();
   }
 
   cloudAuth(): Dropbox {
     return new Dropbox({
-      fetch,
-      clientId: this.clientId,
-      clientSecret: this.clientSecret,
+      auth: this.auth,
     });
   }
 
   getAuthToken(code: string): void {
-    this.dropbox.auth
+    this.auth
       .getAccessTokenFromCode(this.redirectUrl, code)
-      .then((token) => {
-        this.dropbox.auth.setRefreshToken(token.result.refresh_token);
+      .then((token: DropboxResponse<object>) => {
+        // @ts-ignore
+        const { refresh_token: refreshToken } = token.result;
+        if (refreshToken != null) {
+          this.auth.setRefreshToken(refreshToken);
+        }
       });
   }
 
-  generateAuthUrl(): Promise<string> {
-    return this.dropbox.auth.getAuthenticationUrl(
+  generateAuthUrl(): Promise<string | object> {
+    return this.auth.getAuthenticationUrl(
       this.redirectUrl,
-      null,
+      "",
       "code",
       "offline",
-      null,
+      [],
       "none",
       false
     );
@@ -76,25 +85,24 @@ class DropboxService implements IClouds {
     });
   }
 
-  getDriveFiles(folderPath: string): Promise<
+  getDriveFiles(folderId: string): Promise<
     | DropboxResponse<files.ListFolderResult>
     | {
-        data: {
-          files: (
-            | files.FileMetadataReference
-            | files.FolderMetadataReference
-            | files.DeletedMetadataReference
-          )[];
-        };
+        data: (
+          | files.FileMetadataReference
+          | files.FolderMetadataReference
+          | files.DeletedMetadataReference
+        )[];
       }
   > {
     return this.dropbox
       .filesListFolder({
-        path: folderPath,
+        path: folderId || "",
+        include_mounted_folders: true,
       })
       .then((rsp) => {
         return {
-          data: { files: rsp.result.entries },
+          data: rsp.result.entries,
         };
       });
   }
@@ -102,15 +110,16 @@ class DropboxService implements IClouds {
   getFileData(
     fileId: string
   ): Promise<
-    DropboxResponse<sharing.ListSharedLinksResult> | { data: { url: string } }
+    DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
   > {
     return this.dropbox
       .sharingListSharedLinks({
         path: fileId,
       })
       .then((rsp) => {
+        const url = rsp.result.links[0].url.split("?");
         return {
-          data: { url: rsp.result.links[0].url },
+          data: `${url}?raw=1`,
         };
       });
   }
@@ -124,6 +133,21 @@ class DropboxService implements IClouds {
       mode: { ".tag": "add" },
     });
   }
+
+  searchFolder(folderName: string): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  shareFile(
+    fileId: string,
+    email: string,
+    role: string,
+    type: string
+  ): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  getChildren(folderId?: string): any {}
 }
 
 export default DropboxService;
