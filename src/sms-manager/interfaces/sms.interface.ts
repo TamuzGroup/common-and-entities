@@ -10,3 +10,8 @@ export interface ISmsManager {
 
   sendSms(options: { to: string; body: string }): Promise<{ sendTo: string }> | Promise<{message: SNS.PublishResponse | { $response: Response }}>
 }
+
+export interface IMessage {
+  to: string,
+  body: string
+}

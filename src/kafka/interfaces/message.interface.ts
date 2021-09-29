@@ -3,4 +3,4 @@ interface MessageInterface {
   value: string;
 }
 
-export default MessageInterface
+export default MessageInterface;

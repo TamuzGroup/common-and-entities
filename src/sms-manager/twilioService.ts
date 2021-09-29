@@ -1,5 +1,5 @@
 import { Twilio } from "twilio";
-import { ISmsManager } from "./interfaces/sms.interface";
+import { IMessage, ISmsManager } from "./interfaces/sms.interface";
 import { normalizePhoneNumber } from "./utils/smsHelper.util";
 import smsManagerSettings from "../config/smsManager/config";
 
@@ -20,9 +20,7 @@ class TwilioService implements ISmsManager {
     return new Twilio(this.accessKeyId, this.token);
   }
 
-  sendSms(options: { to: string; body: string }): Promise<{sendTo: string} | any> {
-
-    console.log({ options })
+  sendSms(options: IMessage): Promise<{sendTo: string}> {
     const sendTo = normalizePhoneNumber(options.to);
 
     if (!smsManagerSettings.twilioStatus) {
@@ -42,7 +40,7 @@ class TwilioService implements ISmsManager {
       .then((message) => ({
         message,
         sendTo,
-      }))
+      }));
   }
 }
 
