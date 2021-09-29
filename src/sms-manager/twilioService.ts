@@ -20,10 +20,12 @@ class TwilioService implements ISmsManager {
     return new Twilio(this.accessKeyId, this.token);
   }
 
-  sendSms(options: { to: string; body: string }): Promise<{sendTo: string}> {
+  sendSms(options: { to: string; body: string }): Promise<{sendTo: string} | any> {
+
+    console.log({ options })
     const sendTo = normalizePhoneNumber(options.to);
 
-    if (smsManagerSettings.twilioStatus) {
+    if (!smsManagerSettings.twilioStatus) {
       // eslint-disable-next-line no-console
       console.log(`Prevented SMS for ${sendTo} -> ${options.body}`);
       return Promise.resolve({
@@ -40,7 +42,7 @@ class TwilioService implements ISmsManager {
       .then((message) => ({
         message,
         sendTo,
-      }));
+      }))
   }
 }
 
