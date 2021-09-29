@@ -1,4 +1,5 @@
 import { Kafka, Producer } from "kafkajs";
+import MessageInterface from "./interfaces/message.interface";
 
 export default class KafkaProducer {
   kafka: Kafka;
@@ -19,11 +20,21 @@ export default class KafkaProducer {
     this.producer = this.kafka.producer();
   }
 
-  sendMessage(message: { key: string; value: string }) {
+  sendMessage(message: MessageInterface) {
     return this.producer
       .send({
         topic: this.topic,
         messages: [message],
+      })
+      .then(console.log)
+      .catch((e) => console.error(`[example/producer] ${e.message}`, e));
+  }
+
+  sendMessages(messages: MessageInterface[]) {
+    return this.producer
+      .send({
+        topic: this.topic,
+        messages,
       })
       .then(console.log)
       .catch((e) => console.error(`[example/producer] ${e.message}`, e));

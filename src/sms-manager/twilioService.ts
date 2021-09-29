@@ -1,7 +1,7 @@
 import { Twilio } from "twilio";
-import { ISmsManager } from "./interfaces/sms.interface";
+import { IMessage, ISmsManager } from "./interfaces/sms.interface";
 import { normalizePhoneNumber } from "./utils/smsHelper.util";
-import smsManagerSettings from "../config/smsManager/config.json";
+import smsManagerSettings from "../config/smsManager/config";
 
 class TwilioService implements ISmsManager {
   accessKeyId: string;
@@ -20,10 +20,10 @@ class TwilioService implements ISmsManager {
     return new Twilio(this.accessKeyId, this.token);
   }
 
-  sendSms(options: { to: string; body: string }): Promise<{sendTo: string}> {
+  sendSms(options: IMessage): Promise<{sendTo: string}> {
     const sendTo = normalizePhoneNumber(options.to);
 
-    if (smsManagerSettings.twilioStatus) {
+    if (!smsManagerSettings.twilioStatus) {
       // eslint-disable-next-line no-console
       console.log(`Prevented SMS for ${sendTo} -> ${options.body}`);
       return Promise.resolve({
