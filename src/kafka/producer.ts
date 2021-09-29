@@ -31,7 +31,6 @@ export default class KafkaProducer {
   }
 
   sendMessages(messages: MessageInterface[]) {
-    console.log('messages', messages)
     return this.producer
       .send({
         topic: this.topic,
