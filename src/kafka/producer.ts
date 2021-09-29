@@ -20,6 +20,7 @@ export default class KafkaProducer {
   }
 
   sendMessage(message: { key: string; value: string }) {
+    console.log('message', message)
     return this.producer
       .send({
         topic: this.topic,

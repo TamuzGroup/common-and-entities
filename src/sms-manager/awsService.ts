@@ -1,7 +1,7 @@
 import { ISmsManager } from "./interfaces/sms.interface";
 import AWS, { SNS } from "aws-sdk";
 import { normalizePhoneNumber } from "./utils/smsHelper.util";
-import smsManagerSettings from "../config/smsManager/config.json";
+import smsManagerSettings from "../config/smsManager/config";
 
 class AwsService implements ISmsManager {
   accessKeyId: string;

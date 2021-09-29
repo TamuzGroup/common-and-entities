@@ -8,5 +8,5 @@ export interface ISmsManager {
   token?: string;
   init(): Twilio | AWS.SNS;
 
-  sendSms(options: { to: string; body: string }): Promise<{ sendTo: string; message: SNS.PublishResponse | { $response: Response } }>
+  sendSms(options: { to: string; body: string }): Promise<{ sendTo: string }> | Promise<{message: SNS.PublishResponse | { $response: Response }}>
 }
