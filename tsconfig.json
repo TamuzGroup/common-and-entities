@@ -1,5 +1,4 @@
 {
-
   "compilerOptions": {
     "lib": [
       "dom",
@@ -36,10 +35,10 @@
     },
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "src",
-    "composite": true,
+    "rootDir": "./",
+    "composite": true
   },
   "references": [],  // * Any project that is referenced must itself have a `references` array (which may be empty).
-  "include": ["src/**/*.ts", "src/**/*.json"],
+  "include": ["src/**/*.ts", "src/**/*.json", "package.json"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
