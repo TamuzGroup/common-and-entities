@@ -20,7 +20,7 @@ class TwilioService implements ISmsManager {
     return new Twilio(this.accessKeyId, this.token);
   }
 
-  sendSms(options: IMessage): Promise<{sendTo: string}> {
+  sendSms(options: IMessage): Promise<{ sendTo: string }> {
     const sendTo = normalizePhoneNumber(options.to);
 
     if (!smsManagerSettings.twilioStatus) {
