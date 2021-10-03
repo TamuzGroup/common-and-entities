@@ -3,12 +3,14 @@ import MessageInterface from "./interfaces/message.interface";
 
 export default class KafkaProducer {
   kafka: Kafka;
+
   topic: string;
+
   producer: Producer;
 
   constructor(
-    topic: string = "topic-test",
-    clientId: string = "first-app",
+    topic = "topic-test",
+    clientId = "first-app",
     brokers: string[] = ["localhost:9092"]
   ) {
     this.kafka = new Kafka({
@@ -25,16 +27,6 @@ export default class KafkaProducer {
       .send({
         topic: this.topic,
         messages: [message],
-      })
-      .then(console.log)
-      .catch((e) => console.error(`[example/producer] ${e.message}`, e));
-  }
-
-  sendMessages(messages: MessageInterface[]) {
-    return this.producer
-      .send({
-        topic: this.topic,
-        messages,
       })
       .then(console.log)
       .catch((e) => console.error(`[example/producer] ${e.message}`, e));

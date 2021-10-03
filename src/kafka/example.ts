@@ -1,5 +1,5 @@
-import { KafkaProducer, KafkaConsumer } from "./index";
 import { EachMessagePayload } from "kafkajs";
+import { KafkaProducer, KafkaConsumer } from "./index";
 
 const producer = new KafkaProducer();
 const consumer = new KafkaConsumer();
@@ -19,7 +19,9 @@ consumer
   .then(() =>
     producer.sendMessage({
       key: `${getRandomNumber()}`,
-      value: JSON.stringify({ data: { date: new Date().getTime() + "", test: 'test' } }),
+      value: JSON.stringify({
+        data: { date: `${new Date().getTime()}`, test: "test" },
+      }),
     })
   )
   .catch((e) => console.log({ e }));
