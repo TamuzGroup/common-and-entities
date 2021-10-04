@@ -21,7 +21,7 @@ export interface ITokenModel
 export type ITokenDoc = IToken &
   Document<Record<string, any>, Record<string, never>, IToken>;
 
-const tokenSchema = new Schema<IToken, ITokenModel>(
+const tokenSchema = new mongooseInstance.Schema<IToken, ITokenModel>(
   {
     token: {
       type: String,

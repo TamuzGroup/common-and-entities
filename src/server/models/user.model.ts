@@ -5,7 +5,6 @@ import {
   LeanDocument,
   Model,
   QueryWithHelpers,
-  Schema,
   Types,
   _AllowStringsForIds,
 } from "mongoose";
@@ -84,7 +83,7 @@ export type IUserLeanDoc =
   | _AllowStringsForIds<LeanDocument<IUser>>
   | AnyObject;
 
-const userSchema = new Schema<IUser, IUserModel>(
+const userSchema = new mongooseInstance.Schema<IUser, IUserModel>(
   {
     name: {
       type: String,

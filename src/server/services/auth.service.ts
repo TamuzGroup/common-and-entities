@@ -172,7 +172,6 @@ export const sendOtp = async (userInfo: {
 
     return updatedUser;
   } catch (error) {
-    console.log({ error });
     throw new ApiError(httpStatus.UNAUTHORIZED, "Verification failed");
   }
 };
