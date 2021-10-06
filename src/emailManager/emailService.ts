@@ -37,6 +37,9 @@ class EmailService implements IEmailManager {
       to: details.to,
       subject: details.subject,
       text: details.body,
+      attachments: details.attachments,
+      alternatives: details.alternatives,
+      html: details.html,
     };
     this.emailProvider.sendMail(mailOptions, (err, data) => {
       if (err) console.log({ err });
