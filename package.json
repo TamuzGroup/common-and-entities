@@ -81,6 +81,7 @@
     "package-logger": "github:TamuzGroup/package-logger",
     "qs": "^6.10.1",
     "twilio": "^3.67.2",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "passport": "^0.4.1"
   }
 }
