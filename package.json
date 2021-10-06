@@ -71,6 +71,7 @@
     "googleapis-common": "^5.0.4",
     "kafkajs": "^1.10.0",
     "node-fetch": "^2.6.1",
+    "nodemailer": "^6.6.5",
     "qs": "^6.10.1",
     "twilio": "^3.67.2"
   }
