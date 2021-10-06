@@ -12,7 +12,7 @@ export interface IEmailDetails {
   to: string;
   body: string;
   subject: string;
-  attachments: [];
-  alternatives: [];
-  html: string;
+  attachments?: [];
+  alternatives?: [];
+  html?: string;
 }
