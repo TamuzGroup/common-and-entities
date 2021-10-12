@@ -6,7 +6,7 @@
     "protocol": "mongodb",
     "port": 27017,
     "authentication": "/admin",
-    "db": "givers_test"
+    "db": "wawy_test"
   },
   "mongoSettings": {
     "user": "dbuser",
