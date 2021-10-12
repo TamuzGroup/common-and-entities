@@ -1,13 +1,16 @@
 import { Kafka, Producer } from "kafkajs";
+import MessageInterface from "./interfaces/message.interface";
 
 export default class KafkaProducer {
   kafka: Kafka;
+
   topic: string;
+
   producer: Producer;
 
   constructor(
-    topic: string = "topic-test",
-    clientId: string = "first-app",
+    topic = "topic-test",
+    clientId = "first-app",
     brokers: string[] = ["localhost:9092"]
   ) {
     this.kafka = new Kafka({
@@ -19,7 +22,7 @@ export default class KafkaProducer {
     this.producer = this.kafka.producer();
   }
 
-  sendMessage(message: { key: string; value: string }) {
+  sendMessage(message: MessageInterface) {
     return this.producer
       .send({
         topic: this.topic,
