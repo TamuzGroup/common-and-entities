@@ -56,6 +56,7 @@ const envVarsSchema = Joi.object()
     OTP_EXPIRATION_IN_MINUTES: Joi.number()
       .required()
       .description("the time that the authentication otp is valid"),
+    ADMIN_PASS: Joi.string().description("admin password for route validation"),
   })
   .unknown();
 
@@ -120,4 +121,7 @@ export default {
     region: envVars.AWS_BUCKET_REGION,
   },
   otpExpirationInMinutes: envVars.OTP_EXPIRATION_IN_MINUTES,
+  admin: {
+    pass: envVars.ADMIN_PASS,
+  },
 };
