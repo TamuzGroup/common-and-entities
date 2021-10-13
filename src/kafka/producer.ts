@@ -23,13 +23,10 @@ export default class KafkaProducer {
   }
 
   sendMessage(message: MessageInterface) {
-    return this.producer
-      .send({
-        topic: this.topic,
-        messages: [message],
-      })
-      .then(console.log)
-      .catch((e) => console.error(`[example/producer] ${e.message}`, e));
+    return this.producer.send({
+      topic: this.topic,
+      messages: [message],
+    });
   }
 
   connect() {
