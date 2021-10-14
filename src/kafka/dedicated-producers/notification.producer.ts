@@ -14,13 +14,15 @@ const producer = new KafkaProducer(
 const sendMessage = async (
   type: string,
   to: string,
-  body: string
+  body: string,
+  executeAt?: number
 ): Promise<RecordMetadata[]> => {
   const message = {
+    // @todo - check if key is necessary
     key: `${Math.round(Math.random() * 1000)}`,
     value: JSON.stringify({
       type,
-      at: new Date().getTime(),
+      at: executeAt,
       details: {
         to,
         body,
