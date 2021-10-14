@@ -1,5 +1,4 @@
 import httpStatus from "http-status";
-import AWS from "aws-sdk";
 import * as tokenService from "./token.service";
 import * as userService from "./user.service";
 import TokenModel from "../models/token.model";
@@ -7,15 +6,8 @@ import ApiError from "../utils/ApiError";
 import TokenTypes from "../config/tokens";
 import { IUserDoc } from "../models/user.model";
 import { randomStringNumeric } from "../utils/random";
-import config from "../config/config";
-
-AWS.config.update({
-  accessKeyId: config.awsSmsSettings.access,
-  secretAccessKey: config.awsSmsSettings.secret,
-  region: config.awsBucket.region,
-});
-
-const AWSsns = new AWS.SNS({ apiVersion: "2010-03-31" });
+import { sendMessage } from "../../kafka/dedicated-producers/notification.producer";
+import constants from "../../kafka/dedicated-producers/constants";
 
 /**
  * Login with username and password
@@ -156,19 +148,12 @@ export const sendOtp = async (userInfo: {
       otp: otpObj,
     });
 
-    // @TODO - use SMS sender service.
-    const params = {
-      Message: `Your passcode is: ${otp}`,
-      PhoneNumber: "+972508802807",
-      MessageAttributes: {
-        "AWS.SNS.SMS.SenderID": {
-          DataType: "String",
-          StringValue: "GIVERS",
-        },
-      },
-    };
-
-    await AWSsns.publish(params).promise();
+    const body = `Your passcode is: ${otp}`;
+    await sendMessage(
+      constants.NOTIFICATION_TYPES.SMS,
+      updatedUser.phoneNumber,
+      body
+    );
 
     return updatedUser;
   } catch (error) {
