@@ -6,12 +6,13 @@ import { OAuth2Client } from "google-auth-library";
 import { Dropbox, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import { AxiosResponse } from "axios";
+import qs from "qs";
 
 export interface IClouds {
   clientId: string;
   clientSecret: string;
   redirectUrl: string;
-  refreshToken: string | null;
+  refreshToken: string | null | undefined | string[];
   cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
 
   createFolder(
@@ -53,7 +54,9 @@ export interface IClouds {
             )[];
           }
       >;
-  getAuthToken: (code: string) => void | Promise<string>;
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  ): void | Promise<string>;
 
   deleteFile(
     fileId?: string,
@@ -79,7 +82,7 @@ export interface IClouds {
         DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
       >;
 
-  shareFile(
+  shareFile?(
     fileId?: string,
     email?: string,
     role?: string,

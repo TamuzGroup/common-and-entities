@@ -1,17 +1,19 @@
+import qs from "qs";
 import { IClouds } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
 import DropboxService from "../../cloud-storage/dropboxService";
 import OneDriveService from "../../cloud-storage/oneDriveService";
 import config from "../config/config";
+import logger from "../utils/logger.util";
 
 let cloudService: IClouds;
 
-const REDIRECT_URL = "http://localhost:5000/api/clouds/callback";
+const REDIRECT_URL = "http://localhost:3000/v1/cloud/callback";
 
 export const generateAuthUrl = (
-  cloud: any,
-  accessToken: any
+  cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  accessToken: string | string[] | undefined
 ): string | Promise<string> | boolean => {
   switch (cloud) {
     case constants.CLOUDS.GOOGLE: {
@@ -19,7 +21,7 @@ export const generateAuthUrl = (
         config.googleCloudSettings.clientId,
         config.googleCloudSettings.clientSecret,
         REDIRECT_URL,
-        ""
+        null
       );
       break;
     }
@@ -46,4 +48,18 @@ export const generateAuthUrl = (
   }
 
   return cloudService.generateAuthUrl();
+};
+
+export const authCallback = (
+  code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+): Promise<unknown> => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve) => {
+    try {
+      const accessToken = await cloudService.getAuthToken(code);
+      resolve(accessToken);
+    } catch (e) {
+      logger.error(e);
+    }
+  });
 };

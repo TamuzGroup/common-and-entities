@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
+import qs from "qs";
 import { IClouds } from "./interfaces/clouds";
 
 class DropboxService implements IClouds {
@@ -14,13 +15,13 @@ class DropboxService implements IClouds {
 
   redirectUrl: string;
 
-  refreshToken: string | null;
+  refreshToken: string | string[] | undefined;
 
   constructor(
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: string | null
+    refreshToken: string | string[] | undefined
   ) {
     this.refreshToken = refreshToken;
     this.clientId = clientId;
@@ -40,16 +41,23 @@ class DropboxService implements IClouds {
     });
   }
 
-  getAuthToken(code: string): void {
-    this.auth
-      .getAccessTokenFromCode(this.redirectUrl, code)
-      .then((token: DropboxResponse<object>) => {
-        // @ts-ignore
-        const { refresh_token: refreshToken } = token.result;
-        if (refreshToken != null) {
-          this.auth.setRefreshToken(refreshToken);
-        }
-      });
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  ): void | Promise<string> {
+    return new Promise((resolve) => {
+      if (typeof code === "string") {
+        this.auth
+          .getAccessTokenFromCode(this.redirectUrl, code)
+          .then((token: DropboxResponse<any>) => {
+            const { refresh_token: refreshToken, access_token: accessToken } =
+              token.result;
+            if (refreshToken != null) {
+              this.auth.setRefreshToken(refreshToken);
+              return resolve(accessToken);
+            }
+          });
+      }
+    });
   }
 
   generateAuthUrl(): Promise<any> {
@@ -134,20 +142,10 @@ class DropboxService implements IClouds {
     });
   }
 
-  searchFolder(folderName: string): Promise<null> {
+  // eslint-disable-next-line class-methods-use-this
+  searchFolder(): Promise<null> {
     return Promise.resolve(null);
   }
-
-  shareFile(
-    fileId: string,
-    email: string,
-    role: string,
-    type: string
-  ): Promise<null> {
-    return Promise.resolve(null);
-  }
-
-  getChildren(folderId?: string): any {}
 }
 
 export default DropboxService;
