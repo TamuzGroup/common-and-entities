@@ -90,8 +90,7 @@ export interface IClouds {
     | Promise<void | DropboxResponse<sharing.FileMemberActionResult[]>>
     | Promise<null>;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  generateAuthUrl(): string | Promise<string | object>;
+  generateAuthUrl(): string | Promise<string> | boolean;
 }
 
 export interface IOneDriveTreeItem {

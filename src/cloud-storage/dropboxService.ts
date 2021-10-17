@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
-import { IClouds, IDropboxTreeItem } from "./interfaces/clouds";
+import { IClouds } from "./interfaces/clouds";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
@@ -52,7 +52,7 @@ class DropboxService implements IClouds {
       });
   }
 
-  generateAuthUrl(): Promise<string | object> {
+  generateAuthUrl(): Promise<any> {
     return this.auth.getAuthenticationUrl(
       this.redirectUrl,
       "",
