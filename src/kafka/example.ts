@@ -2,7 +2,7 @@ import { KafkaProducer, KafkaConsumer } from "./index";
 import { EachMessagePayload } from "kafkajs";
 
 const producer = new KafkaProducer();
-const consumer = new KafkaConsumer();
+const consumer = new KafkaConsumer.KafkaConsumer();
 
 function getRandomNumber() {
   return Math.round(Math.random() * 1000);

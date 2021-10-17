@@ -1,6 +1,6 @@
 import { Kafka, Consumer, EachMessagePayload, EachBatchPayload } from "kafkajs";
 
-export default class KafkaConsumer {
+class KafkaConsumer {
   groupId;
 
   consumer: Consumer;
@@ -43,3 +43,7 @@ export default class KafkaConsumer {
     return this.consumer.disconnect();
   }
 }
+
+export default {
+  KafkaConsumer,
+};
