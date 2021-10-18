@@ -19,6 +19,8 @@ const cloudCallback = catchAsync(async (req, res) => {
     const accessToken = await authCallback(code);
     logger.info({ accessToken });
     res.redirect(`${constants.REDIRECT_AFTER_CLOUD_AUTH}`);
+  } else {
+    logger.error("The code does not exist");
   }
 });
 
