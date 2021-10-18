@@ -57,6 +57,12 @@ const envVarsSchema = Joi.object()
       .required()
       .description("the time that the authentication otp is valid"),
     ADMIN_PASS: Joi.string().description("admin password for route validation"),
+    GOOGLE_ID: Joi.string().description("google drive client id"),
+    GOOGLE_SECRET: Joi.string().description("google drive client secret"),
+    DROPBOX_ID: Joi.string().description("dropbox drive client id"),
+    DROPBOX_SECRET: Joi.string().description("dropbox drive client secret"),
+    ONEDRIVE_ID: Joi.string().description("onedrive drive client id"),
+    ONEDRIVE_SECRET: Joi.string().description("onedrive drive client secret"),
   })
   .unknown();
 
@@ -123,5 +129,17 @@ export default {
   otpExpirationInMinutes: envVars.OTP_EXPIRATION_IN_MINUTES,
   admin: {
     pass: envVars.ADMIN_PASS,
+  },
+  googleCloudSettings: {
+    clientId: envVars.GOOGLE_ID,
+    clientSecret: envVars.GOOGLE_SECRET,
+  },
+  dropboxCloudSettings: {
+    clientId: envVars.DROPBOX_ID,
+    clientSecret: envVars.DROPBOX_SECRET,
+  },
+  onedriveCloudSettings: {
+    clientId: envVars.ONEDRIVE_ID,
+    clientSecret: envVars.ONEDRIVE_SECRET,
   },
 };

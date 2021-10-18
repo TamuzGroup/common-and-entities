@@ -1,5 +1,5 @@
 import fs from "fs";
-import * as qs from "qs";
+import qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
 import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
 import { axiosRequest } from "./utils/auth.util";
@@ -36,7 +36,9 @@ class OneDriveService implements IClouds {
     return null;
   }
 
-  getAuthToken(code: string): Promise<string> {
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  ): void | Promise<string> {
     return new Promise((resolve) => {
       const options = {
         body: qs.stringify({
