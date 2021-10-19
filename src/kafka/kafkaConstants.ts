@@ -5,8 +5,16 @@ const NOTIFICATION_SETTINGS = {
   BROKERS: ["localhost:9092"],
 };
 
+const CLOUD_STORAGE_TOKEN_MNG = {
+  GROUP_ID: "cloud_storage_token_mng_group_id",
+  TOPIC: "cloud_storage_token_mng",
+  CLIENT_ID: "cloud_storage_token_mng_consumer_id",
+  BROKERS: ["localhost:9092"],
+};
+
 const kafkaConstants = {
   NOTIFICATION_SETTINGS,
+  CLOUD_STORAGE_TOKEN_MNG
 };
 
 export default kafkaConstants;
