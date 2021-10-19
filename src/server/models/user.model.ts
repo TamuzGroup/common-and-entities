@@ -134,11 +134,12 @@ const userSchema = new mongooseInstance.Schema<IUser, IUserModel>(
     otp: {
       passcode: {
         type: String,
+        private: true,
       },
       created: {
         type: Date,
+        private: true,
       },
-      private: true,
     },
     password: {
       type: String,
