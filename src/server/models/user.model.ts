@@ -21,7 +21,10 @@ import { getMongooseInstance } from "../mongooseInstance";
 const mongooseInstance = getMongooseInstance();
 
 export interface IUser {
-  name: string;
+  name: {
+    first: string;
+    last: string;
+  };
   email: string;
   password: string;
   idNumber: string;
@@ -86,9 +89,16 @@ export type IUserLeanDoc =
 const userSchema = new mongooseInstance.Schema<IUser, IUserModel>(
   {
     name: {
-      type: String,
-      required: true,
-      trim: true,
+      first: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      last: {
+        type: String,
+        required: true,
+        trim: true,
+      },
     },
     email: {
       type: String,
@@ -128,6 +138,7 @@ const userSchema = new mongooseInstance.Schema<IUser, IUserModel>(
       created: {
         type: Date,
       },
+      private: true,
     },
     password: {
       type: String,
@@ -151,6 +162,15 @@ const userSchema = new mongooseInstance.Schema<IUser, IUserModel>(
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+    },
+    address: {
+      city: String,
+      street: String,
+      streetNum: String,
     },
   },
   {

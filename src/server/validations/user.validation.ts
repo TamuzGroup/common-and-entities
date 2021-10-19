@@ -5,7 +5,10 @@ export const createUser = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
-    name: Joi.string().required(),
+    name: {
+      first: Joi.string().required(),
+      last: Joi.string().required(),
+    },
     role: Joi.string().required().valid("user", "admin"),
     dateOfBirth: Joi.date().required(),
     idNumber: Joi.string().required(),
@@ -15,7 +18,10 @@ export const createUser = {
 
 export const getUsers = {
   query: Joi.object().keys({
-    name: Joi.string(),
+    name: {
+      first: Joi.string().required(),
+      last: Joi.string().required(),
+    },
     role: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
@@ -37,7 +43,10 @@ export const updateUser = {
     .keys({
       email: Joi.string().email(),
       password: Joi.string().custom(password),
-      name: Joi.string(),
+      name: {
+        first: Joi.string().required(),
+        last: Joi.string().required(),
+      },
     })
     .min(1),
 };
