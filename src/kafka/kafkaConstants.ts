@@ -14,7 +14,7 @@ const CLOUD_STORAGE_TOKEN_MNG = {
 
 const kafkaConstants = {
   NOTIFICATION_SETTINGS,
-  CLOUD_STORAGE_TOKEN_MNG
+  CLOUD_STORAGE_TOKEN_MNG,
 };
 
 export default kafkaConstants;

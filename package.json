@@ -60,6 +60,7 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
+    "safe-box-service": "https://github.com/TamuzGroup/safe-box-service.git",
     "@aws-sdk/types": "^3.32.0",
     "aws-sdk": "^2.992.0",
     "axios": "^0.21.1",

@@ -1,4 +1,5 @@
 import qs from "qs";
+import safeBoxService from "safe-box-service/src/services/safeBoxService";
 import { IClouds } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
@@ -51,13 +52,17 @@ export const generateAuthUrl = (
 };
 
 export const authCallback = (
-  code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  code: string | string[] | qs.ParsedQs | qs.ParsedQs[],
+  userId: string
 ): Promise<unknown> => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     try {
-      const accessToken = await cloudService.getAuthToken(code);
-      resolve(accessToken);
+      const authData = await cloudService.getAuthToken(code);
+
+      safeBoxService.saveTokens(authData, userId);
+
+      resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (e) {
       logger.error(e);
     }

@@ -43,17 +43,22 @@ class DropboxService implements IClouds {
 
   getAuthToken(
     code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
-  ): void | Promise<string> {
+  ): void | Promise<{ refreshToken: string; cloud: string }> {
     return new Promise((resolve) => {
       if (typeof code === "string") {
         this.auth
           .getAccessTokenFromCode(this.redirectUrl, code)
           .then((token: DropboxResponse<any>) => {
-            const { refresh_token: refreshToken, access_token: accessToken } =
-              token.result;
+            const { refresh_token: refreshToken } = token.result;
             if (refreshToken != null) {
               this.auth.setRefreshToken(refreshToken);
-              return resolve(accessToken);
+
+              const authData = {
+                refreshToken,
+                cloud: "dropbox",
+              };
+
+              return resolve(authData);
             }
           });
       }

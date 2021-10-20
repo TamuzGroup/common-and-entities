@@ -56,7 +56,7 @@ export interface IClouds {
       >;
   getAuthToken(
     code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
-  ): void | Promise<string>;
+  ): void | Promise<any>;
 
   deleteFile(
     fileId?: string,
