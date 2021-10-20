@@ -125,19 +125,20 @@ export const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
 /**
  * Set OTP for user
  * @param userInfo sendOtp validation params
- * @param {string} userInfo.birthYear
+ * @param {string} userInfo.phoneNumber
  * @param {string} userInfo.idNumber
  * @returns {Promise}
  */
 export const sendOtp = async (userInfo: {
-  birthYear: string;
+  phoneNumber: string;
   idNumber: string;
 }): Promise<IUserDoc> => {
   try {
-    const { birthYear, idNumber } = userInfo;
+    const { phoneNumber, idNumber } = userInfo;
     const user = await userService.getUserByIdNumber(idNumber);
-    const isCorrectBirthYear = user?.dateOfBirth.getFullYear() === +birthYear;
-    if (!user || !isCorrectBirthYear) throw new Error();
+    const isCorrectPhone = user?.phoneNumber === phoneNumber;
+    // const isCorrectBirthYear = user?.dateOfBirth.getFullYear() === +birthYear;
+    if (!user || !isCorrectPhone) throw new ApiError(httpStatus.NO_CONTENT, "User not found");
 
     const otp = randomStringNumeric(6);
     const otpObj = {
@@ -158,7 +159,7 @@ export const sendOtp = async (userInfo: {
 
     return updatedUser;
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Verification failed");
+    throw error
   }
 };
 
