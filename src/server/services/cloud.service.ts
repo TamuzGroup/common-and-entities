@@ -1,5 +1,4 @@
 import qs from "qs";
-import safeBoxService from "safe-box-service/src/services/safeBoxService";
 import { IClouds } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
@@ -7,6 +6,7 @@ import DropboxService from "../../cloud-storage/dropboxService";
 import OneDriveService from "../../cloud-storage/oneDriveService";
 import config from "../config/config";
 import logger from "../utils/logger.util";
+import { sendMessage } from "../../kafka/dedicated-producers/cloudStorageTokenMng.producer";
 
 let cloudService: IClouds;
 
@@ -60,7 +60,7 @@ export const authCallback = (
     try {
       const authData = await cloudService.getAuthToken(code);
 
-      safeBoxService.saveTokens(authData, userId);
+      await sendMessage(authData, userId);
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (e) {
