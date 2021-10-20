@@ -9,6 +9,7 @@ import { randomStringNumeric } from "../utils/random";
 import { sendMessage } from "../../kafka/dedicated-producers/notification.producer";
 import constants from "../../kafka/dedicated-producers/constants";
 import config from "../config/config";
+import logger from "../utils/logger.util";
 
 /**
  * Login with username and password
@@ -136,9 +137,10 @@ export const sendOtp = async (userInfo: {
   try {
     const { phoneNumber, idNumber } = userInfo;
     const user = await userService.getUserByIdNumber(idNumber);
-    const isCorrectPhone = user?.phoneNumber === phoneNumber;
+    if (!user) throw new Error("User id not found");
+    const isCorrectPhone = user.phoneNumber === phoneNumber;
     // const isCorrectBirthYear = user?.dateOfBirth.getFullYear() === +birthYear;
-    if (!user || !isCorrectPhone) throw new ApiError(httpStatus.NO_CONTENT, "User not found");
+    if (!isCorrectPhone) throw new Error("User not verified");
 
     const otp = randomStringNumeric(6);
     const otpObj = {
@@ -159,7 +161,8 @@ export const sendOtp = async (userInfo: {
 
     return updatedUser;
   } catch (error) {
-    throw error
+    logger.error(error)
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Verification failed");
   }
 };
 
