@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db-migrate:dev": "ts-node ./src/migrations/cli.ts dev",
+    "db-migrate:prod": "ts-node ./src/migrations/cli.ts prod"
   },
   "author": "Matan Navon",
   "license": "ISC",
@@ -75,13 +77,14 @@
     "joi": "^17.4.2",
     "kafkajs": "^1.10.0",
     "moment": "^2.29.1",
+    "mongo-migrate-ts": "^1.0.13",
     "mongoose": "^5.7.7",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.5",
     "package-logger": "github:TamuzGroup/package-logger",
+    "passport": "^0.4.1",
     "qs": "^6.10.1",
     "twilio": "^3.67.2",
-    "validator": "^13.0.0",
-    "passport": "^0.4.1"
+    "validator": "^13.0.0"
   }
 }
