@@ -9,6 +9,7 @@ import { randomStringNumeric } from "../utils/random";
 import { sendMessage } from "../../kafka/dedicated-producers/notification.producer";
 import constants from "../../kafka/dedicated-producers/constants";
 import config from "../config/config";
+import logger from "../utils/logger.util";
 
 /**
  * Login with username and password
@@ -125,19 +126,21 @@ export const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
 /**
  * Set OTP for user
  * @param userInfo sendOtp validation params
- * @param {string} userInfo.birthYear
+ * @param {string} userInfo.phoneNumber
  * @param {string} userInfo.idNumber
  * @returns {Promise}
  */
 export const sendOtp = async (userInfo: {
-  birthYear: string;
+  phoneNumber: string;
   idNumber: string;
 }): Promise<IUserDoc> => {
   try {
-    const { birthYear, idNumber } = userInfo;
+    const { phoneNumber, idNumber } = userInfo;
     const user = await userService.getUserByIdNumber(idNumber);
-    const isCorrectBirthYear = user?.dateOfBirth.getFullYear() === +birthYear;
-    if (!user || !isCorrectBirthYear) throw new Error();
+    if (!user) throw new Error("User id not found");
+    const isCorrectPhone = user.phoneNumber === phoneNumber;
+    // const isCorrectBirthYear = user?.dateOfBirth.getFullYear() === +birthYear;
+    if (!isCorrectPhone) throw new Error("User not verified");
 
     const otp = randomStringNumeric(6);
     const otpObj = {
@@ -158,6 +161,7 @@ export const sendOtp = async (userInfo: {
 
     return updatedUser;
   } catch (error) {
+    logger.error(error)
     throw new ApiError(httpStatus.UNAUTHORIZED, "Verification failed");
   }
 };

@@ -22,7 +22,7 @@ export default class KafkaProducer {
     this.producer = this.kafka.producer();
   }
 
-  sendMessage(message: MessageInterface) {
+  sendMessage(message: { value: string; key: string }) {
     return this.producer.send({
       topic: this.topic,
       messages: [message],

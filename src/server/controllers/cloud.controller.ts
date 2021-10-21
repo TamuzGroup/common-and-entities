@@ -19,9 +19,13 @@ const cloudAuth = catchAsync(async (req, res) => {
 
 const cloudCallback = catchAsync(async (req, res) => {
   const { code } = req.query;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const userId = req.user && req.user._id;
   if (code) {
-    const accessToken = await authCallback(code);
-    logger.info({ accessToken });
+    const authData = await authCallback(code, userId);
+    logger.info({ authData });
     res.redirect(`${constants.REDIRECT_AFTER_CLOUD_AUTH}`);
   } else {
     logger.error("The code does not exist");

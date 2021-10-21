@@ -172,12 +172,18 @@ class GoogleDriveService implements IClouds {
 
   getAuthToken(
     code: string | string[] | qs.ParsedQs | qs.ParsedQs[] | any
-  ): void | Promise<string> {
+  ): void | Promise<{ refreshToken: string; cloud: string }> {
     return new Promise((resolve) => {
       return this.auth.getToken(code, (err, tokens) => {
-        if (tokens && tokens.access_token) {
+        if (tokens && tokens.refresh_token) {
           this.auth.setCredentials(tokens);
-          return resolve(tokens.access_token);
+
+          const authData = {
+            refreshToken: tokens.refresh_token,
+            cloud: "google",
+          };
+
+          return resolve(authData);
         }
       });
     });
