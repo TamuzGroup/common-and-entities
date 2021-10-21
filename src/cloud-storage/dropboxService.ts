@@ -15,13 +15,13 @@ class DropboxService implements IClouds {
 
   redirectUrl: string;
 
-  refreshToken: string | string[] | undefined;
+  refreshToken: string | null;
 
   constructor(
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: string | string[] | undefined
+    refreshToken: string | null
   ) {
     this.refreshToken = refreshToken;
     this.clientId = clientId;
@@ -36,6 +36,9 @@ class DropboxService implements IClouds {
   }
 
   cloudAuth(): Dropbox {
+    if (this.refreshToken != null) {
+      this.auth.setRefreshToken(this.refreshToken);
+    }
     return new Dropbox({
       auth: this.auth,
     });
@@ -49,11 +52,10 @@ class DropboxService implements IClouds {
         this.auth
           .getAccessTokenFromCode(this.redirectUrl, code)
           .then((token: DropboxResponse<any>) => {
-            const { refresh_token: refreshToken, access_token: accessToken } =
-              token.result;
+            const { refresh_token: refreshToken } = token.result;
             if (refreshToken != null) {
               this.auth.setRefreshToken(refreshToken);
-              return resolve(accessToken);
+              return resolve(refreshToken);
             }
           });
       }

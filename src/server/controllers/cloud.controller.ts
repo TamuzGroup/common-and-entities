@@ -1,6 +1,10 @@
 import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync";
-import { generateAuthUrl, authCallback } from "../services/cloud.service";
+import {
+  generateAuthUrl,
+  authCallback,
+  getDriveFiles,
+} from "../services/cloud.service";
 import constants from "../../cloud-storage/constants";
 import logger from "../utils/logger.util";
 
@@ -24,9 +28,24 @@ const cloudCallback = catchAsync(async (req, res) => {
   }
 });
 
+const getFilesList = catchAsync(async (req, res) => {
+  const { folderId, isRenderChildren, cloudType } = req.body;
+  const { cloudtoken: cloudToken } = req.headers;
+  const files = await getDriveFiles(
+    folderId,
+    isRenderChildren,
+    cloudToken,
+    cloudType
+  );
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  res.status(httpStatus.CREATED).send(files.data);
+});
+
 const cloudController = {
   cloudAuth,
   cloudCallback,
+  getFilesList,
 };
 
 export default cloudController;

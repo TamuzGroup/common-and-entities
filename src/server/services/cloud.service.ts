@@ -1,5 +1,12 @@
 import qs from "qs";
-import { IClouds } from "../../cloud-storage/interfaces/clouds";
+import { drive_v3 } from "googleapis";
+import { DropboxResponse } from "dropbox";
+import { files } from "dropbox/types/dropbox_types";
+import { AxiosResponse } from "axios";
+import {
+  IClouds,
+  IOneDriveTreeItem,
+} from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
 import DropboxService from "../../cloud-storage/dropboxService";
@@ -11,10 +18,11 @@ let cloudService: IClouds;
 
 const REDIRECT_URL = "http://localhost:3000/v1/cloud/callback";
 
-export const generateAuthUrl = (
+const connectToServiceByCloud = (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
-  accessToken: string | string[] | undefined
-): string | Promise<string> | boolean => {
+  accessToken: any
+) => {
+  console.log("accessToken", accessToken);
   switch (cloud) {
     case constants.CLOUDS.GOOGLE: {
       cloudService = new GoogleDriveService(
@@ -46,7 +54,13 @@ export const generateAuthUrl = (
     default:
       return true;
   }
+};
 
+export const generateAuthUrl = (
+  cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  accessToken: any
+): string | Promise<string> | boolean => {
+  connectToServiceByCloud(cloud, accessToken);
   return cloudService.generateAuthUrl();
 };
 
@@ -62,4 +76,30 @@ export const authCallback = (
       logger.error(e);
     }
   });
+};
+
+export const getDriveFiles = (
+  folderId: string,
+  isRenderChildren?: string,
+  cloudToken?: any,
+  cloudType?: string
+):
+  | Promise<{ data: drive_v3.Schema$File[] }>
+  | Promise<AxiosResponse>
+  | Promise<
+      { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
+    >
+  | Promise<
+      | DropboxResponse<files.ListFolderResult>
+      | {
+          data: (
+            | files.FileMetadataReference
+            | files.FolderMetadataReference
+            | files.DeletedMetadataReference
+          )[];
+        }
+    > => {
+  connectToServiceByCloud(cloudType, cloudToken);
+
+  return cloudService.getDriveFiles(folderId, isRenderChildren);
 };

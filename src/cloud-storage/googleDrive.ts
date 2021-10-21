@@ -25,7 +25,7 @@ class GoogleDriveService implements IClouds {
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: null | string
+    refreshToken: string | null
   ) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;

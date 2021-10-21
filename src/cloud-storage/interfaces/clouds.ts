@@ -12,7 +12,7 @@ export interface IClouds {
   clientId: string;
   clientSecret: string;
   redirectUrl: string;
-  refreshToken: string | null | undefined | string[];
+  refreshToken: string | null;
   cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
 
   createFolder(
