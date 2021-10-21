@@ -19,7 +19,7 @@ export const sendOTP = {
   body: Joi.object().keys({
     // @TODO - add custom rules validators
     idNumber: Joi.string().required(),
-    birthYear: Joi.string().required(),
+    phoneNumber: Joi.string().required(),
   }),
 };
 
