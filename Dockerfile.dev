@@ -1,0 +1,7 @@
+# dev - install node_modules only, get files from local
+FROM node:10
+WORKDIR /app
+COPY package.json .
+
+RUN npm install
+RUN npm install -g nodemon

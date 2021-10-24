@@ -1,6 +1,6 @@
 {
   "name": "common-and-entities",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "givers common-and-entities repository to be shared between projects",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "author": "Matan Navon",
   "license": "ISC",
   "devDependencies": {
+    "@aws-sdk/types": "^3.38.0",
     "@babel/cli": "^7.14.5",
     "@babel/core": "^7.14.6",
     "@babel/plugin-transform-runtime": "^7.14.5",
@@ -60,8 +61,7 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
-    "@aws-sdk/types": "^3.32.0",
-    "aws-sdk": "^2.992.0",
+    "aws-sdk": "^2.1013.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
@@ -79,9 +79,9 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.5",
     "package-logger": "github:TamuzGroup/package-logger",
+    "passport": "^0.4.1",
     "qs": "^6.10.1",
     "twilio": "^3.67.2",
-    "validator": "^13.0.0",
-    "passport": "^0.4.1"
+    "validator": "^13.0.0"
   }
 }

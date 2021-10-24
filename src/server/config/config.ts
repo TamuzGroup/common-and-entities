@@ -5,7 +5,7 @@ import Joi from "joi";
 import {
   getMongoDBConnectionParams,
   IMongoDBConnectionSettings,
-} from "../../index";
+} from "../../../src/config/mongodb/interfaces";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
