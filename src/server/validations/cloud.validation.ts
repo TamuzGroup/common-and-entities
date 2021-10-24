@@ -2,9 +2,10 @@ import Joi from "joi";
 
 const getFilesList = {
   body: Joi.object().keys({
-    folderId: Joi.string().required(),
+    folderId: Joi.string().empty(""),
     isRenderChildren: Joi.boolean(),
-    cloudType: Joi.string().required(),
+    cloudType: Joi.string(),
+    userId: Joi.string().required(),
   }),
 };
 

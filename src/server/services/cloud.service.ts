@@ -1,12 +1,9 @@
 import qs from "qs";
+import axios, { AxiosResponse } from "axios";
 import { drive_v3 } from "googleapis";
 import { DropboxResponse } from "dropbox";
 import { files } from "dropbox/types/dropbox_types";
-import { AxiosResponse } from "axios";
-import {
-  IClouds,
-  IOneDriveTreeItem,
-} from "../../cloud-storage/interfaces/clouds";
+import { IClouds, ITokenData } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
 import DropboxService from "../../cloud-storage/dropboxService";
@@ -19,18 +16,23 @@ let cloudService: IClouds;
 
 const REDIRECT_URL = "http://localhost:3000/v1/cloud/callback";
 
-const connectToServiceByCloud = (
+const getCloudToken = (userId: string | undefined): Promise<AxiosResponse> => {
+  return axios.post("http://localhost:3001/v1/token/get-token", {
+    userId,
+  });
+};
+
+const getCloudService = (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
-  accessToken: any
+  refreshToken: string
 ) => {
-  console.log("accessToken", accessToken);
   switch (cloud) {
     case constants.CLOUDS.GOOGLE: {
       cloudService = new GoogleDriveService(
         config.googleCloudSettings.clientId,
         config.googleCloudSettings.clientSecret,
         REDIRECT_URL,
-        null
+        refreshToken
       );
       break;
     }
@@ -39,7 +41,7 @@ const connectToServiceByCloud = (
         config.dropboxCloudSettings.clientId,
         config.dropboxCloudSettings.clientSecret,
         REDIRECT_URL,
-        accessToken
+        refreshToken
       );
       break;
     }
@@ -48,7 +50,7 @@ const connectToServiceByCloud = (
         config.onedriveCloudSettings.clientId,
         config.onedriveCloudSettings.clientSecret,
         REDIRECT_URL,
-        null
+        refreshToken
       );
       break;
     }
@@ -57,11 +59,40 @@ const connectToServiceByCloud = (
   }
 };
 
-export const generateAuthUrl = (
+const connectToServiceByCloud = (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
-  accessToken: any
-): string | Promise<string> | boolean => {
-  connectToServiceByCloud(cloud, accessToken);
+  accessToken: any,
+  userId?: string
+): Promise<boolean> => {
+  let refreshToken = accessToken;
+  let cloudType = cloud;
+
+  return new Promise((resolve) => {
+    if (!accessToken) {
+      getCloudToken(userId)
+        .then((rsp) => {
+          const { cloud_type: userCloud } = rsp.data;
+          const [token] = rsp.data.tokens;
+          refreshToken = token;
+          cloudType = userCloud;
+          getCloudService(cloudType, refreshToken);
+          resolve(true);
+        })
+        .catch((err) => {
+          logger.error(`get token: ${err}`);
+        });
+    } else {
+      getCloudService(cloudType, refreshToken);
+      resolve(true);
+    }
+  });
+};
+
+export const generateAuthUrl = async (
+  cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  cloudToken: any
+): Promise<string | Promise<string> | boolean> => {
+  await connectToServiceByCloud(cloud, cloudToken);
   return cloudService.generateAuthUrl();
 };
 
@@ -77,34 +108,33 @@ export const authCallback = (
       await sendMessage(authData, userId);
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
-    } catch (e) {
-      logger.error(e);
+    } catch (err) {
+      logger.error(`cloud callback: ${err}`);
     }
   });
 };
 
-export const getDriveFiles = (
+export const getDriveFiles = async (
   folderId: string,
   isRenderChildren?: string,
   cloudToken?: any,
-  cloudType?: string
-):
-  | Promise<{ data: drive_v3.Schema$File[] }>
-  | Promise<AxiosResponse>
-  | Promise<
-      { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
-    >
-  | Promise<
-      | DropboxResponse<files.ListFolderResult>
-      | {
-          data: (
-            | files.FileMetadataReference
-            | files.FolderMetadataReference
-            | files.DeletedMetadataReference
-          )[];
-        }
-    > => {
-  connectToServiceByCloud(cloudType, cloudToken);
-
+  cloudType?: string,
+  userId?: string
+): Promise<
+  | {
+      tokenData: ITokenData;
+      files: any[];
+    }
+  | { files: drive_v3.Schema$File[]; tokenData: ITokenData }
+  | DropboxResponse<files.ListFolderResult>
+  | {
+      files: (
+        | files.FileMetadataReference
+        | files.FolderMetadataReference
+        | files.DeletedMetadataReference
+      )[];
+    }
+> => {
+  await connectToServiceByCloud(cloudType, cloudToken, userId);
   return cloudService.getDriveFiles(folderId, isRenderChildren);
 };

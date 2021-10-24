@@ -91,11 +91,12 @@ class OneDriveService implements IClouds {
   }
 
   getDriveFiles(
-    folderIdOrName: string,
-    isRenderChildren: string
-  ): Promise<
-    { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
-  > {
+    folderIdOrName?: string,
+    isRenderChildren?: string
+  ): Promise<{
+    tokenData: { cloudType: string; refreshToken: string | null };
+    files: any[];
+  }> {
     const options = {
       auth: this.auth,
     };
@@ -114,7 +115,13 @@ class OneDriveService implements IClouds {
         };
       });
 
-      return { data: treeData };
+      return {
+        files: treeData,
+        tokenData: {
+          refreshToken: this.refreshToken,
+          cloudType: constants.CLOUDS.DROPBOX,
+        },
+      };
     });
   }
 
