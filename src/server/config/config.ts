@@ -3,7 +3,6 @@ import path from "path";
 import Joi from "joi";
 
 import {
-    IMongoDBConnectionSettings,
     getMongoDBConnectionParams
 } from "../../config/mongodb/mongoConfig";
 
@@ -74,7 +73,7 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-const mongoDBConfig: IMongoDBConnectionSettings = getMongoDBConnectionParams(
+const mongoDBConfig = getMongoDBConnectionParams(
   envVars.NODE_ENV
 ); // take default settings
 const dbURL = `${mongoDBConfig.protocol}://${mongoDBConfig.user}:${mongoDBConfig.password}@${mongoDBConfig.host}:${mongoDBConfig.port}`;

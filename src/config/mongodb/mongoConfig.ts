@@ -1,6 +1,6 @@
 const config = require("./config.json");
 
-export interface IMongoDBConnectionSettings {
+interface IMongoDBConnectionSettings {
     user: string;
     password: string;
     host: string;
