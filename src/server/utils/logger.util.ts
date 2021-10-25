@@ -18,3 +18,5 @@
 // logger.info(`Logger version is ${logger.getVersion()}`);
 //
 // export default logger;
+
+export {}
