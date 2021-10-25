@@ -28,9 +28,9 @@ export interface IClouds {
 
   saveFile(
     fileName: string,
-    filePath: string,
-    fileMimeType: string,
-    folderId: string
+    filePath?: string,
+    fileMimeType?: string,
+    folderId?: string
   ):
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<AxiosResponse>
