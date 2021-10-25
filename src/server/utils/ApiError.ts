@@ -1,7 +1,7 @@
 class ApiError extends Error {
-  public readonly statusCode: number;
+  public statusCode: number;
 
-  public readonly isOperational: boolean;
+  public isOperational: boolean;
 
   constructor(
     statusCode: number,
