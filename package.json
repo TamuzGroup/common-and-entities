@@ -2,13 +2,15 @@
   "name": "common-and-entities",
   "version": "1.0.0",
   "description": "givers common-and-entities repository to be shared between projects",
-  "main": "index.js",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
     "lint": "eslint .",
     "db-migrate:dev": "ts-node ./src/migrations/cli.ts dev",
-    "db-migrate:prod": "ts-node ./src/migrations/cli.ts prod"
+    "db-migrate:prod": "ts-node ./src/migrations/cli.ts prod",
+    "build": "yarn clean && tsc"
   },
   "author": "Matan Navon",
   "license": "ISC",
