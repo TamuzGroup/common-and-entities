@@ -25,7 +25,11 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "outDir": "dist",
+    "declarationDir": "dist/types",
+    "outDir": "dist/lib",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "baseUrl": ".",
     "paths": {
       "*": [
