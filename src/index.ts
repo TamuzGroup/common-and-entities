@@ -1,7 +1,7 @@
 // export * from "./config/mongodb/interfaces";
 //
 // export * from "./server/utils/logger.util";
-// export * from "./server/utils/ApiError";
+export * from "./server/utils/ApiError";
 // export * from "./server/utils/catchAsync";
 // export * from "./server/utils/pick";
 // export * from "./server/utils/random";
@@ -35,4 +35,4 @@
 //
 //
 
-export {};
+// export {};
