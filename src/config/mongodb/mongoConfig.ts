@@ -1,4 +1,4 @@
-const mongoConfig = require("./config.json");
+const config = require("./config.json");
 
 export interface IMongoDBConnectionSettings {
     user: string;
@@ -13,10 +13,10 @@ export interface IMongoDBConnectionSettings {
 export function getMongoDBConnectionParams(env: string ): IMongoDBConnectionSettings {
     switch (env) {
         case "dev":
-            return mongoConfig.mongoLocalSettings as IMongoDBConnectionSettings;
+            return config.mongoLocalSettings as IMongoDBConnectionSettings;
         case "prod":
-            return mongoConfig.mongoSettings as IMongoDBConnectionSettings;
+            return config.mongoSettings as IMongoDBConnectionSettings;
         default:
-            return mongoConfig.mongoLocalSettings as IMongoDBConnectionSettings;
+            return config.mongoLocalSettings as IMongoDBConnectionSettings;
     }
 }
