@@ -1,4 +1,4 @@
-import * as mongoConfig from "./config.json";
+const mongoConfig = require("./config.json");
 
 export interface IMongoDBConnectionSettings {
   user: string;
