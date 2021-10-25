@@ -20,14 +20,14 @@ export * from "./server/services/token.service";
 export * from "./server/services/user.service";
 
 export * from "./server/controllers/cloud.controller";
-export * from "./server/controllers/auth.controller";
+// export * from "./server/controllers/auth.controller";
 
 export * from "./server/middlewares/auth";
 export * from "./server/middlewares/healthCheck";
 export * from "./server/middlewares/validate";
 
-export * from "./server/validations/auth.validation";
+// export * from "./server/validations/auth.validation";
 export * from "./server/validations/custom.validation";
 export * from "./server/validations/notification.validation";
 export * from "./server/validations/safebox.validation";
-export * from "./server/validations/user.validation";
+// export * from "./server/validations/user.validation";
