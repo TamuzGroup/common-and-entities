@@ -5,7 +5,7 @@
       "dom.iterable",
       "esnext"
     ],
-    "target": "es5",
+    "target": "es6",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "module": "amd",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": false,
     "noFallthroughCasesInSwitch": true,
@@ -25,12 +25,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "declarationDir": "dist/types",
-    "outDir": "dist/lib",
-    "outFile": "lib/index.js",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "*": [

@@ -1,7 +1,7 @@
-class ApiError extends Error {
-  public statusCode: number;
+export default class ApiError extends Error {
+  public readonly statusCode: number;
 
-  public isOperational: boolean;
+  public readonly isOperational: boolean;
 
   constructor(
     statusCode: number,
@@ -19,5 +19,3 @@ class ApiError extends Error {
     }
   }
 }
-
-export default ApiError;
