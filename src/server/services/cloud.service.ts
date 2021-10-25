@@ -95,7 +95,7 @@ export const generateAuthUrl = async (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
   cloudToken: any
 ): Promise<string | Promise<string> | boolean> => {
-  await connectToServiceByCloud(cloud, cloudToken);
+  getCloudService(cloud, cloudToken);
   return cloudService.generateAuthUrl();
 };
 
