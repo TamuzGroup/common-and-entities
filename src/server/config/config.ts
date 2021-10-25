@@ -2,10 +2,11 @@ import dotenv from "dotenv";
 import path from "path";
 import Joi from "joi";
 
+import IMongoDBConnectionSettings from "../../config/mongodb/interfaces";
+
 import {
-  getMongoDBConnectionParams,
-  IMongoDBConnectionSettings,
-} from "../../../src/config/mongodb/interfaces";
+    getMongoDBConnectionParams
+} from "../../config/mongodb/mongoConfig";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 

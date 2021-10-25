@@ -1,4 +1,4 @@
-export interface IMongoDBConnectionSettings {
+export default interface IMongoDBConnectionSettings {
   user: string;
   password: string;
   host: string;
