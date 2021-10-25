@@ -1,9 +1,9 @@
-// import config from "../config/config";
-// import pJson from "../../../package.json";
+import config from "../config/config";
+import pJson from "../../../package.json";
 
-// const { Logger, LOG_LEVELS } = require("package-logger");
-// const logger = new Logger(pJson.name, config.env, LOG_LEVELS.WARNING_LEVEL);
-//
+const { Logger, LOG_LEVELS } = require("package-logger");
+const logger = new Logger(pJson.name, config.env, LOG_LEVELS.WARNING_LEVEL);
+
 // class TempLogger {
 //     getVersion() {
 //         return "1.1.t";
@@ -14,9 +14,7 @@
 // }
 //
 // const logger = new TempLogger();
-//
-// logger.info(`Logger version is ${logger.getVersion()}`);
-//
-// export default logger;
 
-export {}
+logger.info(`Logger version is ${logger.getVersion()}`);
+
+export default logger;
