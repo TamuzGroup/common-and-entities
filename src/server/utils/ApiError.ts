@@ -1,4 +1,4 @@
-export default class ApiError extends Error {
+class ApiError extends Error {
   public readonly statusCode: number;
 
   public readonly isOperational: boolean;
@@ -19,3 +19,5 @@ export default class ApiError extends Error {
     }
   }
 }
+
+export default ApiError;
