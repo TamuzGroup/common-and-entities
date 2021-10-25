@@ -3,6 +3,7 @@ import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import qs from "qs";
 import { IClouds } from "./interfaces/clouds";
+import constants from "./constants";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
@@ -15,18 +16,19 @@ class DropboxService implements IClouds {
 
   redirectUrl: string;
 
-  refreshToken: string | string[] | undefined;
+  refreshToken: string | null;
 
   constructor(
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: string | string[] | undefined
+    refreshToken: string | null
   ) {
     this.refreshToken = refreshToken;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.redirectUrl = redirectUrl;
+
     this.auth = new DropboxAuth({
       fetch,
       clientId: this.clientId,
@@ -36,6 +38,9 @@ class DropboxService implements IClouds {
   }
 
   cloudAuth(): Dropbox {
+    if (this.refreshToken != null) {
+      this.auth.setRefreshToken(this.refreshToken);
+    }
     return new Dropbox({
       auth: this.auth,
     });
@@ -55,7 +60,7 @@ class DropboxService implements IClouds {
 
               const authData = {
                 refreshToken,
-                cloud: "dropbox",
+                cloud: constants.CLOUDS.DROPBOX,
               };
 
               return resolve(authData);
@@ -101,7 +106,7 @@ class DropboxService implements IClouds {
   getDriveFiles(folderId: string): Promise<
     | DropboxResponse<files.ListFolderResult>
     | {
-        data: (
+        files: (
           | files.FileMetadataReference
           | files.FolderMetadataReference
           | files.DeletedMetadataReference
@@ -115,7 +120,11 @@ class DropboxService implements IClouds {
       })
       .then((rsp) => {
         return {
-          data: rsp.result.entries,
+          files: rsp.result.entries,
+          tokenData: {
+            refreshToken: this.refreshToken,
+            cloudType: constants.CLOUDS.DROPBOX,
+          },
         };
       });
   }

@@ -12,7 +12,8 @@ export interface IClouds {
   clientId: string;
   clientSecret: string;
   redirectUrl: string;
-  refreshToken: string | null | undefined | string[];
+  refreshToken: string | null;
+
   cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
 
   createFolder(
@@ -22,6 +23,7 @@ export interface IClouds {
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<AxiosResponse>
     | Promise<DropboxResponse<files.CreateFolderResult>>;
+
   searchFolder(folderName?: string): Promise<drive_v3.Schema$File | null>;
 
   saveFile(
@@ -37,23 +39,21 @@ export interface IClouds {
   getDriveFiles(
     folderIdOrName?: string,
     isRenderChildren?: string
-  ):
-    | Promise<{ data: drive_v3.Schema$File[] }>
-    | Promise<AxiosResponse>
-    | Promise<
-        | { data: { files: unknown[] } }
-        | { data: { files: IOneDriveTreeItem[] } }
-      >
-    | Promise<
-        | DropboxResponse<files.ListFolderResult>
-        | {
-            data: (
-              | files.FileMetadataReference
-              | files.FolderMetadataReference
-              | files.DeletedMetadataReference
-            )[];
-          }
-      >;
+  ): Promise<
+    | {
+        tokenData: ITokenData;
+        files: any[];
+      }
+    | { files: drive_v3.Schema$File[]; tokenData: ITokenData }
+    | DropboxResponse<files.ListFolderResult>
+    | {
+        files: (
+          | files.FileMetadataReference
+          | files.FolderMetadataReference
+          | files.DeletedMetadataReference
+        )[];
+      }
+  >;
   getAuthToken(
     code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
   ): void | Promise<any>;
@@ -164,4 +164,9 @@ export interface IDropboxTreeItem {
   server_modified: string;
   size: number;
   children?: IDropboxTreeItem[];
+}
+
+export interface ITokenData {
+  refreshToken: string | null;
+  cloudType: string;
 }
