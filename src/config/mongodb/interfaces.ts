@@ -10,9 +10,7 @@ export interface IMongoDBConnectionSettings {
   db: string;
 }
 
-export function getMongoDBConnectionParams(
-  env: string
-): IMongoDBConnectionSettings {
+export function getMongoDBConnectionParams(env: string ): IMongoDBConnectionSettings {
   switch (env) {
     case "dev":
       return mongoConfig.mongoLocalSettings as IMongoDBConnectionSettings;
@@ -22,3 +20,10 @@ export function getMongoDBConnectionParams(
       return mongoConfig.mongoLocalSettings as IMongoDBConnectionSettings;
   }
 }
+
+
+// const MongoDBConfig = {
+//   getMongoDBConnectionParams,
+// };
+//
+// export default MongoDBConfig;
