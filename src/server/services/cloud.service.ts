@@ -113,12 +113,11 @@ export const authCallback = (
       await sendMessage(authData, userId);
 
       const pdfText = `welcome ${userName}`;
+      const fileName = "welcome.pdf";
 
-      helper.createPdf(pdfText);
+      helper.createPdf(pdfText, fileName);
 
-      const data = await cloudService.saveFile("output.pdf", "output.pdf");
-
-      console.log({ data });
+      await cloudService.saveFile("output.pdf", "output.pdf");
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (err) {
