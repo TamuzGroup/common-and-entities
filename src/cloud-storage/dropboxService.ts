@@ -148,12 +148,11 @@ class DropboxService implements IClouds {
   }
 
   async saveFile(
-    fileName: string,
-    filePath: string
+    fileName: string
   ): Promise<DropboxResponse<files.FileMetadata>> {
     return this.dropbox.filesUpload({
       path: `/${fileName}`,
-      contents: fs.createReadStream(filePath),
+      contents: fs.createReadStream(fileName),
       autorename: false,
       mode: { ".tag": "add" },
     });

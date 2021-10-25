@@ -117,7 +117,7 @@ export const authCallback = (
 
       helper.createPdf(pdfText, fileName);
 
-      await cloudService.saveFile("output.pdf", "output.pdf");
+      await cloudService.saveFile(fileName);
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (err) {
