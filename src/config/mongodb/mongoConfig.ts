@@ -1,5 +1,14 @@
 const mongoConfig = require("./config.json");
-import { IMongoDBConnectionSettings } from "./interfaces"
+
+export interface IMongoDBConnectionSettings {
+    user: string;
+    password: string;
+    host: string;
+    protocol: string;
+    port: number;
+    authentication: string;
+    db: string;
+}
 
 export function getMongoDBConnectionParams(env: string ): IMongoDBConnectionSettings {
     switch (env) {

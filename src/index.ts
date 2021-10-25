@@ -1,4 +1,3 @@
-export * from "./config/mongodb/interfaces";
 export * from "./config/mongodb/mongoConfig";
 
 export * from "./server/utils/ApiError";
