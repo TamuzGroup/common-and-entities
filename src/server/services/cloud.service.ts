@@ -23,10 +23,10 @@ const getCloudToken = (userId: string | undefined): Promise<AxiosResponse> => {
 };
 
 const getCloudService = (
-  cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  cloudType: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
   refreshToken: string
 ) => {
-  switch (cloud) {
+  switch (cloudType) {
     case constants.CLOUDS.GOOGLE: {
       cloudService = new GoogleDriveService(
         config.googleCloudSettings.clientId,
@@ -59,6 +59,9 @@ const getCloudService = (
   }
 };
 
+// This function connects to the cloud service through two parameters that come from the client.
+// The parameters are saved in sessionStorage in client after user does auth.
+// If no parameters are reached, we will call the safe box service to obtain the token data of the same user
 const connectToServiceByCloud = (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
   accessToken: any,
