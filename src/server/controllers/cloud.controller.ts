@@ -44,8 +44,6 @@ const getFilesList = catchAsync(async (req, res) => {
     userId
   );
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   res.status(httpStatus.CREATED).send(files);
 });
 

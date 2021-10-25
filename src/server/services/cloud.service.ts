@@ -64,14 +64,14 @@ const getCloudService = (
 // If no parameters are reached, we will call the safe box service to obtain the token data of the same user
 const connectToServiceByCloud = (
   cloud: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
-  accessToken: any,
+  refresh_token: any,
   userId?: string
 ): Promise<boolean> => {
-  let refreshToken = accessToken;
+  let refreshToken = refresh_token;
   let cloudType = cloud;
 
   return new Promise((resolve) => {
-    if (!accessToken) {
+    if (!refresh_token) {
       getCloudToken(userId)
         .then((rsp) => {
           const { cloud_type: userCloud } = rsp.data;
