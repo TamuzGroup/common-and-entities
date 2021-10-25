@@ -1,0 +1,20 @@
+{
+    "mongoLocalSettings": {
+        "user": "dbuser",
+        "password": "dbpass",
+        "host": "localhost",
+        "protocol": "mongodb",
+        "port": 27017,
+        "authentication": "/admin",
+        "db": "givers_test"
+    },
+    "mongoSettings": {
+        "user": "dbuser",
+        "password": "dbpass",
+        "host": "localhost",
+        "protocol": "mongodb",
+        "port": 27017,
+        "authentication": "/admin",
+        "db": "givers_test"
+    }
+}
