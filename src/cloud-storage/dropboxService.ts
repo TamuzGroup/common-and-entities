@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import qs from "qs";
+import fs from "fs";
 import { IClouds } from "./interfaces/clouds";
 import constants from "./constants";
 
@@ -147,10 +148,12 @@ class DropboxService implements IClouds {
   }
 
   async saveFile(
-    fileName: string
+    fileName: string,
+    filePath: string
   ): Promise<DropboxResponse<files.FileMetadata>> {
     return this.dropbox.filesUpload({
       path: `/${fileName}`,
+      contents: fs.createReadStream(filePath || fileName),
       autorename: false,
       mode: { ".tag": "add" },
     });

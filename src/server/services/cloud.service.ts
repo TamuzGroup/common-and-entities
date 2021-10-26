@@ -3,6 +3,8 @@ import axios, { AxiosResponse } from "axios";
 import { drive_v3 } from "googleapis";
 import { DropboxResponse } from "dropbox";
 import { files } from "dropbox/types/dropbox_types";
+import { GaxiosPromise } from "googleapis-common";
+import fs from "fs";
 import { IClouds, ITokenData } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
@@ -11,6 +13,7 @@ import OneDriveService from "../../cloud-storage/oneDriveService";
 import config from "../config/config";
 import logger from "../utils/logger.util";
 import { sendMessage } from "../../kafka/dedicated-producers/cloudStorageTokenMng.producer";
+import helper from "../utils/helper.util";
 
 let cloudService: IClouds;
 
@@ -101,14 +104,23 @@ export const generateAuthUrl = async (
 
 export const authCallback = (
   code: string | string[] | qs.ParsedQs | qs.ParsedQs[],
-  userId: string
+  userId: string,
+  userName: string
 ): Promise<unknown> => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     try {
       const authData = await cloudService.getAuthToken(code);
-
       await sendMessage(authData, userId);
+
+      const pdfText = `welcome ${userName}`;
+      const fileName = "welcome.pdf";
+
+      helper.createPdf(pdfText, fileName);
+
+      await cloudService.saveFile(fileName);
+
+      fs.unlinkSync(fileName);
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (err) {
@@ -140,4 +152,21 @@ export const getDriveFiles = async (
 > => {
   await connectToServiceByCloud(cloudType, cloudToken, userId);
   return cloudService.getDriveFiles(folderId, isRenderChildren);
+};
+
+export const saveFile = async (
+  originalName: string,
+  path: string,
+  mimetype: string,
+  parentId: any,
+  cloudToken?: any,
+  cloudType?: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  userId?: any
+): Promise<
+  | GaxiosPromise<drive_v3.Schema$File>
+  | Promise<AxiosResponse>
+  | Promise<DropboxResponse<files.FileMetadata>>
+> => {
+  await connectToServiceByCloud(cloudType, cloudToken, userId);
+  return cloudService.saveFile(originalName, path, mimetype, parentId);
 };
