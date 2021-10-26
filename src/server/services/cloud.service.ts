@@ -4,6 +4,7 @@ import { drive_v3 } from "googleapis";
 import { DropboxResponse } from "dropbox";
 import { files } from "dropbox/types/dropbox_types";
 import { GaxiosPromise } from "googleapis-common";
+import fs from "fs";
 import { IClouds, ITokenData } from "../../cloud-storage/interfaces/clouds";
 import constants from "../../cloud-storage/constants";
 import GoogleDriveService from "../../cloud-storage/googleDrive";
@@ -118,6 +119,8 @@ export const authCallback = (
       helper.createPdf(pdfText, fileName);
 
       await cloudService.saveFile(fileName);
+
+      fs.unlinkSync(fileName);
 
       resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
     } catch (err) {
