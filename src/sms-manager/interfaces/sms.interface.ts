@@ -8,10 +8,15 @@ export interface ISmsManager {
   token?: string;
   init(): Twilio | AWS.SNS;
 
-  sendSms(options: { to: string; body: string }): Promise<{ sendTo: string }> | Promise<{message: SNS.PublishResponse | { $response: Response }}>
+  sendSms(options: {
+    to: string;
+    body: string;
+  }):
+    | Promise<{ sendTo: string }>
+    | Promise<{ message: SNS.PublishResponse | { $response: Response } }>;
 }
 
 export interface IMessage {
-  to: string,
-  body: string
+  to: string;
+  body: string;
 }

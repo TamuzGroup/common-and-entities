@@ -1,0 +1,1119 @@
+{
+    "data": [
+        {
+            "_id": "5e77717522c4a05ead97e55f",
+            "status": 1,
+            "display_name": {
+                "en": "Psychiatry",
+                "he": "פסיכיאטריה"
+            },
+            "slug": "psychiatry"
+        },
+        {
+            "_id": "5e77764f22c4a05ead97e569",
+            "status": 1,
+            "display_name": {
+                "en": "ADHD",
+                "he": "קשב וריכוז"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "adhd"
+        },
+        {
+            "_id": "5e77766422c4a05ead97e56a",
+            "status": 1,
+            "display_name": {
+                "en": "Sleep",
+                "he": "שינה"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "sleep"
+        },
+        {
+            "_id": "5e777c1b22c4a05ead97e574",
+            "status": 1,
+            "display_name": {
+                "en": "Woman Fertility",
+                "he": "פריון האשה"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "woman-fertility"
+        },
+        {
+            "_id": "5e777da022c4a05ead97e575",
+            "status": 1,
+            "display_name": {
+                "en": "Male Fertility",
+                "he": "פריון הגבר"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "male-fertility"
+        },
+        {
+            "_id": "5e778f2d22c4a05ead97e57b",
+            "status": 1,
+            "display_name": {
+                "en": "Gastroenterology",
+                "he": "גסטרואנטרולוגיה"
+            },
+            "slug": "gastroenterology"
+        },
+        {
+            "_id": "5e776fd222c4a05ead97e55d",
+            "status": 1,
+            "display_name": {
+                "en": "Retina",
+                "he": "רשתית"
+            },
+            "parent": "5e776e4722c4a05ead97e55a",
+            "slug": "retina"
+        },
+        {
+            "_id": "5e77741d22c4a05ead97e560",
+            "status": 1,
+            "display_name": {
+                "en": "Geriatric Psychiatry",
+                "he": "פסיכו גריאטריה"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "geriatric-psychiatry"
+        },
+        {
+            "_id": "5e77921322c4a05ead97e581",
+            "status": 1,
+            "display_name": {
+                "en": "Diabetes",
+                "he": "סכרת"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "diabetes"
+        },
+        {
+            "_id": "5e77927322c4a05ead97e583",
+            "status": 1,
+            "display_name": {
+                "en": "Obesity",
+                "he": "השמנה"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "obesity"
+        },
+        {
+            "_id": "5e77749422c4a05ead97e561",
+            "status": 1,
+            "display_name": {
+                "en": "Child/Adolescent Psychiatry",
+                "he": "פסיכיאטריה ילד/מתבגר"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "child-adolescent-psychiatry"
+        },
+        {
+            "_id": "5e776cca22c4a05ead97e557",
+            "status": 1,
+            "display_name": {
+                "en": "Dermatology",
+                "he": "עור ומין"
+            },
+            "slug": "dermatology"
+        },
+        {
+            "_id": "5e77757c22c4a05ead97e565",
+            "status": 1,
+            "display_name": {
+                "en": "Neurology",
+                "he": "נוירולוגיה"
+            },
+            "slug": "neurology"
+        },
+        {
+            "_id": "5e77779f22c4a05ead97e56b",
+            "status": 1,
+            "display_name": {
+                "en": "Dementia/Memory Disorders",
+                "he": "דמנציה/הפרעות זכרון"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "dementia-memory-disorders"
+        },
+        {
+            "_id": "5e778f7622c4a05ead97e57c",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Gastroenterology",
+                "he": "גסטרו ילדים"
+            },
+            "parent": "5e778f2d22c4a05ead97e57b",
+            "slug": "pediatric-gastroenterology"
+        },
+        {
+            "_id": "5e7792b022c4a05ead97e584",
+            "status": 1,
+            "display_name": {
+                "en": "Thyroid/Thyroid Gland",
+                "he": "בלוטת תריס/מגן"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "thyroid-thyroid-gland"
+        },
+        {
+            "_id": "5e776cf322c4a05ead97e558",
+            "status": 1,
+            "display_name": {
+                "en": "Psoriasis",
+                "he": "פסוריאזיס"
+            },
+            "parent": "5e776cca22c4a05ead97e557",
+            "slug": "psoriasis"
+        },
+        {
+            "_id": "5e77803d22c4a05ead97e579",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Hematology",
+                "he": "המטולוגיה ילדים"
+            },
+            "parent": "5e77703522c4a05ead97e55e",
+            "slug": "pediatric-hematology"
+        },
+        {
+            "_id": "5e77615a22c4a05ead97e550",
+            "status": 1,
+            "display_name": {
+                "en": "Physiotherapy",
+                "he": "פיזיוטרפיה"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "physiotherapy"
+        },
+        {
+            "_id": "5e7754cb22c4a05ead97e54c",
+            "status": 1,
+            "display_name": {
+                "en": "Dentist",
+                "he": "שיניים"
+            },
+            "slug": "dentist"
+        },
+        {
+            "_id": "5e776ac922c4a05ead97e551",
+            "status": 1,
+            "display_name": {
+                "en": "Naturopathy",
+                "he": "נטורופטיה"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "naturopathy"
+        },
+        {
+            "_id": "5e77818622c4a05ead97e57a",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Immunology/Allergology",
+                "he": "אימונולוגיה/אלרגולוגיה ילדים"
+            },
+            "parent": "5e777f7922c4a05ead97e578",
+            "slug": "pediatric-immunology-allergology"
+        },
+        {
+            "_id": "5e77902e22c4a05ead97e57d",
+            "status": 1,
+            "display_name": {
+                "en": "Otolaryngology",
+                "he": "אף אוזן גרון"
+            },
+            "slug": "otolaryngology"
+        },
+        {
+            "_id": "5e7753ca22c4a05ead97e549",
+            "status": 1,
+            "display_name": {
+                "en": "Nephrology",
+                "he": "נפרולוגיה"
+            },
+            "slug": "nephrology"
+        },
+        {
+            "_id": "5e76b1339315334f9adf27ca",
+            "status": 1,
+            "display_name": {
+                "en": "Cardiology",
+                "he": "קרדיולוגיה"
+            },
+            "slug": "cardiology"
+        },
+        {
+            "_id": "5e776ae322c4a05ead97e552",
+            "status": 1,
+            "display_name": {
+                "en": "Nutritionist",
+                "he": "תזונאי"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "nutritionist"
+        },
+        {
+            "_id": "5e776b8222c4a05ead97e553",
+            "status": 1,
+            "display_name": {
+                "en": "Mouth/Jaw",
+                "he": "פה/לסת"
+            },
+            "slug": "mouth-jaw"
+        },
+        {
+            "_id": "5e776d6f22c4a05ead97e559",
+            "status": 1,
+            "display_name": {
+                "en": "Hair Loss",
+                "he": "נשירת שיער"
+            },
+            "parent": "5e776cca22c4a05ead97e557",
+            "slug": "hair-loss"
+        },
+        {
+            "_id": "5e777dff22c4a05ead97e577",
+            "status": 1,
+            "display_name": {
+                "en": "Cervix",
+                "he": "צוואר הרחם"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "cervix"
+        },
+        {
+            "_id": "5e77793022c4a05ead97e56e",
+            "status": 1,
+            "display_name": {
+                "en": "Family Internal/General",
+                "he": "משפחה פנימית/כללית"
+            },
+            "slug": "family-internal-general"
+        },
+        {
+            "_id": "5e77799622c4a05ead97e570",
+            "status": 1,
+            "display_name": {
+                "en": "Hematology",
+                "he": "המטולוגיה"
+            },
+            "parent": "5e77793022c4a05ead97e56e",
+            "slug": "hematology"
+        },
+        {
+            "_id": "5e77945522c4a05ead97e585",
+            "status": 1,
+            "display_name": {
+                "en": "Orthopedics",
+                "he": "אורתופדיה"
+            },
+            "slug": "orthopedics"
+        },
+        {
+            "_id": "5e76b1e6159aec4fcc2faa0f",
+            "status": 1,
+            "display_name": {
+                "en": "Arrhythmia",
+                "he": "הפרעות קצב"
+            },
+            "parent": "5e76b1339315334f9adf27ca",
+            "slug": "arrhythmia"
+        },
+        {
+            "_id": "5e76b1b7a3ab7a4fb8059a83",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Cardiology",
+                "he": "קרדיולוגיה ילדים"
+            },
+            "parent": "5e76b1339315334f9adf27ca",
+            "slug": "pediatric-cardiology"
+        },
+        {
+            "_id": "5e776bb722c4a05ead97e554",
+            "status": 1,
+            "display_name": {
+                "en": "Radiology",
+                "he": "רדיולוגיה"
+            },
+            "slug": "radiology"
+        },
+        {
+            "_id": "5e776f1222c4a05ead97e55b",
+            "status": 1,
+            "display_name": {
+                "en": "Glaucoma",
+                "he": "גלאוקומה"
+            },
+            "parent": "5e776e4722c4a05ead97e55a",
+            "slug": "glaucoma"
+        },
+        {
+            "_id": "5e77762e22c4a05ead97e568",
+            "status": 1,
+            "display_name": {
+                "en": "Parkinson",
+                "he": "פרקינסון"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "parkinson"
+        },
+        {
+            "_id": "5e77610f22c4a05ead97e54e",
+            "status": 1,
+            "display_name": {
+                "en": "Shiatsu",
+                "he": "שיאצו"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "shiatsu"
+        },
+        {
+            "_id": "5e7774fb22c4a05ead97e564",
+            "status": 1,
+            "display_name": {
+                "en": "Addictions",
+                "he": "התמכרויות"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "addictions"
+        },
+        {
+            "_id": "5e77797622c4a05ead97e56f",
+            "status": 1,
+            "display_name": {
+                "en": "Rheumatology",
+                "he": "ראומטולוגיה"
+            },
+            "parent": "5e77793022c4a05ead97e56e",
+            "slug": "rheumatology"
+        },
+        {
+            "_id": "5e77909f22c4a05ead97e57e",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Otolaryngology (ENT)",
+                "he": "אף אוזן גרון ילדים"
+            },
+            "parent": "5e77902e22c4a05ead97e57d",
+            "slug": "pediatric-otolaryngology-ent"
+        },
+        {
+            "_id": "5e7760d622c4a05ead97e54d",
+            "status": 1,
+            "display_name": {
+                "en": "Holistic",
+                "he": "הוליסטי"
+            },
+            "slug": "holistic"
+        },
+        {
+            "_id": "5e777f7922c4a05ead97e578",
+            "status": 1,
+            "display_name": {
+                "en": "Immunology/Allergology",
+                "he": "אימונולוגיה/אלרגולוגיה"
+            },
+            "slug": "immunology-allergology"
+        },
+        {
+            "_id": "5e776bd922c4a05ead97e555",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatrician",
+                "he": "ילדים"
+            },
+            "slug": "pediatrician"
+        },
+        {
+            "_id": "5e7753ea22c4a05ead97e54a",
+            "status": 1,
+            "display_name": {
+                "en": "Surgery",
+                "he": "כירורגיה"
+            },
+            "slug": "surgery"
+        },
+        {
+            "_id": "5e776f9022c4a05ead97e55c",
+            "status": 1,
+            "display_name": {
+                "en": "Children Ophthalmologist",
+                "he": "עיניים ילדים"
+            },
+            "parent": "5e776e4722c4a05ead97e55a",
+            "slug": "children-ophthalmologist"
+        },
+        {
+            "_id": "5e77537122c4a05ead97e548",
+            "status": 1,
+            "display_name": {
+                "en": "Pain",
+                "he": "כאב"
+            },
+            "slug": "pain"
+        },
+        {
+            "_id": "5e7775e322c4a05ead97e566",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Neurology/Child Development",
+                "he": "נוירולוגיה ילדים/התפתחות הילד"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "pediatric-neurology-child-development"
+        },
+        {
+            "_id": "5e7777c422c4a05ead97e56c",
+            "status": 1,
+            "display_name": {
+                "en": "Head Tumors",
+                "he": "גידולי ראש"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "head tumors"
+        },
+        {
+            "_id": "5e7779ff22c4a05ead97e572",
+            "status": 1,
+            "display_name": {
+                "en": "Infectious Diseases",
+                "he": "מחלות זיהומיות"
+            },
+            "parent": "5e77793022c4a05ead97e56e",
+            "slug": "infectious-diseases"
+        },
+        {
+            "_id": "5e77614022c4a05ead97e54f",
+            "status": 1,
+            "display_name": {
+                "en": "Acupuncture",
+                "he": "דיקור"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "acupuncture"
+        },
+        {
+            "_id": "5e7774e722c4a05ead97e563",
+            "status": 1,
+            "display_name": {
+                "en": "ADHD",
+                "he": "קשב וריכוז"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "adhd"
+        },
+        {
+            "_id": "5e7777fd22c4a05ead97e56d",
+            "status": 1,
+            "display_name": {
+                "en": "Geriatrics",
+                "he": "גריאטריה"
+            },
+            "slug": "geriatrics"
+        },
+        {
+            "_id": "5e7779b522c4a05ead97e571",
+            "status": 1,
+            "display_name": {
+                "en": "Hypertension",
+                "he": "לחץ דם"
+            },
+            "parent": "5e77793022c4a05ead97e56e",
+            "slug": "hypertension"
+        },
+        {
+            "_id": "5e77542e22c4a05ead97e54b",
+            "status": 1,
+            "display_name": {
+                "en": "Other/Plastics",
+                "he": "אחר/פלסטיקה"
+            },
+            "parent": "5e7753ea22c4a05ead97e54a",
+            "slug": "other-plastics"
+        },
+        {
+            "_id": "5e776e4722c4a05ead97e55a",
+            "status": 1,
+            "display_name": {
+                "en": "Ophthalmologist",
+                "he": "עיניים"
+            },
+            "slug": "ophthalmologist"
+        },
+        {
+            "_id": "5e7774ba22c4a05ead97e562",
+            "status": 1,
+            "display_name": {
+                "en": "Eating Disorders",
+                "he": "הפרעות אכילה"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "eating-disorders"
+        },
+        {
+            "_id": "5e777b7822c4a05ead97e573",
+            "status": 1,
+            "display_name": {
+                "en": "Gynecology",
+                "he": "גניקולוגיה"
+            },
+            "slug": "gynecology"
+        },
+        {
+            "_id": "5e777dde22c4a05ead97e576",
+            "status": 1,
+            "display_name": {
+                "en": "Girls/Adolescents",
+                "he": "נערות ומתבגרות"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "girls-adolescents"
+        },
+        {
+            "_id": "5e7791f422c4a05ead97e580",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Endocrinology",
+                "he": "אנדוקרינולוגיה ילדים"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "pediatric-endocrinology"
+        },
+        {
+            "_id": "5e77924222c4a05ead97e582",
+            "status": 1,
+            "display_name": {
+                "en": "Juvenile Diabetes",
+                "he": "סכרת נעורים"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "juvenile-diabetes"
+        },
+        {
+            "_id": "5e7794c922c4a05ead97e586",
+            "status": 1,
+            "display_name": {
+                "en": "Oncology",
+                "he": "אונקולוגית"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "oncology"
+        },
+        {
+            "_id": "5e77915e22c4a05ead97e57f",
+            "status": 1,
+            "display_name": {
+                "en": "Endocrinology",
+                "he": "אנדוקרינולוגיה"
+            },
+            "slug": "endocrinology"
+        },
+        {
+            "_id": "5e77703522c4a05ead97e55e",
+            "status": 1,
+            "display_name": {
+                "en": "Hematology",
+                "he": "המטולוגיה"
+            },
+            "slug": "hematology"
+        },
+        {
+            "_id": "5e77760f22c4a05ead97e567",
+            "status": 1,
+            "display_name": {
+                "en": "Epilepsy",
+                "he": "אפילפסיה"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "epilepsy"
+        },
+        {
+            "_id": "5e779b5f22c4a05ead97e595",
+            "status": 1,
+            "display_name": {
+                "en": "Prostate",
+                "he": "ערמונית"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "prostate"
+        },
+        {
+            "_id": "5e8b0900a5b6c73f44d0be08",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77902e22c4a05ead97e57d",
+            "slug": "general"
+        },
+        {
+            "_id": "5e78a869b222f22334fedbc4",
+            "status": 1,
+            "display_name": {
+                "en": "Menopause",
+                "he": "גיל המעבר"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "menopause"
+        },
+        {
+            "_id": "5e8086d2881f1d594a483679",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77717522c4a05ead97e55f",
+            "slug": "general"
+        },
+        {
+            "_id": "5e808665881f1d594a48366c",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e7754cb22c4a05ead97e54c",
+            "slug": "general"
+        },
+        {
+            "_id": "5e779a9d22c4a05ead97e591",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Urology",
+                "he": "אורולוגיה ילדים"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "pediatric-urology"
+        },
+        {
+            "_id": "5e779aca22c4a05ead97e592",
+            "status": 1,
+            "display_name": {
+                "en": "Nephrology",
+                "he": "נפרולוגיה"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "nephrology"
+        },
+        {
+            "_id": "5e8086a9881f1d594a483675",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77757c22c4a05ead97e565",
+            "slug": "general"
+        },
+        {
+            "_id": "5e779b3522c4a05ead97e594",
+            "status": 1,
+            "display_name": {
+                "en": "Male Fertility",
+                "he": "פריון גבר"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "male-fertility"
+        },
+        {
+            "_id": "5e77a14522c4a05ead97e597",
+            "status": 1,
+            "display_name": {
+                "en": "Gastrointestinal",
+                "he": "מערכת העיכול"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "gastrointestinal"
+        },
+        {
+            "_id": "5e77a16422c4a05ead97e598",
+            "status": 1,
+            "display_name": {
+                "en": "Breast",
+                "he": "שד"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "breast"
+        },
+        {
+            "_id": "5e77a1b822c4a05ead97e59c",
+            "status": 1,
+            "display_name": {
+                "en": "Orthopedics",
+                "he": "אורתופדיה"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "orthopedics"
+        },
+        {
+            "_id": "5e808677881f1d594a48366f",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e7777fd22c4a05ead97e56d",
+            "slug": "general"
+        },
+        {
+            "_id": "5e808699881f1d594a483673",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e776b8222c4a05ead97e553",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8086c9881f1d594a483678",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e776bd922c4a05ead97e555",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8b08f4a5b6c73f44d0be06",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "general"
+        },
+        {
+            "_id": "5e779a7a22c4a05ead97e590",
+            "status": 1,
+            "display_name": {
+                "en": "Orogenology",
+                "he": "אורוגניקולוגיה"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "orogenology"
+        },
+        {
+            "_id": "5e8086dd881f1d594a48367a",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e776bb722c4a05ead97e554",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8b069aa5b6c73f44d0bdde",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8086a0881f1d594a483674",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e7753ca22c4a05ead97e549",
+            "slug": "general"
+        },
+        {
+            "_id": "5e7797b122c4a05ead97e58e",
+            "status": 1,
+            "display_name": {
+                "en": "Upper Limbs",
+                "he": "גפיים עליונים"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "upper-limbs"
+        },
+        {
+            "_id": "5e8b08faa5b6c73f44d0be07",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77915e22c4a05ead97e57f",
+            "slug": "general"
+        },
+        {
+            "_id": "5e77979022c4a05ead97e58d",
+            "status": 1,
+            "display_name": {
+                "en": "Hand",
+                "he": "כף יד"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "hand"
+        },
+        {
+            "_id": "5e77952922c4a05ead97e588",
+            "status": 1,
+            "display_name": {
+                "en": "Joints",
+                "he": "מפרקים"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "joints"
+        },
+        {
+            "_id": "5e8b090da5b6c73f44d0be0a",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e777f7922c4a05ead97e578",
+            "slug": "general"
+        },
+        {
+            "_id": "5e77971722c4a05ead97e58a",
+            "status": 1,
+            "display_name": {
+                "en": "Shoulder",
+                "he": "כתף"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "shoulder"
+        },
+        {
+            "_id": "5e77962b22c4a05ead97e589",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Orthopedics",
+                "he": "אורתופדיה ילדים"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "pediatric-orthopedics"
+        },
+        {
+            "_id": "5e8086bd881f1d594a483677",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77537122c4a05ead97e548",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8b0907a5b6c73f44d0be09",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e778f2d22c4a05ead97e57b",
+            "slug": "general"
+        },
+        {
+            "_id": "5e779b0122c4a05ead97e593",
+            "status": 1,
+            "display_name": {
+                "en": "Pediatric Nephrology",
+                "he": "נפרולוגיה ילדים"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "pediatric-nephrology"
+        },
+        {
+            "_id": "5e77a18922c4a05ead97e59a",
+            "status": 1,
+            "display_name": {
+                "en": "Gynecology",
+                "he": "גניקולוגיה"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "gynecology"
+        },
+        {
+            "_id": "5e8086b4881f1d594a483676",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e776e4722c4a05ead97e55a",
+            "slug": "general"
+        },
+        {
+            "_id": "5e77a10a22c4a05ead97e596",
+            "status": 1,
+            "display_name": {
+                "en": "Oncology",
+                "he": "אונקולוגיה"
+            },
+            "slug": "oncology"
+        },
+        {
+            "_id": "5e77a17922c4a05ead97e599",
+            "status": 1,
+            "display_name": {
+                "en": "Urology",
+                "he": "אורולוגיה"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "urology"
+        },
+        {
+            "_id": "5e77a1a822c4a05ead97e59b",
+            "status": 1,
+            "display_name": {
+                "en": "Eye",
+                "he": "עין"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "eye"
+        },
+        {
+            "_id": "5e80867d881f1d594a483670",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e777b7822c4a05ead97e573",
+            "slug": "general"
+        },
+        {
+            "_id": "5e808683881f1d594a483671",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77703522c4a05ead97e55e",
+            "slug": "general"
+        },
+        {
+            "_id": "5e77950422c4a05ead97e587",
+            "status": 1,
+            "display_name": {
+                "en": "Knees",
+                "he": "ברכיים"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "knees"
+        },
+        {
+            "_id": "5e77972a22c4a05ead97e58b",
+            "status": 1,
+            "display_name": {
+                "en": "Spine",
+                "he": "עמוד שדרה"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "spine"
+        },
+        {
+            "_id": "5e77977222c4a05ead97e58c",
+            "status": 1,
+            "display_name": {
+                "en": "Podiatric Medicine",
+                "he": "קרסול וכף רגל"
+            },
+            "parent": "5e77945522c4a05ead97e585",
+            "slug": "podiatric-medicine"
+        },
+        {
+            "_id": "5e779a2822c4a05ead97e58f",
+            "status": 1,
+            "display_name": {
+                "en": "Urology",
+                "he": "אורולוגיה"
+            },
+            "slug": "urology"
+        },
+        {
+            "_id": "5e80866c881f1d594a48366d",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e776cca22c4a05ead97e557",
+            "slug": "general"
+        },
+        {
+            "_id": "5e808671881f1d594a48366e",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e77793022c4a05ead97e56e",
+            "slug": "general"
+        },
+        {
+            "_id": "5e77a1ca22c4a05ead97e59d",
+            "status": 1,
+            "display_name": {
+                "en": "Hematology",
+                "he": "המטולוגיה"
+            },
+            "parent": "5e77a10a22c4a05ead97e596",
+            "slug": "hematology"
+        },
+        {
+            "_id": "5e8b08eda5b6c73f44d0be05",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e779a2822c4a05ead97e58f",
+            "slug": "general"
+        },
+        {
+            "_id": "5ee1f068fedd250df9c193c7",
+            "status": 1,
+            "display_name": {
+                "en": "Any Doctor",
+                "he": "כל רופא"
+            },
+            "slug": "anydoctor"
+        },
+        {
+            "_id": "5e80865e881f1d594a48366b",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e76b1339315334f9adf27ca",
+            "slug": "general"
+        },
+        {
+            "_id": "5e808691881f1d594a483672",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e7760d622c4a05ead97e54d",
+            "slug": "general"
+        },
+        {
+            "_id": "5e8086fe881f1d594a48367b",
+            "status": 1,
+            "display_name": {
+                "en": "General",
+                "he": "כללי"
+            },
+            "parent": "5e7753ea22c4a05ead97e54a",
+            "slug": "general"
+        }
+    ]
+}

@@ -6,12 +6,14 @@ import { OAuth2Client } from "google-auth-library";
 import { Dropbox, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import { AxiosResponse } from "axios";
+import qs from "qs";
 
 export interface IClouds {
   clientId: string;
   clientSecret: string;
   redirectUrl: string;
   refreshToken: string | null;
+
   cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
 
   createFolder(
@@ -21,6 +23,7 @@ export interface IClouds {
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<AxiosResponse>
     | Promise<DropboxResponse<files.CreateFolderResult>>;
+
   searchFolder(folderName?: string): Promise<drive_v3.Schema$File | null>;
 
   saveFile(
@@ -36,24 +39,24 @@ export interface IClouds {
   getDriveFiles(
     folderIdOrName?: string,
     isRenderChildren?: string
-  ):
-    | Promise<{ data: drive_v3.Schema$File[] }>
-    | Promise<AxiosResponse>
-    | Promise<
-        | { data: { files: unknown[] } }
-        | { data: { files: IOneDriveTreeItem[] } }
-      >
-    | Promise<
-        | DropboxResponse<files.ListFolderResult>
-        | {
-            data: (
-              | files.FileMetadataReference
-              | files.FolderMetadataReference
-              | files.DeletedMetadataReference
-            )[];
-          }
-      >;
-  getAuthToken: (code: string) => void | Promise<string>;
+  ): Promise<
+    | {
+        tokenData: ITokenData;
+        files: any[];
+      }
+    | { files: drive_v3.Schema$File[]; tokenData: ITokenData }
+    | DropboxResponse<files.ListFolderResult>
+    | {
+        files: (
+          | files.FileMetadataReference
+          | files.FolderMetadataReference
+          | files.DeletedMetadataReference
+        )[];
+      }
+  >;
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  ): void | Promise<any>;
 
   deleteFile(
     fileId?: string,
@@ -79,7 +82,7 @@ export interface IClouds {
         DropboxResponse<sharing.ListSharedLinksResult> | { data: string }
       >;
 
-  shareFile(
+  shareFile?(
     fileId?: string,
     email?: string,
     role?: string,
@@ -90,8 +93,7 @@ export interface IClouds {
     | Promise<void | DropboxResponse<sharing.FileMemberActionResult[]>>
     | Promise<null>;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  generateAuthUrl(): string | Promise<string | object>;
+  generateAuthUrl(): string | Promise<string> | boolean;
 }
 
 export interface IOneDriveTreeItem {
@@ -162,4 +164,9 @@ export interface IDropboxTreeItem {
   server_modified: string;
   size: number;
   children?: IDropboxTreeItem[];
+}
+
+export interface ITokenData {
+  refreshToken: string | null;
+  cloudType: string;
 }

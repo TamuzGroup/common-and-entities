@@ -1,5 +1,5 @@
 import fs from "fs";
-import * as qs from "qs";
+import qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
 import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
 import { axiosRequest } from "./utils/auth.util";
@@ -36,7 +36,9 @@ class OneDriveService implements IClouds {
     return null;
   }
 
-  getAuthToken(code: string): Promise<string> {
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
+  ): void | Promise<{ refreshToken: string; cloud: string }> {
     return new Promise((resolve) => {
       const options = {
         body: qs.stringify({
@@ -51,8 +53,14 @@ class OneDriveService implements IClouds {
 
       axiosRequest(constants.ONE_DRIVE_GET_TOKEN_URL, options).then(
         (data: any) => {
-          this.auth = data.access_token;
-          resolve(data.access_token);
+          this.auth = data.refresh_token;
+
+          const authData = {
+            refreshToken: data.refresh_token,
+            cloud: "onedrive",
+          };
+
+          resolve(authData);
         }
       );
     });
@@ -83,11 +91,12 @@ class OneDriveService implements IClouds {
   }
 
   getDriveFiles(
-    folderIdOrName: string,
-    isRenderChildren: string
-  ): Promise<
-    { data: { files: unknown[] } } | { data: { files: IOneDriveTreeItem[] } }
-  > {
+    folderIdOrName?: string,
+    isRenderChildren?: string
+  ): Promise<{
+    tokenData: { cloudType: string; refreshToken: string | null };
+    files: any[];
+  }> {
     const options = {
       auth: this.auth,
     };
@@ -106,7 +115,13 @@ class OneDriveService implements IClouds {
         };
       });
 
-      return { data: treeData };
+      return {
+        files: treeData,
+        tokenData: {
+          refreshToken: this.refreshToken,
+          cloudType: constants.CLOUDS.DROPBOX,
+        },
+      };
     });
   }
 

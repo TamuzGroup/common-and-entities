@@ -4,7 +4,8 @@ import * as fs from "fs";
 import { GaxiosPromise } from "googleapis-common";
 import { GaxiosResponse } from "gaxios";
 import { Readable } from "stream";
-import { IClouds } from "./interfaces/clouds";
+import qs from "qs";
+import { IClouds, ITokenData } from "./interfaces/clouds";
 import constants from "./constants";
 
 class GoogleDriveService implements IClouds {
@@ -18,13 +19,13 @@ class GoogleDriveService implements IClouds {
 
   redirectUrl: string;
 
-  refreshToken: string;
+  refreshToken: string | null;
 
   constructor(
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: string
+    refreshToken: string | null
   ) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
@@ -43,7 +44,8 @@ class GoogleDriveService implements IClouds {
       this.redirectUrl
     );
 
-    auth.setCredentials({ refresh_token: this.refreshToken });
+    if (this.refreshToken)
+      auth.setCredentials({ refresh_token: this.refreshToken });
 
     const drive = google.drive({ version: "v3", auth });
     return [auth, drive];
@@ -132,14 +134,22 @@ class GoogleDriveService implements IClouds {
   }
 
   getDriveFiles(
-    folderId: string,
-    isRenderChildren: string
-  ): Promise<{ data: drive_v3.Schema$File[] }> {
+    folderIdOrName?: string,
+    isRenderChildren?: string
+  ): Promise<
+    | {
+        tokenData: { cloudType: string; refreshToken: string | null };
+        files: any[];
+      }
+    | { files: drive_v3.Schema$File[]; tokenData: ITokenData }
+  > {
     const params: drive_v3.Params$Resource$Files$List | undefined = {
       auth: this.auth,
       pageSize: 1000,
       spaces: "appDataFolder",
-      ...(folderId && { q: `'${folderId}' in parents and trashed=false` }),
+      ...(folderIdOrName && {
+        q: `'${folderIdOrName}' in parents and trashed=false`,
+      }),
       fields: "files(id, name, parents, mimeType)",
     };
 
@@ -153,7 +163,7 @@ class GoogleDriveService implements IClouds {
 
       if (!isRenderChildrenItems) {
         filteredFiles = filesData.filter(
-          (item) => item.parents && item.parents[0] === folderId
+          (item) => item.parents && item.parents[0] === folderIdOrName
         );
       }
 
@@ -164,15 +174,32 @@ class GoogleDriveService implements IClouds {
             item.mimeType === constants.GOOGLE_FOLDER_PATH ? "folder" : "file",
         };
       });
-      return { data: filteredFiles };
+      return {
+        files: filteredFiles,
+        tokenData: {
+          refreshToken: this.refreshToken,
+          cloudType: constants.CLOUDS.DROPBOX,
+        },
+      };
     });
   }
 
-  getAuthToken(code: string): void {
-    this.auth.getToken(code, (err, tokens) => {
-      if (tokens) {
-        this.auth.setCredentials(tokens);
-      }
+  getAuthToken(
+    code: string | string[] | qs.ParsedQs | qs.ParsedQs[] | any
+  ): void | Promise<{ refreshToken: string; cloud: string }> {
+    return new Promise((resolve) => {
+      return this.auth.getToken(code, (err, tokens) => {
+        if (tokens && tokens.refresh_token) {
+          this.auth.setCredentials(tokens);
+
+          const authData = {
+            refreshToken: tokens.refresh_token,
+            cloud: constants.CLOUDS.GOOGLE,
+          };
+
+          return resolve(authData);
+        }
+      });
     });
   }
 
