@@ -1,0 +1,1 @@
+{"version":3,"file":"interfaces.d.ts","sourceRoot":"","sources":["../../../../src/config/emailManager/interfaces.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,UAAU;IACzB,OAAO,EAAE,MAAM,CAAC;IAChB,IAAI,EAAE;QACJ,IAAI,EAAE,MAAM,CAAC;QACb,IAAI,EAAE,MAAM,CAAC;KACd,CAAC;CACH"}

@@ -1,5 +1,5 @@
 import { mongoMigrateCli } from "mongo-migrate-ts";
-import { getMongoDBConnectionParams } from "../config/mongodb/interfaces";
+import { getMongoDBConnectionParams } from "../config/mongodb/mongoConfig";
 
 const [env] = process.argv.splice(2, 1);
 const mongoDBConfig = getMongoDBConnectionParams(env);
