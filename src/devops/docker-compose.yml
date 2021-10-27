@@ -45,23 +45,9 @@ services:
 #      - DB_NAME=givers_test
 #      - MONGO_USER=dbuser
 #      - MONGO_PASSWORD=dbpass
-#  common-and-entities:
-#    build:
-#      context: ../../../common-and-entities
-#      dockerfile: Dockerfile.dev
-#    volumes:
-#      - ../../../common-and-entities/:/app/common-and-entities
-#      - /app/node_modules
-#    networks:
-#      - db
-#    environment:
-#      ## env vars to inject to api server
-#      ## ENVIRONMENT
-#      - NODE_ENV=development
   sp-server:
 #    depends_on:
 #      - mongodb-seed
-#      - common-and-entities
     build:
       context: ../../../sp-server
       dockerfile: Dockerfile.dev
