@@ -1,53 +1,61 @@
 version: '2'
 services:
-#  zookeeper:
-#    image: wurstmeister/zookeeper:latest
-#    ports:
-#      - "2181:2181"
-#  kafka:
-#    image: wurstmeister/kafka:2.11-1.1.1
-#    ports:
-#      - "9092:9092"
-#    links:
-#      - zookeeper
-#    environment:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks:
+      db:
+        ipv4_address: 172.30.0.2
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    ports:
+      - "9092:9092"
+    networks:
+      db:
+        ipv4_address: 172.30.0.3
+    links:
+      - zookeeper
+    environment:
 #      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-#      KAFKA_DELETE_TOPIC_ENABLE: 'true'
-#      KAFKA_CREATE_TOPICS: "notification_request:1:1,cloud_storage_token_mng:1:1"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#  # local mongo server
-#  mongodb-server:
-#    image: mongo:4.2.3
-#    restart: always
-#    ports: # expose port to localhost for debugging
-#      - 27017:27017
-#    networks:
-#      db:
-#        aliases:
-#          - mongodb
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: dbuser
-#      MONGO_INITDB_ROOT_PASSWORD: dbpass
-#  # init container to load mongo dumps to local container
-#  mongodb-seed:
-#    image: mongo:4.2.3
-#    volumes:
-#      - ./mongo-seed:/mongo-seed
-#    command: /mongo-seed/import.sh
-#    depends_on:
-#      - mongodb-server
-#    networks:
-#      - db
-#    environment:
-#      - DB_NAME=givers_test
-#      - MONGO_USER=dbuser
-#      - MONGO_PASSWORD=dbpass
+      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: "notification_request:1:1,cloud_storage_token_mng:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  # local mongo server
+  mongodb-server:
+    image: mongo:4.2.3
+    restart: always
+    ports: # expose port to localhost for debugging
+      - 27017:27017
+    networks:
+      db:
+        ipv4_address: 172.30.0.4
+        aliases:
+          - mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dbuser
+      MONGO_INITDB_ROOT_PASSWORD: dbpass
+  # init container to load mongo dumps to local container
+  mongodb-seed:
+    image: mongo:4.2.3
+    volumes:
+      - ./mongo-seed:/mongo-seed
+    command: /mongo-seed/import.sh
+    depends_on:
+      - mongodb-server
+    networks:
+      - db
+    environment:
+      - DB_NAME=givers_test
+      - MONGO_USER=dbuser
+      - MONGO_PASSWORD=dbpass
   sp-server:
-#    depends_on:
-#      - mongodb-seed
+    depends_on:
+      - mongodb-seed
     build:
       context: ../../../sp-server
       dockerfile: Dockerfile.dev
@@ -58,7 +66,8 @@ services:
      - ../../../sp-server/:/app/
      - /app/node_modules
     networks:
-      - db
+      db:
+        ipv4_address: 172.30.0.5
     env_file:
       - ../../../sp-server/.env # read twilio/paypal secrets from secret file
     environment:
@@ -71,5 +80,8 @@ services:
 
 networks:
   db:
+    ipam:
+      config:
+          - subnet: 172.30.0.0/24
 #  api:
 #  elk:
