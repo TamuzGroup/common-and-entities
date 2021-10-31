@@ -170,3 +170,25 @@ export const saveFile = async (
   await connectToServiceByCloud(cloudType, cloudToken, userId);
   return cloudService.saveFile(originalName, path, mimetype, parentId);
 };
+
+export const deleteFileById = async (
+  fileId: string,
+  fileName: string,
+  cloudToken?: any,
+  cloudType?: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  userId?: any
+) => {
+  await connectToServiceByCloud(cloudType, cloudToken, userId);
+  return cloudService.deleteFile(fileId, fileName);
+};
+
+export const downloadFileById = async (
+  fileId: string,
+  fileName: string,
+  cloudToken?: any,
+  cloudType?: string | string[] | qs.ParsedQs | qs.ParsedQs[] | undefined,
+  userId?: any
+) => {
+  await connectToServiceByCloud(cloudType, cloudToken, userId);
+  return cloudService.downloadFile(fileId, fileName);
+};
