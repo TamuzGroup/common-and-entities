@@ -1,0 +1,187 @@
+{
+  "data": [
+    {
+      "_id" : "5e9330e4a77d06404d6cd00f",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "leumit-silver",
+      "display_name" : {
+        "en" : "Silver",
+        "he" : "כסף"
+      },
+      "parent" : "5e932c50a77d06404d6cd007"
+    },
+    {
+      "_id" : "5e9320e6c2058ee9a30ef759",
+      "type" : "Institute",
+      "status" : 1,
+      "slug" : "maccabi",
+      "display_name" : {
+        "en" : "Maccabi",
+        "he" : "מכבי"
+      }
+    },
+    {
+      "_id" : "5e933076a77d06404d6cd00d",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "meuhedet-si",
+      "display_name" : {
+        "en" : "Si",
+        "he" : "שיא"
+      },
+      "parent" : "5e932c38a77d06404d6cd006"
+    },
+    {
+      "_id" : "5e932c38a77d06404d6cd006",
+      "type" : "Institute",
+      "status" : 1,
+      "slug" : "meuhedet",
+      "display_name" : {
+        "en" : "Meuhedet",
+        "he" : "מאוחדת"
+      }
+    },
+    {
+      "_id" : "5e93212b895f27e9f32cf400",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "maccabi-silver",
+      "display_name" : {
+        "en" : "Silver",
+        "he" : "כסף"
+      },
+      "parent" : "5e9320e6c2058ee9a30ef759"
+    },
+    {
+      "_id" : "5e932159fdb6e0ea15362cf8",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "clalit-regular",
+      "display_name" : {
+        "en" : "Basic",
+        "he" : "בסיסי"
+      },
+      "parent" : "5e932be7a77d06404d6cd005"
+    },
+    {
+      "_id" : "5e932d91a77d06404d6cd009",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "clalit-gold",
+      "display_name" : {
+        "en" : "Mushlam Zahav",
+        "he" : "מושלם זהב"
+      },
+      "parent" : "5e932be7a77d06404d6cd005"
+    },
+    {
+      "_id" : "5e932be7a77d06404d6cd005",
+      "type" : "Institute",
+      "status" : 1,
+      "slug" : "clalit",
+      "display_name" : {
+        "en" : "Clalit",
+        "he" : "כללית"
+      }
+    },
+    {
+      "_id" : "5e932118b21c51e9c7763917",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "maccabi-sheli",
+      "display_name" : {
+        "en" : "Sheli",
+        "he" : "שלי"
+      },
+      "parent" : "5e9320e6c2058ee9a30ef759"
+    },
+    {
+      "_id" : "5e932c50a77d06404d6cd007",
+      "type" : "Institute",
+      "status" : 1,
+      "slug" : "leumit",
+      "display_name" : {
+        "en" : "Leumit",
+        "he" : "לאומית"
+      }
+    },
+    {
+      "_id" : "5e932123cadb8ae9e5cf0483",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "maccabi-gold",
+      "display_name" : {
+        "en" : "Gold",
+        "he" : "זהב"
+      },
+      "parent" : "5e9320e6c2058ee9a30ef759"
+    },
+    {
+      "_id" : "5e932cb8a77d06404d6cd008",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "maccabi-regular",
+      "display_name" : {
+        "en" : "Basic",
+        "he" : "בסיסי"
+      },
+      "parent" : "5e9320e6c2058ee9a30ef759"
+    },
+    {
+      "_id" : "5e932e94a77d06404d6cd00c",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "meuhedet-adif",
+      "display_name" : {
+        "en" : "Adif",
+        "he" : "עדיף"
+      },
+      "parent" : "5e932c38a77d06404d6cd006"
+    },
+    {
+      "_id" : "5e9330cea77d06404d6cd00e",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "leumit-regular",
+      "display_name" : {
+        "en" : "Basic",
+        "he" : "בסיסי"
+      },
+      "parent" : "5e932c50a77d06404d6cd007"
+    },
+    {
+      "_id" : "5e932dc5a77d06404d6cd00a",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "clalit-platinum",
+      "display_name" : {
+        "en" : "Mushlam Platinum",
+        "he" : "מושלם פלטינום"
+      },
+      "parent" : "5e932be7a77d06404d6cd005"
+    },
+    {
+      "_id" : "5e93310ca77d06404d6cd010",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "leumit-gold",
+      "display_name" : {
+        "en" : "Gold",
+        "he" : "זהב"
+      },
+      "parent" : "5e932c50a77d06404d6cd007"
+    },
+    {
+      "_id" : "5e932e2aa77d06404d6cd00b",
+      "type" : "Plan",
+      "status" : 1,
+      "slug" : "meuhedet-regular",
+      "display_name" : {
+        "en" : "Basic",
+        "he" : "בסיסי"
+      },
+      "parent" : "5e932c38a77d06404d6cd006"
+    }
+  ]
+}

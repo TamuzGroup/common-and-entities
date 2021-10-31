@@ -1,8 +1,19 @@
 import httpStatus from "http-status";
+import multer from "multer";
+import fs from "fs";
 import catchAsync from "../utils/catchAsync";
-import { generateAuthUrl, authCallback } from "../services/cloud.service";
+import {
+  generateAuthUrl,
+  authCallback,
+  getDriveFiles,
+  saveFile,
+} from "../services/cloud.service";
 import constants from "../../cloud-storage/constants";
 import logger from "../utils/logger.util";
+
+const upload = multer({
+  dest: "./",
+}).single("file");
 
 const cloudAuth = catchAsync(async (req, res) => {
   const { accessToken } = req.headers;
@@ -15,18 +26,69 @@ const cloudAuth = catchAsync(async (req, res) => {
 
 const cloudCallback = catchAsync(async (req, res) => {
   const { code } = req.query;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const userId = req.user && req.user._id;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const userName = req.user && req.user.name;
   if (code) {
-    const accessToken = await authCallback(code);
-    logger.info({ accessToken });
+    const authData = await authCallback(code, userId, userName);
+    logger.info({ authData });
     res.redirect(`${constants.REDIRECT_AFTER_CLOUD_AUTH}`);
   } else {
     logger.error("The code does not exist");
   }
 });
 
+const getFilesList = catchAsync(async (req, res) => {
+  const { folderId, isRenderChildren, cloudType, userId } = req.body;
+  const { cloudtoken: cloudToken } = req.headers;
+
+  const files = await getDriveFiles(
+    folderId,
+    isRenderChildren,
+    cloudToken,
+    cloudType,
+    userId
+  );
+
+  res.status(httpStatus.CREATED).send(files);
+});
+
+const uploadFile = catchAsync(async (req, res) => {
+  upload(req, res, async (err) => {
+    const { parentId, cloudType, userId } = req.query;
+    const { cloudtoken: cloudToken } = req.headers;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { originalname: originalName, path, mimetype } = req.file;
+    if (err) {
+      logger.error(`upload file: ${err}`);
+    }
+
+    const data = await saveFile(
+      originalName,
+      path,
+      mimetype,
+      parentId,
+      cloudToken,
+      cloudType,
+      userId
+    );
+
+    fs.unlinkSync(path);
+
+    res.status(httpStatus.CREATED).send(data);
+  });
+});
+
 const cloudController = {
   cloudAuth,
   cloudCallback,
+  getFilesList,
+  uploadFile,
 };
 
 export default cloudController;

@@ -2,7 +2,9 @@ import fetch from "node-fetch";
 import { Dropbox, DropboxAuth, DropboxResponse } from "dropbox";
 import { files, sharing } from "dropbox/types/dropbox_types";
 import qs from "qs";
+import fs from "fs";
 import { IClouds } from "./interfaces/clouds";
+import constants from "./constants";
 
 class DropboxService implements IClouds {
   dropbox: Dropbox;
@@ -15,18 +17,19 @@ class DropboxService implements IClouds {
 
   redirectUrl: string;
 
-  refreshToken: string | string[] | undefined;
+  refreshToken: string | null;
 
   constructor(
     clientId: string,
     clientSecret: string,
     redirectUrl: string,
-    refreshToken: string | string[] | undefined
+    refreshToken: string | null
   ) {
     this.refreshToken = refreshToken;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.redirectUrl = redirectUrl;
+
     this.auth = new DropboxAuth({
       fetch,
       clientId: this.clientId,
@@ -36,6 +39,9 @@ class DropboxService implements IClouds {
   }
 
   cloudAuth(): Dropbox {
+    if (this.refreshToken != null) {
+      this.auth.setRefreshToken(this.refreshToken);
+    }
     return new Dropbox({
       auth: this.auth,
     });
@@ -43,17 +49,22 @@ class DropboxService implements IClouds {
 
   getAuthToken(
     code: string | string[] | qs.ParsedQs | qs.ParsedQs[]
-  ): void | Promise<string> {
+  ): void | Promise<{ refreshToken: string; cloud: string }> {
     return new Promise((resolve) => {
       if (typeof code === "string") {
         this.auth
           .getAccessTokenFromCode(this.redirectUrl, code)
           .then((token: DropboxResponse<any>) => {
-            const { refresh_token: refreshToken, access_token: accessToken } =
-              token.result;
+            const { refresh_token: refreshToken } = token.result;
             if (refreshToken != null) {
               this.auth.setRefreshToken(refreshToken);
-              return resolve(accessToken);
+
+              const authData = {
+                refreshToken,
+                cloud: constants.CLOUDS.DROPBOX,
+              };
+
+              return resolve(authData);
             }
           });
       }
@@ -96,7 +107,7 @@ class DropboxService implements IClouds {
   getDriveFiles(folderId: string): Promise<
     | DropboxResponse<files.ListFolderResult>
     | {
-        data: (
+        files: (
           | files.FileMetadataReference
           | files.FolderMetadataReference
           | files.DeletedMetadataReference
@@ -110,7 +121,11 @@ class DropboxService implements IClouds {
       })
       .then((rsp) => {
         return {
-          data: rsp.result.entries,
+          files: rsp.result.entries,
+          tokenData: {
+            refreshToken: this.refreshToken,
+            cloudType: constants.CLOUDS.DROPBOX,
+          },
         };
       });
   }
@@ -133,10 +148,12 @@ class DropboxService implements IClouds {
   }
 
   async saveFile(
-    fileName: string
+    fileName: string,
+    filePath: string
   ): Promise<DropboxResponse<files.FileMetadata>> {
     return this.dropbox.filesUpload({
       path: `/${fileName}`,
+      contents: fs.createReadStream(filePath || fileName),
       autorename: false,
       mode: { ".tag": "add" },
     });
