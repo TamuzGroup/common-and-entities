@@ -17,8 +17,8 @@ services:
     links:
       - zookeeper
     environment:
-#      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
-      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
+#      KAFKA_ADVERTISED_HOST_NAME: kafka
 #      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.3
 #      KAFKA_ZOOKEEPER_CONNECT: 172.30.0.2:2181
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
