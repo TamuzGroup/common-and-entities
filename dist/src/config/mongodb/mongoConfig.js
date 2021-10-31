@@ -5,6 +5,7 @@ const config = require("./config.json");
 function getMongoDBConnectionParams(env) {
     switch (env) {
         case "dev":
+        case "development":
             return config.mongoLocalSettings;
         case "prod":
             return config.mongoSettings;
