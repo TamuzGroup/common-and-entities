@@ -32,5 +32,8 @@
 // export * from "./server/validations/safebox.validation";
 // // export * from "./server/validations/user.validation";
 
+const common_and_entities_version = "1.0.1"
 
-export {}
+export {
+    common_and_entities_version
+}

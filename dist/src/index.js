@@ -33,4 +33,7 @@
 // export * from "./server/validations/safebox.validation";
 // // export * from "./server/validations/user.validation";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.common_and_entities_version = void 0;
+const common_and_entities_version = "1.0.1";
+exports.common_and_entities_version = common_and_entities_version;
 //# sourceMappingURL=index.js.map
