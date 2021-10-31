@@ -2,7 +2,8 @@
   "mongoLocalSettings": {
     "user": "dbuser",
     "password": "dbpass",
-    "host": "localhost",
+    "host": "mongodb/admin",
+    "host2": "localhost",
     "protocol": "mongodb",
     "port": 27017,
     "authentication": "/admin",

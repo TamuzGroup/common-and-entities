@@ -39,11 +39,12 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: dbuser
       MONGO_INITDB_ROOT_PASSWORD: dbpass
+
   # init container to load mongo dumps to local container
   mongodb-seed:
     image: mongo:4.2.3
     volumes:
-      - ./mongo-seed:/mongo-seed
+      - ../config/mongodb/mongo-seed:/mongo-seed
     command: /mongo-seed/import.sh
     depends_on:
       - mongodb-server
@@ -53,6 +54,7 @@ services:
       - DB_NAME=givers_test
       - MONGO_USER=dbuser
       - MONGO_PASSWORD=dbpass
+
   sp-server:
     depends_on:
       - mongodb-seed
@@ -66,8 +68,9 @@ services:
      - ../../../sp-server/:/app/
      - /app/node_modules
     networks:
-      db:
-        ipv4_address: 172.30.0.5
+      - db
+#      api:
+#        ipv4_address: 172.30.0.5
     env_file:
       - ../../../sp-server/.env # read twilio/paypal secrets from secret file
     environment:
@@ -80,6 +83,7 @@ services:
 
 networks:
   db:
+  api:
     ipam:
       config:
           - subnet: 172.30.0.0/24
