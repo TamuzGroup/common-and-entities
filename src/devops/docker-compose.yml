@@ -1,30 +1,30 @@
 version: '2'
 services:
-#  zookeeper:
-#    image: wurstmeister/zookeeper:latest
-#    ports:
-#      - "2181:2181"
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
 #    networks:
 #      db:
 #        ipv4_address: 172.30.0.2
-#  kafka:
-#    image: wurstmeister/kafka:2.11-1.1.1
-#    ports:
-#      - "9092:9092"
-#    networks:
-#      db:
-#        ipv4_address: 172.30.0.3
-#    links:
-#      - zookeeper
-#    environment:
-##      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
-#      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.2
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-#      KAFKA_DELETE_TOPIC_ENABLE: 'true'
-#      KAFKA_CREATE_TOPICS: "notification_request:1:1,cloud_storage_token_mng:1:1"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    ports:
+      - "9092:9092"
+    networks:
+      api:
+        ipv4_address: 172.30.0.3
+    links:
+      - zookeeper
+    environment:
+#      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
+      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: "notification_request:1:1,cloud_storage_token_mng:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   # local mongo server
   mongodb-server:
     image: mongo:4.2.3
@@ -63,7 +63,7 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 3000:3000 # expose port to localhost for debugging
-      - 56745:56745
+      - 56755:56755
     volumes:
      - ../../../sp-server/:/app/
      - /app/node_modules
