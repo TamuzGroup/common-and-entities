@@ -13,6 +13,7 @@ export interface IMongoDBConnectionSettings {
 export function getMongoDBConnectionParams(env: string ): IMongoDBConnectionSettings {
     switch (env) {
         case "dev":
+        case "development":
             return config.mongoLocalSettings as IMongoDBConnectionSettings;
         case "prod":
             return config.mongoSettings as IMongoDBConnectionSettings;
