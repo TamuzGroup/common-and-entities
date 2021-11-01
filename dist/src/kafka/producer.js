@@ -23,7 +23,6 @@ class KafkaProducer {
     }
     connect() {
         return this.producer.connect();
-        ;
     }
     async connectSync() {
         try {
