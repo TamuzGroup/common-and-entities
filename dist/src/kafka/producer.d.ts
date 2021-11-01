@@ -10,6 +10,7 @@ export default class KafkaProducer {
         key: string;
     }): Promise<import("kafkajs").RecordMetadata[]>;
     connect(): Promise<void>;
+    connectSync(): Promise<void>;
     disconnect(): Promise<void>;
 }
 //# sourceMappingURL=producer.d.ts.map
