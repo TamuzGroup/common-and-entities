@@ -7,6 +7,8 @@ import {
   authCallback,
   getDriveFiles,
   saveFile,
+  deleteFileById,
+  downloadFileById,
 } from "../services/cloud.service";
 import constants from "../../cloud-storage/constants";
 import logger from "../utils/logger.util";
@@ -84,11 +86,26 @@ const uploadFile = catchAsync(async (req, res) => {
   });
 });
 
+const deleteFile = catchAsync(async (req, res) => {
+  const { fileId, fileName } = req.body;
+  const file = await deleteFileById(fileId, fileName);
+  res.status(httpStatus.CREATED).send(file);
+});
+
+const downloadFile = catchAsync(async (req, res) => {
+  const { fileId, fileName } = req.body;
+
+  const file = await downloadFileById(fileId, fileName);
+  res.status(httpStatus.CREATED).send(file);
+});
+
 const cloudController = {
   cloudAuth,
   cloudCallback,
   getFilesList,
   uploadFile,
+  deleteFile,
+  downloadFile,
 };
 
 export default cloudController;
