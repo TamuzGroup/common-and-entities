@@ -27,4 +27,14 @@ const sendMessage = async (type, to, body, executeAt) => {
 };
 exports.sendMessage = sendMessage;
 producer.connect().catch((err) => logger_util_1.default.error(err));
+// export default class NotificationProducer extends KafkaProducer {
+//
+//   constructor(
+//       topic = kafkaConstants.NOTIFICATION_SETTINGS.TOPIC,
+//       clientId = kafkaConstants.NOTIFICATION_SETTINGS.CLIENT_ID,
+//       brokers: string[] = kafkaConstants.NOTIFICATION_SETTINGS.BROKERS
+//   ){
+//     super(topic, clientId, brokers);
+//   }
+// }
 //# sourceMappingURL=notification.producer.js.map

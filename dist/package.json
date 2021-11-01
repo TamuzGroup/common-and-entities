@@ -2,7 +2,8 @@
     "name": "common-and-entities",
     "version": "1.0.0",
     "description": "givers common-and-entities repository to be shared between projects",
-    "main": "index.js",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepare": "husky install",
