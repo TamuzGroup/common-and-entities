@@ -4,26 +4,19 @@ services:
     image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
-    networks:
-      - kafkaNet
   kafka:
     image: wurstmeister/kafka:2.11-1.1.1
     ports:
       - "9092:9092"
-    networks:
-      - kafkaNet
     links:
       - zookeeper
+    hostname: kafka
     environment:
-      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-
-      #      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-#      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.3
+#      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
+#      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_PORT: "9092"
+      #      KAFKA_ADVERTISED_HOST_NAME: 172.30.0.3
 #      KAFKA_ZOOKEEPER_CONNECT: 172.30.0.2:2181
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
@@ -64,7 +57,6 @@ services:
   sp-server:
     depends_on:
       - mongodb-seed
-      - kafka
     build:
       context: ../../../sp-server
       dockerfile: Dockerfile.dev
@@ -76,7 +68,6 @@ services:
      - /app/node_modules
     networks:
       - db
-      - kafkaNet
 #      api:
 #        ipv4_address: 172.30.0.5
     env_file:
@@ -91,10 +82,9 @@ services:
 
 networks:
   db:
-  kafkaNet:
+  api:
+    ipam:
+      config:
+          - subnet: 172.30.0.0/24
 #  api:
-#    ipam:
-#      config:
-#          - subnet: 172.30.0.0/24
-##  api:
 #  elk:
