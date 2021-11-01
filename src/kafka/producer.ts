@@ -33,16 +33,8 @@ export default class KafkaProducer {
   }
 
   connect() {
+    logger.info("producer connecting...", "topic", this.topic, "brokers", this.brokers)
     return this.producer.connect();
-  }
-
-  async connectSync() {
-    try {
-      const connected = await this.producer.connect();
-      logger.info("producer connected", "topic", this.topic, "brokers", this.brokers)
-      return connected;
-    }
-    catch(e) { logger.error( e ) }
   }
 
   disconnect() {

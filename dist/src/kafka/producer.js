@@ -22,17 +22,8 @@ class KafkaProducer {
         });
     }
     connect() {
+        logger_util_1.default.info("producer connecting...", "topic", this.topic, "brokers", this.brokers);
         return this.producer.connect();
-    }
-    async connectSync() {
-        try {
-            const connected = await this.producer.connect();
-            logger_util_1.default.info("producer connected", "topic", this.topic, "brokers", this.brokers);
-            return connected;
-        }
-        catch (e) {
-            logger_util_1.default.error(e);
-        }
     }
     disconnect() {
         return this.producer.disconnect();
