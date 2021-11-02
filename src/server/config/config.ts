@@ -2,10 +2,7 @@ import dotenv from "dotenv";
 import path from "path";
 import Joi from "joi";
 
-import {
-  getMongoDBConnectionParams,
-  IMongoDBConnectionSettings,
-} from "../../index";
+import { getMongoDBConnectionParams } from "../../config/mongodb/mongoConfig";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -74,7 +71,7 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-const mongoDBConfig: IMongoDBConnectionSettings = getMongoDBConnectionParams(
+const mongoDBConfig = getMongoDBConnectionParams(
   envVars.NODE_ENV
 ); // take default settings
 const dbURL = `${mongoDBConfig.protocol}://${mongoDBConfig.user}:${mongoDBConfig.password}@${mongoDBConfig.host}:${mongoDBConfig.port}`;

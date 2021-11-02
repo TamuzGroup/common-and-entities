@@ -1,0 +1,76 @@
+{
+    "data": [
+        {
+            "_id": "5ebb94625f9880041b264dd7",
+            "slug": "pheonix",
+            "display_name": {
+                "en": "pheonix",
+                "he": "הפניקס"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb95085f9880041b264ddb",
+            "slug": "clal",
+            "display_name": {
+                "en": "Clal",
+                "he": "כלל"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb94b25f9880041b264dd9",
+            "slug": "menora",
+            "display_name": {
+                "en": "Menora",
+                "he": "מנורה"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb95365f9880041b264ddc",
+            "slug": "ayalon",
+            "display_name": {
+                "en": "Ayalon",
+                "he": "איילון"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb956b5f9880041b264ddd",
+            "slug": "idi",
+            "display_name": {
+                "en": "IDI",
+                "he": "איי.די.איי"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb95a05f9880041b264dde",
+            "slug": "hachshara",
+            "display_name": {
+                "en": "Hachshara",
+                "he": "הכשרה"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb948f5f9880041b264dd8",
+            "slug": "harel",
+            "display_name": {
+                "en": "Harel",
+                "he": "הראל"
+            },
+            "status": 1
+        },
+        {
+            "_id": "5ebb94d95f9880041b264dda",
+            "slug": "migdal",
+            "display_name": {
+                "en": "Migdal",
+                "he": "מגדל"
+            },
+            "status": 1
+        }
+    ]
+}

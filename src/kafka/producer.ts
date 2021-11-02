@@ -1,5 +1,6 @@
 import { Kafka, Producer } from "kafkajs";
 import MessageInterface from "./interfaces/message.interface";
+import logger from "../server/utils/logger.util";
 
 export default class KafkaProducer {
   kafka: Kafka;
@@ -7,6 +8,7 @@ export default class KafkaProducer {
   topic: string;
 
   producer: Producer;
+  brokers: string[];
 
   constructor(
     topic = "topic-test",
@@ -18,6 +20,7 @@ export default class KafkaProducer {
       brokers,
     });
 
+    this.brokers = brokers;
     this.topic = topic;
     this.producer = this.kafka.producer();
   }
@@ -30,6 +33,7 @@ export default class KafkaProducer {
   }
 
   connect() {
+    logger.info("producer connecting...", "topic", this.topic, "brokers", this.brokers)
     return this.producer.connect();
   }
 
