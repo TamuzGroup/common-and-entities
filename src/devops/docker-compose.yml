@@ -4,19 +4,24 @@ services:
     image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
+    networks:
+      - db
   kafka:
     image: wurstmeister/kafka:2.11-1.1.1
     ports:
       - "9092:9092"
+    networks:
+      - db
     links:
       - zookeeper
+    # for docker connection
     hostname: kafka
     environment:
-      # for local
+      # for local connection
 ##     KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
 #      KAFKA_ADVERTISED_HOST_NAME: localhost
 
-      # for docker
+      # for docker connection
       KAFKA_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -61,6 +66,7 @@ services:
   sp-server:
     depends_on:
       - mongodb-seed
+      - kafka
     build:
       context: ../../../sp-server
       dockerfile: Dockerfile.dev
@@ -76,6 +82,30 @@ services:
 #        ipv4_address: 172.30.0.5
     env_file:
       - ../../../sp-server/.env # read twilio/paypal secrets from secret file
+    environment:
+      ## env vars to inject to api server
+      ## ENVIRONMENT
+      - NODE_ENV=development
+
+  notifications-consumer:
+    depends_on:
+      - mongodb-seed
+      - kafka
+    build:
+      context: ../../../notifications-consumer
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3001 # expose port to localhost for debugging
+      - 56765:56765
+    volumes:
+      - ../../../notifications-consumer/:/app/
+      - /app/node_modules
+    networks:
+      - db
+    #      api:
+    #        ipv4_address: 172.30.0.5
+    env_file:
+      - ../../../notifications-consumer/.env # read twilio/paypal secrets from secret file
     environment:
       ## env vars to inject to api server
       ## ENVIRONMENT
