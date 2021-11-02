@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveFile = exports.getDriveFiles = exports.authCallback = exports.generateAuthUrl = void 0;
+exports.downloadFileById = exports.deleteFileById = exports.saveFile = exports.getDriveFiles = exports.authCallback = exports.generateAuthUrl = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
 const constants_1 = __importDefault(require("../../cloud-storage/constants"));
@@ -100,4 +100,14 @@ const saveFile = async (originalName, path, mimetype, parentId, cloudToken, clou
     return cloudService.saveFile(originalName, path, mimetype, parentId);
 };
 exports.saveFile = saveFile;
+const deleteFileById = async (fileId, fileName, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
+    return cloudService.deleteFile(fileId, fileName);
+};
+exports.deleteFileById = deleteFileById;
+const downloadFileById = async (fileId, fileName, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
+    return cloudService.downloadFile(fileId, fileName);
+};
+exports.downloadFileById = downloadFileById;
 //# sourceMappingURL=cloud.service.js.map

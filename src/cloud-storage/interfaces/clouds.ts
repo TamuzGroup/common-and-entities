@@ -18,7 +18,7 @@ export interface IClouds {
 
   createFolder(
     folderName: string,
-    parentId: string
+    parentId?: string
   ):
     | GaxiosPromise<drive_v3.Schema$File>
     | Promise<AxiosResponse>

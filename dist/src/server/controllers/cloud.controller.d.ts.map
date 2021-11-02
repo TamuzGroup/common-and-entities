@@ -1,1 +1,1 @@
-{"version":3,"file":"cloud.controller.d.ts","sourceRoot":"","sources":["../../../../src/server/controllers/cloud.controller.ts"],"names":[],"mappings":";;AAsFA,QAAA,MAAM,eAAe;;;;;CAKpB,CAAC;AAEF,eAAe,eAAe,CAAC"}
+{"version":3,"file":"cloud.controller.d.ts","sourceRoot":"","sources":["../../../../src/server/controllers/cloud.controller.ts"],"names":[],"mappings":";;AAqGA,QAAA,MAAM,eAAe;;;;;;;CAOpB,CAAC;AAEF,eAAe,eAAe,CAAC"}

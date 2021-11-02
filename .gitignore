@@ -79,7 +79,7 @@ docker-compose.debug.yml
 !.env*.example
 
 # babel out-dir
-#dist
+dist
 
 # vs-code dir
 .vscode

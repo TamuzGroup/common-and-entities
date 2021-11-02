@@ -57,11 +57,23 @@ const uploadFile = catchAsync_1.default(async (req, res) => {
         res.status(http_status_1.default.CREATED).send(data);
     });
 });
+const deleteFile = catchAsync_1.default(async (req, res) => {
+    const { fileId, fileName } = req.body;
+    const file = await cloud_service_1.deleteFileById(fileId, fileName);
+    res.status(http_status_1.default.CREATED).send(file);
+});
+const downloadFile = catchAsync_1.default(async (req, res) => {
+    const { fileId, fileName } = req.body;
+    const file = await cloud_service_1.downloadFileById(fileId, fileName);
+    res.status(http_status_1.default.CREATED).send(file);
+});
 const cloudController = {
     cloudAuth,
     cloudCallback,
     getFilesList,
     uploadFile,
+    deleteFile,
+    downloadFile,
 };
 exports.default = cloudController;
 //# sourceMappingURL=cloud.controller.js.map
