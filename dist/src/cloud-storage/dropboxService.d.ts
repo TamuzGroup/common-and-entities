@@ -25,7 +25,7 @@ declare class DropboxService implements IClouds {
     getFileData(fileId: string): Promise<DropboxResponse<sharing.ListSharedLinksResult> | {
         data: string;
     }>;
-    saveFile(fileName: string): Promise<DropboxResponse<files.FileMetadata>>;
+    saveFile(fileName: string, filePath: string): Promise<DropboxResponse<files.FileMetadata>>;
     searchFolder(): Promise<null>;
 }
 export default DropboxService;

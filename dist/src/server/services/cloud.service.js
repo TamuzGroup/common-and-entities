@@ -1,19 +1,11 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDriveFiles = exports.authCallback = exports.generateAuthUrl = void 0;
+exports.downloadFileById = exports.deleteFileById = exports.saveFile = exports.getDriveFiles = exports.authCallback = exports.generateAuthUrl = void 0;
 const axios_1 = __importDefault(require("axios"));
+const fs_1 = __importDefault(require("fs"));
 const constants_1 = __importDefault(require("../../cloud-storage/constants"));
 const googleDrive_1 = __importDefault(require("../../cloud-storage/googleDrive"));
 const dropboxService_1 = __importDefault(require("../../cloud-storage/dropboxService"));
@@ -21,6 +13,7 @@ const oneDriveService_1 = __importDefault(require("../../cloud-storage/oneDriveS
 const config_1 = __importDefault(require("../config/config"));
 const logger_util_1 = __importDefault(require("../utils/logger.util"));
 const cloudStorageTokenMng_producer_1 = require("../../kafka/dedicated-producers/cloudStorageTokenMng.producer");
+const helper_util_1 = __importDefault(require("../utils/helper.util"));
 let cloudService;
 const REDIRECT_URL = "http://localhost:3000/v1/cloud/callback";
 const getCloudToken = (userId) => {
@@ -73,28 +66,48 @@ const connectToServiceByCloud = (cloud, refresh_token, userId) => {
         }
     });
 };
-const generateAuthUrl = (cloud, cloudToken) => __awaiter(void 0, void 0, void 0, function* () {
+const generateAuthUrl = async (cloud, cloudToken) => {
     getCloudService(cloud, cloudToken);
     return cloudService.generateAuthUrl();
-});
+};
 exports.generateAuthUrl = generateAuthUrl;
-const authCallback = (code, userId) => {
+const authCallback = (code, userId, userName) => {
     // eslint-disable-next-line no-async-promise-executor
-    return new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+    return new Promise(async (resolve) => {
         try {
-            const authData = yield cloudService.getAuthToken(code);
-            yield cloudStorageTokenMng_producer_1.sendMessage(authData, userId);
+            const authData = await cloudService.getAuthToken(code);
+            await cloudStorageTokenMng_producer_1.sendMessage(authData, userId);
+            const pdfText = `welcome ${userName}`;
+            const fileName = "welcome.pdf";
+            helper_util_1.default.createPdf(pdfText, fileName);
+            await cloudService.saveFile(fileName);
+            fs_1.default.unlinkSync(fileName);
             resolve({ refreshToken: authData.refreshToken, cloud: authData.cloud });
         }
         catch (err) {
             logger_util_1.default.error(`cloud callback: ${err}`);
         }
-    }));
+    });
 };
 exports.authCallback = authCallback;
-const getDriveFiles = (folderId, isRenderChildren, cloudToken, cloudType, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield connectToServiceByCloud(cloudType, cloudToken, userId);
+const getDriveFiles = async (folderId, isRenderChildren, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
     return cloudService.getDriveFiles(folderId, isRenderChildren);
-});
+};
 exports.getDriveFiles = getDriveFiles;
+const saveFile = async (originalName, path, mimetype, parentId, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
+    return cloudService.saveFile(originalName, path, mimetype, parentId);
+};
+exports.saveFile = saveFile;
+const deleteFileById = async (fileId, fileName, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
+    return cloudService.deleteFile(fileId, fileName);
+};
+exports.deleteFileById = deleteFileById;
+const downloadFileById = async (fileId, fileName, cloudToken, cloudType, userId) => {
+    await connectToServiceByCloud(cloudType, cloudToken, userId);
+    return cloudService.downloadFile(fileId, fileName);
+};
+exports.downloadFileById = downloadFileById;
 //# sourceMappingURL=cloud.service.js.map

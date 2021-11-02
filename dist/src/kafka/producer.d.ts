@@ -3,6 +3,7 @@ export default class KafkaProducer {
     kafka: Kafka;
     topic: string;
     producer: Producer;
+    brokers: string[];
     constructor(topic?: string, clientId?: string, brokers?: string[]);
     sendMessage(message: {
         value: string;

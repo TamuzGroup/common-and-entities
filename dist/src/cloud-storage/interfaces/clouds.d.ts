@@ -14,9 +14,9 @@ export interface IClouds {
     redirectUrl: string;
     refreshToken: string | null;
     cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
-    createFolder(folderName: string, parentId: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.CreateFolderResult>>;
+    createFolder(folderName: string, parentId?: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.CreateFolderResult>>;
     searchFolder(folderName?: string): Promise<drive_v3.Schema$File | null>;
-    saveFile(fileName: string, filePath: string, fileMimeType: string, folderId: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.FileMetadata>>;
+    saveFile(fileName: string, filePath?: string, fileMimeType?: string, folderId?: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.FileMetadata>>;
     getDriveFiles(folderIdOrName?: string, isRenderChildren?: string): Promise<{
         tokenData: ITokenData;
         files: any[];

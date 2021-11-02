@@ -18,15 +18,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -49,21 +40,21 @@ const logger_util_1 = __importDefault(require("../utils/logger.util"));
  * @param {string} password
  * @returns {Promise<IUserDoc>}
  */
-const loginUserWithEmailAndPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userService.getUserByEmail(email);
-    if (!user || !(yield user.isPasswordMatch(password))) {
+const loginUserWithEmailAndPassword = async (email, password) => {
+    const user = await userService.getUserByEmail(email);
+    if (!user || !(await user.isPasswordMatch(password))) {
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Incorrect email or password");
     }
     return user;
-});
+};
 exports.loginUserWithEmailAndPassword = loginUserWithEmailAndPassword;
 /**
  * Logout
  * @param {string} refreshToken
  * @returns {Promise}
  */
-const logout = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshTokenDoc = yield token_model_1.default.findOne({
+const logout = async (refreshToken) => {
+    const refreshTokenDoc = await token_model_1.default.findOne({
         token: refreshToken,
         type: tokens_1.default.REFRESH,
         blacklisted: false,
@@ -71,28 +62,28 @@ const logout = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () 
     if (!refreshTokenDoc) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "Not found");
     }
-    yield refreshTokenDoc.remove();
-});
+    await refreshTokenDoc.remove();
+};
 exports.logout = logout;
 /**
  * Refresh auth tokens
  * @param {string} refreshToken
  * @returns {Promise<Object>}
  */
-const refreshAuth = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
+const refreshAuth = async (refreshToken) => {
     try {
-        const refreshTokenDoc = yield tokenService.verifyToken(refreshToken, tokens_1.default.REFRESH);
-        const user = yield userService.getUserById(refreshTokenDoc.user);
+        const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokens_1.default.REFRESH);
+        const user = await userService.getUserById(refreshTokenDoc.user);
         if (!user) {
             throw new Error();
         }
-        yield refreshTokenDoc.remove();
-        return yield tokenService.generateAuthTokens(user);
+        await refreshTokenDoc.remove();
+        return await tokenService.generateAuthTokens(user);
     }
     catch (error) {
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Please authenticate");
     }
-});
+};
 exports.refreshAuth = refreshAuth;
 /**
  * Reset password
@@ -100,15 +91,15 @@ exports.refreshAuth = refreshAuth;
  * @param {string} newPassword
  * @returns {Promise}
  */
-const resetPassword = (resetPasswordToken, newPassword) => __awaiter(void 0, void 0, void 0, function* () {
+const resetPassword = async (resetPasswordToken, newPassword) => {
     try {
-        const resetPasswordTokenDoc = yield tokenService.verifyToken(resetPasswordToken, tokens_1.default.RESET_PASSWORD);
-        const user = yield userService.getUserById(resetPasswordTokenDoc.user);
+        const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokens_1.default.RESET_PASSWORD);
+        const user = await userService.getUserById(resetPasswordTokenDoc.user);
         if (!user) {
             throw new Error();
         }
-        yield userService.updateUserById(user.id, { password: newPassword });
-        yield token_model_1.default.deleteMany({
+        await userService.updateUserById(user.id, { password: newPassword });
+        await token_model_1.default.deleteMany({
             user: user.id,
             type: tokens_1.default.RESET_PASSWORD,
         });
@@ -116,30 +107,30 @@ const resetPassword = (resetPasswordToken, newPassword) => __awaiter(void 0, voi
     catch (error) {
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Password reset failed");
     }
-});
+};
 exports.resetPassword = resetPassword;
 /**
  * Verify email
  * @param {string} verifyEmailToken
  * @returns {Promise}
  */
-const verifyEmail = (verifyEmailToken) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyEmail = async (verifyEmailToken) => {
     try {
-        const verifyEmailTokenDoc = yield tokenService.verifyToken(verifyEmailToken, tokens_1.default.VERIFY_EMAIL);
-        const user = yield userService.getUserById(verifyEmailTokenDoc.user);
+        const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokens_1.default.VERIFY_EMAIL);
+        const user = await userService.getUserById(verifyEmailTokenDoc.user);
         if (!user) {
             throw new Error();
         }
-        yield token_model_1.default.deleteMany({
+        await token_model_1.default.deleteMany({
             user: user.id,
             type: tokens_1.default.VERIFY_EMAIL,
         });
-        yield userService.updateUserById(user.id, { isEmailVerified: true });
+        await userService.updateUserById(user.id, { isEmailVerified: true });
     }
     catch (error) {
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Email verification failed");
     }
-});
+};
 exports.verifyEmail = verifyEmail;
 /**
  * Set OTP for user
@@ -148,10 +139,10 @@ exports.verifyEmail = verifyEmail;
  * @param {string} userInfo.idNumber
  * @returns {Promise}
  */
-const sendOtp = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
+const sendOtp = async (userInfo) => {
     try {
         const { phoneNumber, idNumber } = userInfo;
-        const user = yield userService.getUserByIdNumber(idNumber);
+        const user = await userService.getUserByIdNumber(idNumber);
         if (!user)
             throw new Error("User id not found");
         const isCorrectPhone = user.phoneNumber === phoneNumber;
@@ -163,18 +154,18 @@ const sendOtp = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
             passcode: otp,
             created: new Date(),
         };
-        const updatedUser = yield userService.updateUserById(user.id, {
+        const updatedUser = await userService.updateUserById(user.id, {
             otp: otpObj,
         });
         const body = `Your passcode is: ${otp}`;
-        yield notification_producer_1.sendMessage(constants_1.default.NOTIFICATION_TYPES.SMS, updatedUser.phoneNumber, body);
+        await notification_producer_1.sendMessage(constants_1.default.NOTIFICATION_TYPES.SMS, updatedUser.phoneNumber, body);
         return updatedUser;
     }
     catch (error) {
         logger_util_1.default.error(error);
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Verification failed");
     }
-});
+};
 exports.sendOtp = sendOtp;
 /**
  * Verify OTP for user
@@ -183,16 +174,16 @@ exports.sendOtp = sendOtp;
  * @param {string} otpInfo.passcode
  * @returns {Promise}
  */
-const verifyOtp = (otpInfo) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyOtp = async (otpInfo) => {
     const { userId, passcode } = otpInfo;
-    const user = yield userService.getUserById(userId);
+    const user = await userService.getUserById(userId);
     if (user && config_1.default.env !== "production" && passcode === "111111") {
         return user;
     }
-    if (!user || !(yield user.isOtpPasscodeMatch(passcode))) {
+    if (!user || !(await user.isOtpPasscodeMatch(passcode))) {
         throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "Incorrect passcode or passcode has expired");
     }
     return user;
-});
+};
 exports.verifyOtp = verifyOtp;
 //# sourceMappingURL=auth.service.js.map
