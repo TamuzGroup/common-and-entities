@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,12 +12,12 @@ const ApiError_1 = __importDefault(require("../utils/ApiError"));
  * @param {IUserLeanDoc} userBody
  * @returns {Promise<IUserDoc>}
  */
-const createUser = (userBody) => __awaiter(void 0, void 0, void 0, function* () {
-    if (yield user_model_1.default.isEmailTaken(userBody.email)) {
+const createUser = async (userBody) => {
+    if (await user_model_1.default.isEmailTaken(userBody.email)) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Email already taken");
     }
     return user_model_1.default.create(userBody);
-});
+};
 exports.createUser = createUser;
 /**
  * Query for users
@@ -37,39 +28,39 @@ exports.createUser = createUser;
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult<IUser, IUserMethods>>}
  */
-const queryUsers = (filter, options) => __awaiter(void 0, void 0, void 0, function* () {
+const queryUsers = async (filter, options) => {
     const users = typeof user_model_1.default.paginate === "function"
-        ? yield user_model_1.default.paginate(filter, options)
+        ? await user_model_1.default.paginate(filter, options)
         : { results: [], page: 0, limit: 0, totalPages: 0, totalResults: 0 };
     return users;
-});
+};
 exports.queryUsers = queryUsers;
 /**
  * Get user by id
  * @param {Types.ObjectId} id
  * @returns {Promise<IUserQueryWithHelper>}
  */
-const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserById = async (id) => {
     return user_model_1.default.findById(id);
-});
+};
 exports.getUserById = getUserById;
 /**
  * Get user by email
  * @param {string} email
  * @returns {Promise<IUserQueryWithHelper>}
  */
-const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserByEmail = async (email) => {
     return user_model_1.default.findOne({ email });
-});
+};
 exports.getUserByEmail = getUserByEmail;
 /**
  * Get user by id number
  * @param {string} idNumber
  * @returns {Promise<IUserQueryWithHelper>}
  */
-const getUserByIdNumber = (idNumber) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserByIdNumber = async (idNumber) => {
     return user_model_1.default.findOne({ idNumber });
-});
+};
 exports.getUserByIdNumber = getUserByIdNumber;
 /**
  * Update user by id
@@ -77,32 +68,32 @@ exports.getUserByIdNumber = getUserByIdNumber;
  * @param {Partial<IUser>} updateBody
  * @returns {Promise<IUserDoc>}
  */
-const updateUserById = (id, updateBody) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield exports.getUserById(id);
+const updateUserById = async (id, updateBody) => {
+    const user = await exports.getUserById(id);
     if (!user) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User not found");
     }
     if (updateBody.email &&
-        (yield user_model_1.default.isEmailTaken(updateBody.email, id))) {
+        (await user_model_1.default.isEmailTaken(updateBody.email, id))) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Email already taken");
     }
     Object.assign(user, updateBody);
-    yield user.save();
+    await user.save();
     return user;
-});
+};
 exports.updateUserById = updateUserById;
 /**
  * Delete user by id
  * @param {string | Types.ObjectId} userId
  * @returns {Promise<IUserDoc>}
  */
-const deleteUserById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield exports.getUserById(userId);
+const deleteUserById = async (userId) => {
+    const user = await exports.getUserById(userId);
     if (!user) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User not found");
     }
-    yield user.remove();
+    await user.remove();
     return user;
-});
+};
 exports.deleteUserById = deleteUserById;
 //# sourceMappingURL=user.service.js.map

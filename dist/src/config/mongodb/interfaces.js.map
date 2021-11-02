@@ -1,1 +1,0 @@
-{"version":3,"file":"interfaces.js","sourceRoot":"","sources":["../../../../src/config/mongodb/interfaces.ts"],"names":[],"mappings":";;;;;;AAAA,gEAAwC;AAYxC,SAAgB,0BAA0B,CACxC,GAAW;IAEX,QAAQ,GAAG,EAAE;QACX,KAAK,KAAK;YACR,OAAO,qBAAW,CAAC,kBAAgD,CAAC;QACtE,KAAK,MAAM;YACT,OAAO,qBAAW,CAAC,aAA2C,CAAC;QACjE;YACE,OAAO,qBAAW,CAAC,kBAAgD,CAAC;KACvE;AACH,CAAC;AAXD,gEAWC"}

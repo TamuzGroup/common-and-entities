@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 const joi_1 = __importDefault(require("joi"));
-const index_1 = require("../../index");
+const mongoConfig_1 = require("../../config/mongodb/mongoConfig");
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../.env") });
 const envVarsSchema = joi_1.default.object()
     .keys({
@@ -62,7 +62,7 @@ const { value: envVars, error } = envVarsSchema
 if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
-const mongoDBConfig = index_1.getMongoDBConnectionParams(envVars.NODE_ENV); // take default settings
+const mongoDBConfig = mongoConfig_1.getMongoDBConnectionParams(envVars.NODE_ENV); // take default settings
 const dbURL = `${mongoDBConfig.protocol}://${mongoDBConfig.user}:${mongoDBConfig.password}@${mongoDBConfig.host}:${mongoDBConfig.port}`;
 // eslint-disable-next-line no-console
 console.info(`@@Mongodb:${dbURL}`);

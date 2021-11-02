@@ -9,7 +9,7 @@ const ONE_DRIVE_GET_TOKEN_URL = "https://login.live.com/oauth20_token.srf";
 const ONE_DRIVE_AUTHORIZE_URL = "https://login.live.com/oauth20_authorize.srf";
 const CLOUDS = {
     GOOGLE: "google",
-    DROPBOX: "Dropbox",
+    DROPBOX: "dropbox",
     ONEDRIVE: "oneDrive",
 };
 const constants = {

@@ -18,15 +18,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -67,8 +58,8 @@ exports.generateToken = generateToken;
  * @param {boolean} [blacklisted]
  * @returns {Promise<ITokenDoc>}
  */
-const saveToken = (token, userId, expires, type, blacklisted = false) => __awaiter(void 0, void 0, void 0, function* () {
-    const tokenDoc = yield token_model_1.default.create({
+const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+    const tokenDoc = await token_model_1.default.create({
         token,
         user: userId,
         expires: expires.toDate(),
@@ -76,7 +67,7 @@ const saveToken = (token, userId, expires, type, blacklisted = false) => __await
         blacklisted,
     });
     return tokenDoc;
-});
+};
 exports.saveToken = saveToken;
 /**
  * Verify token and return token doc (or throw an error if it is not valid)
@@ -84,9 +75,9 @@ exports.saveToken = saveToken;
  * @param {TokenTypes} type
  * @returns {Promise<ITokenDoc>}
  */
-const verifyToken = (token, type) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyToken = async (token, type) => {
     const payload = jsonwebtoken_1.default.verify(token, config_1.default.jwt.secret);
-    const tokenDoc = yield token_model_1.default.findOne({
+    const tokenDoc = await token_model_1.default.findOne({
         token,
         type,
         user: typeof payload.sub === 'function' ? payload.sub() : payload.sub,
@@ -96,7 +87,7 @@ const verifyToken = (token, type) => __awaiter(void 0, void 0, void 0, function*
         throw new Error('Token not found');
     }
     return tokenDoc;
-});
+};
 exports.verifyToken = verifyToken;
 /**
  * Generate new security auth tokens for the specified user
@@ -104,12 +95,12 @@ exports.verifyToken = verifyToken;
  * @param {IUserDoc} user
  * @returns {Promise<AuthTokens>}
  */
-const generateAuthTokens = (user) => __awaiter(void 0, void 0, void 0, function* () {
+const generateAuthTokens = async (user) => {
     const accessTokenExpires = moment_1.default().add(config_1.default.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = exports.generateToken(user.id, accessTokenExpires, tokens_1.default.ACCESS);
     const refreshTokenExpires = moment_1.default().add(config_1.default.jwt.refreshExpirationDays, 'days');
     const refreshToken = exports.generateToken(user.id, refreshTokenExpires, tokens_1.default.REFRESH);
-    yield exports.saveToken(refreshToken, user.id, refreshTokenExpires, tokens_1.default.REFRESH);
+    await exports.saveToken(refreshToken, user.id, refreshTokenExpires, tokens_1.default.REFRESH);
     return {
         access: {
             token: accessToken,
@@ -120,34 +111,34 @@ const generateAuthTokens = (user) => __awaiter(void 0, void 0, void 0, function*
             expires: refreshTokenExpires.toDate(),
         },
     };
-});
+};
 exports.generateAuthTokens = generateAuthTokens;
 /**
  * Generate reset password token
  * @param {string} email
  * @returns {Promise<string>}
  */
-const generateResetPasswordToken = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userService.getUserByEmail(email);
+const generateResetPasswordToken = async (email) => {
+    const user = await userService.getUserByEmail(email);
     if (!user) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'No users found with this email');
     }
     const expires = moment_1.default().add(config_1.default.jwt.resetPasswordExpirationMinutes, 'minutes');
     const resetPasswordToken = exports.generateToken(user.id, expires, tokens_1.default.RESET_PASSWORD);
-    yield exports.saveToken(resetPasswordToken, user.id, expires, tokens_1.default.RESET_PASSWORD);
+    await exports.saveToken(resetPasswordToken, user.id, expires, tokens_1.default.RESET_PASSWORD);
     return resetPasswordToken;
-});
+};
 exports.generateResetPasswordToken = generateResetPasswordToken;
 /**
  * Generate verify email token
  * @param {ObjectId} userId
  * @returns {Promise<string>}
  */
-const generateVerifyEmailToken = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+const generateVerifyEmailToken = async (userId) => {
     const expires = moment_1.default().add(config_1.default.jwt.verifyEmailExpirationMinutes, 'minutes');
     const verifyEmailToken = exports.generateToken(userId, expires, tokens_1.default.VERIFY_EMAIL);
-    yield exports.saveToken(verifyEmailToken, userId, expires, tokens_1.default.VERIFY_EMAIL);
+    await exports.saveToken(verifyEmailToken, userId, expires, tokens_1.default.VERIFY_EMAIL);
     return verifyEmailToken;
-});
+};
 exports.generateVerifyEmailToken = generateVerifyEmailToken;
 //# sourceMappingURL=token.service.js.map

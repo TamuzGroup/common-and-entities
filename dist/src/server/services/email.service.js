@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -37,10 +28,10 @@ if (config_1.default.env !== 'test') {
  * @param {string} text
  * @returns {Promise}
  */
-const sendEmail = (to, subject, text) => __awaiter(void 0, void 0, void 0, function* () {
+const sendEmail = async (to, subject, text) => {
     const msg = { from: config_1.default.email.from, to, subject, text };
-    yield exports.transport.sendMail(msg);
-});
+    await exports.transport.sendMail(msg);
+};
 exports.sendEmail = sendEmail;
 /**
  * Send reset password email
@@ -48,15 +39,15 @@ exports.sendEmail = sendEmail;
  * @param {string} token
  * @returns {Promise}
  */
-const sendResetPasswordEmail = (to, token) => __awaiter(void 0, void 0, void 0, function* () {
+const sendResetPasswordEmail = async (to, token) => {
     const subject = 'Reset password';
     // replace this url with the link to the reset password page of your front-end app
     const resetPasswordUrl = `http://link-to-app/reset-password?token=${token}`;
     const text = `Dear user,
 To reset your password, click on this link: ${resetPasswordUrl}
 If you did not request any password resets, then ignore this email.`;
-    yield exports.sendEmail(to, subject, text);
-});
+    await exports.sendEmail(to, subject, text);
+};
 exports.sendResetPasswordEmail = sendResetPasswordEmail;
 /**
  * Send verification email
@@ -64,14 +55,14 @@ exports.sendResetPasswordEmail = sendResetPasswordEmail;
  * @param {string} token
  * @returns {Promise}
  */
-const sendVerificationEmail = (to, token) => __awaiter(void 0, void 0, void 0, function* () {
+const sendVerificationEmail = async (to, token) => {
     const subject = 'Email Verification';
     // replace this url with the link to the email verification page of your front-end app
     const verificationEmailUrl = `http://link-to-app/verify-email?token=${token}`;
     const text = `Dear user,
 To verify your email, click on this link: ${verificationEmailUrl}
 If you did not create an account, then ignore this email.`;
-    yield exports.sendEmail(to, subject, text);
-});
+    await exports.sendEmail(to, subject, text);
+};
 exports.sendVerificationEmail = sendVerificationEmail;
 //# sourceMappingURL=email.service.js.map

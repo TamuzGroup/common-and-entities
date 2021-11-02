@@ -8,8 +8,8 @@ declare class DropboxService implements IClouds {
     clientId: string;
     clientSecret: string;
     redirectUrl: string;
-    refreshToken: string | string[] | undefined;
-    constructor(clientId: string, clientSecret: string, redirectUrl: string, refreshToken: string | string[] | undefined);
+    refreshToken: string | null;
+    constructor(clientId: string, clientSecret: string, redirectUrl: string, refreshToken: string | null);
     cloudAuth(): Dropbox;
     getAuthToken(code: string | string[] | qs.ParsedQs | qs.ParsedQs[]): void | Promise<{
         refreshToken: string;
@@ -20,12 +20,12 @@ declare class DropboxService implements IClouds {
     deleteFile(fileId: string): Promise<DropboxResponse<files.DeleteResult>>;
     downloadFile(fileId: string): Promise<DropboxResponse<files.FileMetadata>>;
     getDriveFiles(folderId: string): Promise<DropboxResponse<files.ListFolderResult> | {
-        data: (files.FileMetadataReference | files.FolderMetadataReference | files.DeletedMetadataReference)[];
+        files: (files.FileMetadataReference | files.FolderMetadataReference | files.DeletedMetadataReference)[];
     }>;
     getFileData(fileId: string): Promise<DropboxResponse<sharing.ListSharedLinksResult> | {
         data: string;
     }>;
-    saveFile(fileName: string): Promise<DropboxResponse<files.FileMetadata>>;
+    saveFile(fileName: string, filePath: string): Promise<DropboxResponse<files.FileMetadata>>;
     searchFolder(): Promise<null>;
 }
 export default DropboxService;

@@ -5,7 +5,7 @@ import { GaxiosPromise } from "googleapis-common";
 import { GaxiosResponse } from "gaxios";
 import { Readable } from "stream";
 import qs from "qs";
-import { IClouds } from "./interfaces/clouds";
+import { IClouds, ITokenData } from "./interfaces/clouds";
 declare class GoogleDriveService implements IClouds {
     auth: OAuth2Client;
     drive: drive_v3.Drive;
@@ -13,7 +13,7 @@ declare class GoogleDriveService implements IClouds {
     clientSecret: string;
     redirectUrl: string;
     refreshToken: string | null;
-    constructor(clientId: string, clientSecret: string, redirectUrl: string, refreshToken: null | string);
+    constructor(clientId: string, clientSecret: string, redirectUrl: string, refreshToken: string | null);
     cloudAuth(): [OAuth2Client, drive_v3.Drive];
     createFolder(folderName: string, parentId: string): GaxiosPromise<drive_v3.Schema$File>;
     searchFolder(folderName: string): Promise<drive_v3.Schema$File | null>;
@@ -21,8 +21,15 @@ declare class GoogleDriveService implements IClouds {
     getChildren(folderId: string): Promise<{
         data: drive_v3.Schema$File[];
     }>;
-    getDriveFiles(folderId: string, isRenderChildren: string): Promise<{
-        data: drive_v3.Schema$File[];
+    getDriveFiles(folderIdOrName?: string, isRenderChildren?: string): Promise<{
+        tokenData: {
+            cloudType: string;
+            refreshToken: string | null;
+        };
+        files: any[];
+    } | {
+        files: drive_v3.Schema$File[];
+        tokenData: ITokenData;
     }>;
     getAuthToken(code: string | string[] | qs.ParsedQs | qs.ParsedQs[] | any): void | Promise<{
         refreshToken: string;

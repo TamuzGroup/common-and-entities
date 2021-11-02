@@ -12,23 +12,19 @@ export interface IClouds {
     clientId: string;
     clientSecret: string;
     redirectUrl: string;
-    refreshToken: string | null | undefined | string[];
+    refreshToken: string | null;
     cloudAuth(): [OAuth2Client, drive_v3.Drive] | Dropbox | null;
-    createFolder(folderName: string, parentId: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.CreateFolderResult>>;
+    createFolder(folderName: string, parentId?: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.CreateFolderResult>>;
     searchFolder(folderName?: string): Promise<drive_v3.Schema$File | null>;
-    saveFile(fileName: string, filePath: string, fileMimeType: string, folderId: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.FileMetadata>>;
+    saveFile(fileName: string, filePath?: string, fileMimeType?: string, folderId?: string): GaxiosPromise<drive_v3.Schema$File> | Promise<AxiosResponse> | Promise<DropboxResponse<files.FileMetadata>>;
     getDriveFiles(folderIdOrName?: string, isRenderChildren?: string): Promise<{
-        data: drive_v3.Schema$File[];
-    }> | Promise<AxiosResponse> | Promise<{
-        data: {
-            files: unknown[];
-        };
+        tokenData: ITokenData;
+        files: any[];
     } | {
-        data: {
-            files: IOneDriveTreeItem[];
-        };
-    }> | Promise<DropboxResponse<files.ListFolderResult> | {
-        data: (files.FileMetadataReference | files.FolderMetadataReference | files.DeletedMetadataReference)[];
+        files: drive_v3.Schema$File[];
+        tokenData: ITokenData;
+    } | DropboxResponse<files.ListFolderResult> | {
+        files: (files.FileMetadataReference | files.FolderMetadataReference | files.DeletedMetadataReference)[];
     }>;
     getAuthToken(code: string | string[] | qs.ParsedQs | qs.ParsedQs[]): void | Promise<any>;
     deleteFile(fileId?: string, fileName?: string): Promise<GaxiosResponse<void>> | Promise<AxiosResponse> | Promise<DropboxResponse<files.DeleteResult>>;
@@ -108,5 +104,9 @@ export interface IDropboxTreeItem {
     server_modified: string;
     size: number;
     children?: IDropboxTreeItem[];
+}
+export interface ITokenData {
+    refreshToken: string | null;
+    cloudType: string;
 }
 //# sourceMappingURL=clouds.d.ts.map

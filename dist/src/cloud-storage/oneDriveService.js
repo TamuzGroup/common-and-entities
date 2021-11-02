@@ -74,7 +74,13 @@ class OneDriveService {
             const treeData = rsp.value.map((item) => {
                 return Object.assign(Object.assign({}, item), { ".tag": item.folder ? "folder" : "file" });
             });
-            return { data: treeData };
+            return {
+                files: treeData,
+                tokenData: {
+                    refreshToken: this.refreshToken,
+                    cloudType: constants_1.default.CLOUDS.DROPBOX,
+                },
+            };
         });
     }
     getFileData(fileName) {

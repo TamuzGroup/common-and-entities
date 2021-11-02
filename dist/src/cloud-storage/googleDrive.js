@@ -18,15 +18,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -100,20 +91,28 @@ class GoogleDriveService {
             };
         });
     }
-    getDriveFiles(folderId, isRenderChildren) {
-        const params = Object.assign(Object.assign({ auth: this.auth, pageSize: 1000, spaces: "appDataFolder" }, (folderId && { q: `'${folderId}' in parents and trashed=false` })), { fields: "files(id, name, parents, mimeType)" });
+    getDriveFiles(folderIdOrName, isRenderChildren) {
+        const params = Object.assign(Object.assign({ auth: this.auth, pageSize: 1000, spaces: "appDataFolder" }, (folderIdOrName && {
+            q: `'${folderIdOrName}' in parents and trashed=false`,
+        })), { fields: "files(id, name, parents, mimeType)" });
         const isRenderChildrenItems = isRenderChildren === "true";
         return this.drive.files.list(params).then((rsp) => {
             const { files } = rsp.data;
             const filesData = files !== null && files !== undefined ? files : [];
             let filteredFiles = [];
             if (!isRenderChildrenItems) {
-                filteredFiles = filesData.filter((item) => item.parents && item.parents[0] === folderId);
+                filteredFiles = filesData.filter((item) => item.parents && item.parents[0] === folderIdOrName);
             }
             filteredFiles = filteredFiles.map((item) => {
                 return Object.assign(Object.assign({}, item), { ".tag": item.mimeType === constants_1.default.GOOGLE_FOLDER_PATH ? "folder" : "file" });
             });
-            return { data: filteredFiles };
+            return {
+                files: filteredFiles,
+                tokenData: {
+                    refreshToken: this.refreshToken,
+                    cloudType: constants_1.default.CLOUDS.DROPBOX,
+                },
+            };
         });
     }
     getAuthToken(code) {
@@ -123,20 +122,18 @@ class GoogleDriveService {
                     this.auth.setCredentials(tokens);
                     const authData = {
                         refreshToken: tokens.refresh_token,
-                        cloud: "google",
+                        cloud: constants_1.default.CLOUDS.GOOGLE,
                     };
                     return resolve(authData);
                 }
             });
         });
     }
-    deleteFile(fileId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const params = {
-                fileId,
-            };
-            return this.drive.files.delete(params);
-        });
+    async deleteFile(fileId) {
+        const params = {
+            fileId,
+        };
+        return this.drive.files.delete(params);
     }
     downloadFile(fileId) {
         return this.drive.files.get({
@@ -146,34 +143,30 @@ class GoogleDriveService {
             responseType: "stream",
         });
     }
-    getFileData(fileId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.drive.files
-                .get({
-                fileId,
-                fields: "webViewLink, webContentLink, thumbnailLink",
-            })
-                .then((rsp) => {
-                const { thumbnailLink } = rsp.data;
-                const [img] = thumbnailLink !== undefined && thumbnailLink !== null
-                    ? thumbnailLink.split("=")
-                    : "";
-                return { data: img };
-            });
+    async getFileData(fileId) {
+        return this.drive.files
+            .get({
+            fileId,
+            fields: "webViewLink, webContentLink, thumbnailLink",
+        })
+            .then((rsp) => {
+            const { thumbnailLink } = rsp.data;
+            const [img] = thumbnailLink !== undefined && thumbnailLink !== null
+                ? thumbnailLink.split("=")
+                : "";
+            return { data: img };
         });
     }
-    shareFile(fileId, email, role, type) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const params = {
-                fileId,
-                requestBody: {
-                    role,
-                    type,
-                    emailAddress: email,
-                },
-            };
-            return this.drive.permissions.create(params);
-        });
+    async shareFile(fileId, email, role, type) {
+        const params = {
+            fileId,
+            requestBody: {
+                role,
+                type,
+                emailAddress: email,
+            },
+        };
+        return this.drive.permissions.create(params);
     }
     generateAuthUrl() {
         return this.auth.generateAuthUrl({

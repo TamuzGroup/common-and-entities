@@ -1,6 +1,6 @@
 import qs from "qs";
 import { AxiosBasicCredentials, AxiosResponse } from "axios";
-import { IClouds, IOneDriveTreeItem } from "./interfaces/clouds";
+import { IClouds } from "./interfaces/clouds";
 declare class OneDriveService implements IClouds {
     auth: AxiosBasicCredentials | null;
     clientId: string;
@@ -17,14 +17,12 @@ declare class OneDriveService implements IClouds {
     deleteFile(fileName: string): Promise<AxiosResponse>;
     downloadFile(): Promise<null>;
     generateAuthUrl(): string;
-    getDriveFiles(folderIdOrName: string, isRenderChildren: string): Promise<{
-        data: {
-            files: unknown[];
+    getDriveFiles(folderIdOrName?: string, isRenderChildren?: string): Promise<{
+        tokenData: {
+            cloudType: string;
+            refreshToken: string | null;
         };
-    } | {
-        data: {
-            files: IOneDriveTreeItem[];
-        };
+        files: any[];
     }>;
     getFileData(fileName: string): Promise<AxiosResponse>;
     saveFile(fileName: string, filePath: string): Promise<AxiosResponse>;
